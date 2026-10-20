@@ -27,12 +27,19 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import weapons from '../data/weapons'
+import { questStats } from '../data/quests'
 
 const weaponTypesCount = new Set(weapons.map((item) => item.type)).size
 
 const boards = [
   { label: '主线', desc: '主线流程、Boss 顺序与关键节点攻略', path: '/main-quest', icon: 'Flag', ready: false },
-  { label: '支线', desc: 'NPC 支线任务与剧情分支全解析', path: '/side-quests', icon: 'ChatDotRound', ready: false },
+  {
+    label: '支线',
+    desc: `${questStats.total} 条 NPC 支线（本体 ${questStats.base} + DLC ${questStats.dlc}），含 ${questStats.missable} 条易错过预警与分支结局`,
+    path: '/side-quests',
+    icon: 'ChatDotRound',
+    ready: true,
+  },
   {
     label: '武器',
     desc: `${weapons.length} 件武器、${weaponTypesCount} 个类型全收录：数值、战技、异常状态与配装推荐`,
