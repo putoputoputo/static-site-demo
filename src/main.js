@@ -1,19 +1,9 @@
 import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+// 组件由 unplugin-vue-components 按需引入（见 vite.config.js），这里不再整包注册 ElementPlus
 import App from './App.vue'
 import router from './router'
 import './assets/style.css'
 
-const app = createApp(App)
-
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component)
-}
-
-app.use(ElementPlus, { locale: zhCn })
-app.use(router)
-app.mount('#app')
+createApp(App).use(router).mount('#app')

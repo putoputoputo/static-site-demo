@@ -1,21 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import WeaponsView from '../views/WeaponsView.vue'
-import WeaponDetailView from '../views/WeaponDetailView.vue'
-import QuestsView from '../views/QuestsView.vue'
-import QuestDetailView from '../views/QuestDetailView.vue'
-import PlaceholderView from '../views/PlaceholderView.vue'
 
+// 路由级懒加载：各页面与它们依赖的数据文件会被拆成独立 chunk，
+// 首屏只下载当前路由需要的代码，避免单文件 bundle 随内容增长一路膨胀。
 const routes = [
-  { path: '/', name: 'home', component: HomeView },
-  { path: '/weapons', name: 'weapons', component: WeaponsView },
-  { path: '/weapons/:id', name: 'weapon-detail', component: WeaponDetailView },
-  { path: '/side-quests', name: 'side-quests', component: QuestsView },
-  { path: '/side-quests/:id', name: 'quest-detail', component: QuestDetailView },
-  { path: '/main-quest', name: 'main-quest', component: PlaceholderView, props: { title: '主线' } },
-  { path: '/runes', name: 'runes', component: PlaceholderView, props: { title: '符文' } },
-  { path: '/sorceries', name: 'sorceries', component: PlaceholderView, props: { title: '魔法' } },
-  { path: '/incantations', name: 'incantations', component: PlaceholderView, props: { title: '祷告' } },
+  { path: '/', name: 'home', component: () => import('../views/HomeView.vue') },
+  { path: '/weapons', name: 'weapons', component: () => import('../views/WeaponsView.vue') },
+  { path: '/weapons/:id', name: 'weapon-detail', component: () => import('../views/WeaponDetailView.vue') },
+  { path: '/side-quests', name: 'side-quests', component: () => import('../views/QuestsView.vue') },
+  { path: '/side-quests/:id', name: 'quest-detail', component: () => import('../views/QuestDetailView.vue') },
+  {
+    path: '/main-quest',
+    name: 'main-quest',
+    component: () => import('../views/PlaceholderView.vue'),
+    props: { title: '主线' },
+  },
+  {
+    path: '/runes',
+    name: 'runes',
+    component: () => import('../views/PlaceholderView.vue'),
+    props: { title: '符文' },
+  },
+  {
+    path: '/sorceries',
+    name: 'sorceries',
+    component: () => import('../views/PlaceholderView.vue'),
+    props: { title: '魔法' },
+  },
+  {
+    path: '/incantations',
+    name: 'incantations',
+    component: () => import('../views/PlaceholderView.vue'),
+    props: { title: '祷告' },
+  },
 ]
 
 const router = createRouter({

@@ -26,30 +26,28 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import weapons from '../data/weapons'
-import { questStats } from '../data/quests'
-
-const weaponTypesCount = new Set(weapons.map((item) => item.type)).size
+import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise } from '@element-plus/icons-vue'
+import { weaponCount, weaponTypeCount, questStats } from '../data/summary'
 
 const boards = [
-  { label: '主线', desc: '主线流程、Boss 顺序与关键节点攻略', path: '/main-quest', icon: 'Flag', ready: false },
+  { label: '主线', desc: '主线流程、Boss 顺序与关键节点攻略', path: '/main-quest', icon: Flag, ready: false },
   {
     label: '支线',
     desc: `${questStats.total} 条 NPC 支线（本体 ${questStats.base} + DLC ${questStats.dlc}），含 ${questStats.missable} 条易错过预警与分支结局`,
     path: '/side-quests',
-    icon: 'ChatDotRound',
+    icon: ChatDotRound,
     ready: true,
   },
   {
     label: '武器',
-    desc: `${weapons.length} 件武器、${weaponTypesCount} 个类型全收录：数值、战技、异常状态与配装推荐`,
+    desc: `${weaponCount} 件武器、${weaponTypeCount} 个类型全收录：数值、战技、异常状态与配装推荐`,
     path: '/weapons',
-    icon: 'KnifeFork',
+    icon: KnifeFork,
     ready: true,
   },
-  { label: '符文', desc: '护符收集与强力符文搭配推荐', path: '/runes', icon: 'Medal', ready: false },
-  { label: '魔法', desc: '魔法列表与法师流派构筑指南', path: '/sorceries', icon: 'MagicStick', ready: false },
-  { label: '祷告', desc: '祷告一览与信仰流玩法攻略', path: '/incantations', icon: 'Sunrise', ready: false },
+  { label: '符文', desc: '护符收集与强力符文搭配推荐', path: '/runes', icon: Medal, ready: false },
+  { label: '魔法', desc: '魔法列表与法师流派构筑指南', path: '/sorceries', icon: MagicStick, ready: false },
+  { label: '祷告', desc: '祷告一览与信仰流玩法攻略', path: '/incantations', icon: Sunrise, ready: false },
 ]
 </script>
 

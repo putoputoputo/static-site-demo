@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider>
+  <el-config-provider :locale="zhCn">
     <div class="layout">
       <header class="site-header">
         <div class="header-inner">
@@ -32,6 +32,8 @@
 
 <script setup>
 import { RouterLink, RouterView, useRoute } from 'vue-router'
+import { Trophy } from '@element-plus/icons-vue'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 const navItems = [
   { path: '/', label: '首页' },

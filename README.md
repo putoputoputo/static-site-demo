@@ -49,13 +49,31 @@ BASE_PATH=/static-site-demo/ npm run build
 `vite.config.js` 会读取 `BASE_PATH` 环境变量作为 `base`，路由同步使用 `import.meta.env.BASE_URL`。
 注意：history 路由在 Pages 上直接访问 `/weapons` 这类深链接会 404，需要用 404.html 重写或改用 hash 路由。
 
+## 构建与性能
+
+页面与数据量增长后，单文件 bundle 会一路膨胀（曾达到 1.4MB），因此做了三层拆分：
+
+1. **路由级懒加载**：`router/index.js` 全部使用 `() => import(...)`，各页面与它依赖的数据文件被拆成独立 chunk，首屏只加载首页需要的代码。
+2. **Element Plus 按需引入**：`unplugin-vue-components` + `ElementPlusResolver` 只打包模板里实际用到的 `el-*` 组件（配合 `el-config-provider` 注入中文语言包）；图标改为在组件内显式 `import`，不再整包注册。
+3. **首页统计与数据解耦**：首页只需要几个数字，改由 `scripts/gen-summary.mjs` 在 `predev` / `prebuild` 阶段从数据文件生成 `src/data/summary.js`，首页不再把整份武器 / 支线数据拉进首屏。
+
+效果（未压缩 / gzip）：
+
+| 指标 | 优化前 | 优化后 |
+| --- | --- | --- |
+| 最大单文件 | 1424 KB | 166 KB |
+| 首屏 JS | 1424 KB / ~380 KB | 316 KB / 117 KB |
+
+> 修改 `src/data/weapons.js` 或 `quests.js` 后，`npm run dev` / `npm run build` 会自动重新生成 `summary.js`；单独跑 `node scripts/gen-summary.mjs` 也可以。
+
 ## 目录结构
 
 ```
+scripts/             # 构建期脚本（生成首页统计）
 src/
-├── composables/     # 组合式函数（收藏夹等）
-├── data/            # 静态数据（武器图鉴）
-├── router/          # 路由配置
+├── composables/     # 组合式函数（收藏夹、支线进度等）
+├── data/            # 静态数据（武器图鉴、支线、自动生成的统计）
+├── router/          # 路由配置（懒加载）
 ├── utils/           # 通用工具（补正换算、筛选匹配等）
 ├── views/           # 页面视图
 └── assets/          # 全局样式
