@@ -127,157 +127,199 @@
     <div class="result-bar">
       <span>
         匹配 <strong>{{ filteredWeapons.length }}</strong> / {{ weapons.length }} 件武器
-        <span class="result-hint">已全部渲染，可直接用浏览器 Ctrl+F 查找</span>
+        <span v-if="filteredWeapons.length" class="result-hint">
+          <template v-if="pageSize">当前显示第 {{ pageStart + 1 }}–{{ pageEnd }} 件 · 分页模式，需全文查找请切「全部」</template>
+          <template v-else>已全部渲染，可直接用浏览器 Ctrl+F 查找</template>
+        </span>
       </span>
       <el-button v-if="isFiltering" text type="warning" size="small" :icon="RefreshLeft" @click="resetFilters">
         清除筛选
       </el-button>
     </div>
 
-    <!-- 卡片视图 -->
-    <div v-if="viewMode === 'card'" class="weapon-grid">
-      <RouterLink
-        v-for="weapon in filteredWeapons"
-        :key="weapon.id"
-        class="weapon-card"
-        :to="`/weapons/${weapon.id}`"
-      >
-        <div class="card-head">
-          <h2 class="card-name">
-            {{ weapon.name }}
-            <span v-if="weapon.dlc" class="dlc-tag">(DLC)</span>
-          </h2>
-          <button
-            class="fav-btn"
-            :class="{ active: isFavorite(weapon.id) }"
-            :title="isFavorite(weapon.id) ? '取消收藏' : '加入收藏'"
-            @click.prevent.stop="toggleFavorite(weapon.id)"
-          >
-            <el-icon :size="16">
-              <StarFilled v-if="isFavorite(weapon.id)" />
-              <Star v-else />
-            </el-icon>
-          </button>
-          <div class="card-tags">
-            <span class="mini-tag type">{{ weapon.type }}</span>
-            <span class="mini-tag region">
-              <el-icon :size="12"><Location /></el-icon>
-              {{ weapon.region }}
-            </span>
-            <span class="mini-tag attack">{{ attackTypeOf(weapon) }}</span>
-            <span
-              v-for="status in weapon.status"
-              :key="status"
-              class="mini-tag status"
-              :style="{ color: statusColor(status), borderColor: statusColor(status) }"
+    <!-- 列表容器：翻页后滚动回这里 -->
+    <div ref="listRef" class="weapon-list">
+      <!-- 卡片视图 -->
+      <div v-if="viewMode === 'card'" class="weapon-grid" :class="{ 'is-full': !pageSize }">
+        <RouterLink
+          v-for="weapon in pagedWeapons"
+          :key="weapon.id"
+          class="weapon-card"
+          :to="`/weapons/${weapon.id}`"
+        >
+          <div class="card-head">
+            <h2 class="card-name">
+              {{ weapon.name }}
+              <span v-if="weapon.dlc" class="dlc-tag">(DLC)</span>
+            </h2>
+            <button
+              class="fav-btn"
+              :class="{ active: isFavorite(weapon.id) }"
+              :title="isFavorite(weapon.id) ? '取消收藏' : '加入收藏'"
+              @click.prevent.stop="toggleFavorite(weapon.id)"
             >
-              {{ status }}
+              <el-icon :size="16">
+                <StarFilled v-if="isFavorite(weapon.id)" />
+                <Star v-else />
+              </el-icon>
+            </button>
+            <div class="card-tags">
+              <span class="mini-tag type">{{ weapon.type }}</span>
+              <span class="mini-tag region">
+                <el-icon :size="12"><Location /></el-icon>
+                {{ weapon.region }}
+              </span>
+              <span class="mini-tag attack">{{ attackTypeOf(weapon) }}</span>
+              <span
+                v-for="status in weapon.status"
+                :key="status"
+                class="mini-tag status"
+                :style="{ color: statusColor(status), borderColor: statusColor(status) }"
+              >
+                {{ status }}
+              </span>
+            </div>
+          </div>
+
+          <p class="card-desc">{{ weapon.description }}</p>
+
+          <div class="card-values">
+            <div class="value-item">
+              <span class="value-label">物理</span>
+              <strong class="value-num">{{ weapon.stats.physical }}</strong>
+            </div>
+            <div v-for="dmg in extraDamages(weapon.stats)" :key="dmg.key" class="value-item">
+              <span class="value-label">{{ dmg.label }}</span>
+              <strong class="value-num" :style="{ color: dmg.color }">{{ dmg.value }}</strong>
+            </div>
+            <div class="value-item">
+              <span class="value-label">重量</span>
+              <strong class="value-num">{{ weapon.stats.weight }}</strong>
+            </div>
+          </div>
+
+          <div class="card-scaling">
+            <span
+              v-for="attr in ATTR_KEYS"
+              :key="attr"
+              class="scaling-pill"
+              :class="{ empty: weapon.scaling[attr] === '-' }"
+              :style="{ color: scalingColor(weapon.scaling[attr]), borderColor: scalingColor(weapon.scaling[attr]) }"
+            >
+              {{ ATTR_LABELS[attr][0] }}·{{ weapon.scaling[attr] }}
             </span>
           </div>
-        </div>
 
-        <p class="card-desc">{{ weapon.description }}</p>
-
-        <div class="card-values">
-          <div class="value-item">
-            <span class="value-label">物理</span>
-            <strong class="value-num">{{ weapon.stats.physical }}</strong>
+          <div class="card-foot">
+            <el-icon :size="14"><MagicStick /></el-icon>
+            <span class="skill-name">{{ weapon.skill ? weapon.skill.name : '无战技' }}</span>
+            <el-icon class="arrow" :size="14"><ArrowRight /></el-icon>
           </div>
-          <div v-for="dmg in extraDamages(weapon.stats)" :key="dmg.key" class="value-item">
-            <span class="value-label">{{ dmg.label }}</span>
-            <strong class="value-num" :style="{ color: dmg.color }">{{ dmg.value }}</strong>
-          </div>
-          <div class="value-item">
-            <span class="value-label">重量</span>
-            <strong class="value-num">{{ weapon.stats.weight }}</strong>
-          </div>
-        </div>
+        </RouterLink>
+      </div>
 
-        <div class="card-scaling">
-          <span
-            v-for="attr in ATTR_KEYS"
-            :key="attr"
-            class="scaling-pill"
-            :class="{ empty: weapon.scaling[attr] === '-' }"
-            :style="{ color: scalingColor(weapon.scaling[attr]), borderColor: scalingColor(weapon.scaling[attr]) }"
-          >
-            {{ ATTR_LABELS[attr][0] }}·{{ weapon.scaling[attr] }}
-          </span>
-        </div>
-
-        <div class="card-foot">
-          <el-icon :size="14"><MagicStick /></el-icon>
-          <span class="skill-name">{{ weapon.skill ? weapon.skill.name : '无战技' }}</span>
-          <el-icon class="arrow" :size="14"><ArrowRight /></el-icon>
-        </div>
-      </RouterLink>
+      <!-- 表格视图 -->
+        <el-table
+          v-else
+          :data="pagedWeapons"
+          class="weapon-table"
+          row-class-name="weapon-row"
+          @row-click="goDetail"
+        >
+        <el-table-column prop="name" label="武器" min-width="150">
+          <template #default="{ row }">
+            <span class="table-name">{{ row.name }}</span>
+            <span v-if="row.dlc" class="dlc-tag">(DLC)</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="类型" width="100" />
+        <el-table-column prop="region" label="地区" width="110" />
+        <el-table-column label="物理" width="80" align="right">
+          <template #default="{ row }">{{ row.stats.physical }}</template>
+        </el-table-column>
+        <el-table-column label="属性伤害" min-width="120">
+          <template #default="{ row }">
+            <template v-if="extraDamages(row.stats).length">
+              <span
+                v-for="dmg in extraDamages(row.stats)"
+                :key="dmg.key"
+                class="dmg-chip"
+                :style="{ color: dmg.color, borderColor: dmg.color }"
+              >
+                {{ dmg.label }} {{ dmg.value }}
+              </span>
+            </template>
+            <span v-else class="muted">—</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态异常" width="110">
+          <template #default="{ row }">
+            <template v-if="row.status.length">
+              <span
+                v-for="status in row.status"
+                :key="status"
+                class="dmg-chip"
+                :style="{ color: statusColor(status), borderColor: statusColor(status) }"
+              >
+                {{ status }}
+              </span>
+            </template>
+            <span v-else class="muted">—</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="重量" width="80" align="right">
+          <template #default="{ row }">{{ row.stats.weight }}</template>
+        </el-table-column>
+        <el-table-column label="补正" min-width="170">
+          <template #default="{ row }">
+            <span v-for="attr in ATTR_KEYS" :key="attr" class="scaling-pill small" :class="{ empty: row.scaling[attr] === '-' }" :style="{ color: scalingColor(row.scaling[attr]), borderColor: scalingColor(row.scaling[attr]) }">
+              {{ ATTR_LABELS[attr][0] }}·{{ row.scaling[attr] }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="战技" min-width="120">
+          <template #default="{ row }">
+            {{ row.skill ? row.skill.name : '无战技' }}
+          </template>
+        </el-table-column>
+        </el-table>
     </div>
 
-    <!-- 表格视图 -->
-    <el-table
-      v-else
-      :data="filteredWeapons"
-      class="weapon-table"
-      row-class-name="weapon-row"
-      @row-click="goDetail"
-    >
-      <el-table-column prop="name" label="武器" min-width="150">
-        <template #default="{ row }">
-          <span class="table-name">{{ row.name }}</span>
-          <span v-if="row.dlc" class="dlc-tag">(DLC)</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="type" label="类型" width="100" />
-      <el-table-column prop="region" label="地区" width="110" />
-      <el-table-column label="物理" width="80" align="right">
-        <template #default="{ row }">{{ row.stats.physical }}</template>
-      </el-table-column>
-      <el-table-column label="属性伤害" min-width="120">
-        <template #default="{ row }">
-          <template v-if="extraDamages(row.stats).length">
-            <span
-              v-for="dmg in extraDamages(row.stats)"
-              :key="dmg.key"
-              class="dmg-chip"
-              :style="{ color: dmg.color, borderColor: dmg.color }"
-            >
-              {{ dmg.label }} {{ dmg.value }}
-            </span>
-          </template>
-          <span v-else class="muted">—</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="状态异常" width="110">
-        <template #default="{ row }">
-          <template v-if="row.status.length">
-            <span
-              v-for="status in row.status"
-              :key="status"
-              class="dmg-chip"
-              :style="{ color: statusColor(status), borderColor: statusColor(status) }"
-            >
-              {{ status }}
-            </span>
-          </template>
-          <span v-else class="muted">—</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="重量" width="80" align="right">
-        <template #default="{ row }">{{ row.stats.weight }}</template>
-      </el-table-column>
-      <el-table-column label="补正" min-width="170">
-        <template #default="{ row }">
-          <span v-for="attr in ATTR_KEYS" :key="attr" class="scaling-pill small" :class="{ empty: row.scaling[attr] === '-' }" :style="{ color: scalingColor(row.scaling[attr]), borderColor: scalingColor(row.scaling[attr]) }">
-            {{ ATTR_LABELS[attr][0] }}·{{ row.scaling[attr] }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="战技" min-width="120">
-        <template #default="{ row }">
-          {{ row.skill ? row.skill.name : '无战技' }}
-        </template>
-      </el-table-column>
-    </el-table>
+    <!-- 分页栏 -->
+    <nav v-if="filteredWeapons.length" class="pager" aria-label="武器分页">
+      <div v-if="pageSize" class="pager-main">
+        <button class="pager-step" :disabled="currentPage <= 1" @click="goPage(currentPage - 1)">
+          上一页
+        </button>
+        <button
+          v-for="(item, index) in pageItems"
+          :key="`${item}-${index}`"
+          class="pager-num"
+          :class="{ active: item === currentPage, gap: item === '...' }"
+          :disabled="item === '...'"
+          @click="goPage(item)"
+        >
+          {{ item }}
+        </button>
+        <button class="pager-step" :disabled="currentPage >= totalPages" @click="goPage(currentPage + 1)">
+          下一页
+        </button>
+      </div>
+      <span v-else class="pager-all">已在同一页展示全部 {{ filteredWeapons.length }} 件</span>
+
+      <div class="pager-size">
+        <span class="pager-label">每页</span>
+        <button
+          v-for="option in pageSizeOptions"
+          :key="option.value"
+          class="size-chip"
+          :class="{ active: pageSize === option.value }"
+          @click="setPageSize(option.value)"
+        >
+          {{ option.label }}
+        </button>
+      </div>
+    </nav>
 
     <!-- 空状态 -->
     <el-empty v-if="filteredWeapons.length === 0" description="没有符合条件的武器，换个关键词试试">
@@ -287,10 +329,11 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { Search, RefreshLeft, Star, StarFilled } from '@element-plus/icons-vue'
 import weapons, { weaponTypeGroups } from '../data/weapons'
+import { usePagination } from '../composables/usePagination'
 import { useWeaponFavorites } from '../composables/useWeaponFavorites'
 import {
   ATTR_KEYS,
@@ -316,6 +359,16 @@ const onlyFavorites = ref(false)
 const dlcFilter = ref('all')
 const viewMode = ref('card')
 const sortKey = ref('default')
+
+// 分页：480 件全量渲染约 1.2 万个 DOM 节点，低端机滚动与切换筛选都会掉帧。
+// pageSize = 0 表示「全部」，保留 Ctrl+F 全文查找能力（分页模式下只有当前页在 DOM 里）。
+const listRef = ref(null)
+const pageSizeOptions = [
+  { value: 20, label: '20' },
+  { value: 48, label: '48' },
+  { value: 120, label: '120' },
+  { value: 0, label: '全部' },
+]
 
 const sortOptions = [
   { value: 'default', label: '默认（按类型）' },
@@ -409,8 +462,56 @@ const filteredWeapons = computed(() => {
   return sorter ? [...list].sort(sorter) : list
 })
 
-// 全部结果一次性渲染：分批渲染会让未展示的条目无法被 Ctrl+F 命中，看起来像「漏了」
-// 渲染开销交给 CSS 的 content-visibility: auto（见 .weapon-card）
+// 分页：480 件全量渲染约 1.2 万个 DOM 节点，低端机滚动与切筛选都会掉帧。
+// 默认 20 条/页；「全部」选项保留 Ctrl+F 全文查找能力（分页时只有当前页在 DOM 里）。
+// 指纹覆盖全部筛选 / 排序维度，任一变化都要丢掉旧页码
+const filterToken = () =>
+  [
+    keyword.value,
+    dlcFilter.value,
+    sortKey.value,
+    onlyFavorites.value,
+    selectedTypes.value.join(','),
+    selectedAttrs.value.join(','),
+    selectedStatuses.value.join(','),
+  ].join('|')
+
+const {
+  pageSize,
+  currentPage,
+  totalPages,
+  pageStart,
+  pageEnd,
+  pageItems,
+  pagedList: pagedWeapons,
+  goPage: changePage,
+  setPageSize: changePageSize,
+} = usePagination(filteredWeapons, {
+  initialPageSize: 20,
+  // 不重置的话会停在第 18 页、而新结果只有 3 件，页面看着是空的
+  resetToken: filterToken,
+})
+
+// 筛选变化时视口可能还停在旧列表底部，一并拉回列表顶部（须在上面的 watch 之后注册）
+watch(filterToken, () => scrollToList())
+
+function goPage(page) {
+  if (changePage(page)) scrollToList()
+}
+
+function setPageSize(size) {
+  if (changePageSize(size)) scrollToList()
+}
+
+// 翻页后如果视口还在列表下方，滚回列表顶部；顶部导航约 70px，留出余量
+function scrollToList() {
+  const element = listRef.value
+  if (!element) return
+  const top = element.getBoundingClientRect().top + window.scrollY - 84
+  if (window.scrollY > top) {
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
+}
 
 function toggleType(name) {
   const index = selectedTypes.value.indexOf(name)
@@ -689,10 +790,6 @@ function goDetail(row) {
 }
 
 .weapon-card {
-  /* 数百张卡片一次性渲染，屏幕外的内容跳过布局与绘制；
-     加 auto 关键字让浏览器记住实际高度，避免滚动条跳动 */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 230px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -702,6 +799,13 @@ function goDetail(row) {
   background: #1c1c1c;
   text-decoration: none;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+/* 「全部」模式下数百张卡片同时存在，屏幕外内容跳过布局与绘制；
+   分页模式只有 20 条，开着反而多一次可见性判定，故仅在 is-full 下启用 */
+.weapon-grid.is-full .weapon-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 230px;
 }
 
 .weapon-card:hover {
@@ -902,6 +1006,104 @@ function goDetail(row) {
   color: #5d5849;
 }
 
+/* 分页栏 */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  border: 1px solid #302b1f;
+  border-radius: 10px;
+  background: #1a1a1a;
+}
+
+.pager-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pager-step,
+.pager-num {
+  min-width: 34px;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+  color: #b8b2a0;
+  background: #202020;
+  border: 1px solid #383225;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.pager-step:hover:not(:disabled),
+.pager-num:hover:not(:disabled) {
+  color: #d4af37;
+  border-color: #6b5c2e;
+}
+
+.pager-step:disabled,
+.pager-num:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pager-num.active {
+  color: #121212;
+  font-weight: 600;
+  background: #d4af37;
+  border-color: #d4af37;
+}
+
+.pager-num.gap {
+  background: transparent;
+  border-color: transparent;
+}
+
+.pager-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pager-label {
+  font-size: 12px;
+  color: #8a8574;
+}
+
+.size-chip {
+  min-width: 46px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #b8b2a0;
+  background: #202020;
+  border: 1px solid #383225;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.size-chip:hover {
+  color: #d4af37;
+  border-color: #6b5c2e;
+}
+
+.size-chip.active {
+  color: #121212;
+  font-weight: 600;
+  background: #d4af37;
+  border-color: #d4af37;
+}
+
+.pager-all {
+  font-size: 12.5px;
+  color: #8a8574;
+}
+
 @media (max-width: 1000px) {
   .weapon-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -922,6 +1124,10 @@ function goDetail(row) {
   }
   .hero-badges {
     flex-wrap: wrap;
+  }
+  .pager {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 </style>
