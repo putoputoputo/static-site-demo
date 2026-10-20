@@ -7,6 +7,7 @@ import { dirname, resolve } from 'node:path'
 import weapons from '../src/data/weapons.js'
 import { questStats } from '../src/data/quests.js'
 import { mainStats } from '../src/data/mainline.js'
+import { regionStats } from '../src/data/regions.js'
 
 const weaponTypeCount = new Set(weapons.map((item) => item.type)).size
 const dlcCount = weapons.filter((item) => item.dlc).length
@@ -18,10 +19,11 @@ export const weaponTypeCount = ${weaponTypeCount}
 export const weaponDlcCount = ${dlcCount}
 export const questStats = ${JSON.stringify(questStats, null, 2)}
 export const mainStats = ${JSON.stringify(mainStats, null, 2)}
+export const regionStats = ${JSON.stringify(regionStats, null, 2)}
 `
 
 const target = resolve(dirname(fileURLToPath(import.meta.url)), '../src/data/summary.js')
 writeFileSync(target, out, 'utf-8')
 console.log(
-  `[gen-summary] 武器 ${weapons.length} 件 / ${weaponTypeCount} 类（DLC ${dlcCount}），支线 ${questStats.total} 条 / 已整理 ${questStats.ready} 条，主线 ${mainStats.total} 章（本体 ${mainStats.base} + DLC ${mainStats.dlc}）/ ${mainStats.steps} 步`
+  `[gen-summary] 武器 ${weapons.length} 件 / ${weaponTypeCount} 类（DLC ${dlcCount}），支线 ${questStats.total} 条 / 已整理 ${questStats.ready} 条，主线 ${mainStats.total} 章（本体 ${mainStats.base} + DLC ${mainStats.dlc}）/ ${mainStats.steps} 步，区域 ${regionStats.total} 个 / BOSS ${regionStats.bosses} 个（追忆 ${regionStats.remembrance}）`
 )

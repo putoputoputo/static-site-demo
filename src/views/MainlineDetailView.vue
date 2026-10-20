@@ -12,6 +12,7 @@
         <div class="hero-eyebrow">
           第 {{ String(chapter.order).padStart(2, '0') }} 章
           <span v-if="chapter.dlc" class="dlc-tag">DLC 黄金树幽影</span>
+          <span v-else-if="chapter.optional" class="optional-tag">可选章节</span>
         </div>
         <h1 class="detail-title">{{ chapter.name }}</h1>
         <p class="detail-sub">{{ chapter.subtitle }}</p>
@@ -37,6 +38,7 @@
           <el-icon style="margin-right: 4px"><Check /></el-icon>
           {{ isCompleted(chapter.id) ? '已通关' : '标记通关' }}
         </el-button>
+        <RouterLink to="/main-quest/regions" class="region-link">区域 &amp; BOSS 图鉴 →</RouterLink>
       </div>
     </header>
 
@@ -101,6 +103,7 @@
                 <span class="boss-flag" :class="{ must: boss.required }">
                   {{ boss.required ? '必打' : '可选' }}
                 </span>
+                <span v-if="boss.remembrance" class="boss-flag rem">追忆</span>
               </div>
               <div class="boss-meta">
                 <span class="boss-place">{{ boss.place }}</span>
@@ -298,6 +301,31 @@ function goTo(id) {
 .dlc-tag {
   color: #c98b3f;
   letter-spacing: 0;
+}
+
+.optional-tag {
+  color: #8a8574;
+  letter-spacing: 0;
+  border: 1px solid #383225;
+  border-radius: 3px;
+  padding: 0 5px;
+}
+
+.region-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  font-size: 12px;
+  color: #c9a227;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.16s ease;
+}
+
+.region-link:hover {
+  border-color: rgba(201, 162, 39, 0.65);
+  background: rgba(201, 162, 39, 0.08);
 }
 
 .detail-title {
@@ -521,6 +549,12 @@ function goTo(id) {
   color: #d08a6a;
   border-color: rgba(193, 107, 79, 0.35);
   background: rgba(193, 107, 79, 0.08);
+}
+
+.boss-flag.rem {
+  color: #b58cc0;
+  border-color: rgba(181, 140, 192, 0.35);
+  background: rgba(181, 140, 192, 0.08);
 }
 
 .boss-meta {

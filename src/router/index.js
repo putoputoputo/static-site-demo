@@ -13,6 +13,12 @@ const routes = [
     name: 'main-quest',
     component: () => import('../views/MainlineView.vue'),
   },
+  // 必须放在 /main-quest/:id 之前，否则会被当成章节 id
+  {
+    path: '/main-quest/regions',
+    name: 'main-regions',
+    component: () => import('../views/RegionsView.vue'),
+  },
   {
     path: '/main-quest/:id',
     name: 'main-chapter',

@@ -181,8 +181,8 @@ export const mainChapters = [
       { name: '拉冈的红狼', place: '雷亚卢卡利亚 讨论室', required: true, note: '学院第一个 BOSS' },
       { name: '满月女王蕾娜菈', place: '雷亚卢卡利亚 大书库', required: true, note: '第二枚大卢恩 + 洗点功能' },
       { name: '辉石龙史玛拉格', place: '学院门前镇 西侧', required: false, note: '守着学院钥匙，可以绕后不战' },
-      { name: '魔法骑士罗蕾塔', place: '卡利亚城寨', required: false, note: '通往三姐妹塔，菈妮线必经' },
-      { name: '熔岩土龙玛卡尔', place: '古遗迹断崖', required: false, note: '走古遗迹断崖上高原才需要打' },
+      { name: '禁卫骑士罗蕾塔', place: '卡利亚庄园', required: false, note: '通往三姐妹塔，菈妮线必经' },
+      { name: '黑刀刺客', place: '黑刀地下墓地', required: false, note: '掉「黑刀烙印」，与死根线相关' },
     ],
     keyItems: [
       { name: '学院钥匙', note: '史玛拉格身后，开门时消耗' },
@@ -198,11 +198,129 @@ export const mainChapters = [
     ],
     relatedQuests: ['ranni', 'thops', 'sellen', 'rya', 'boc', 'hyetta'],
     nextCondition: '取得第二枚大卢恩（葛瑞克 + 蕾娜菈即可），然后前往亚坛高原。',
-    next: 'altus',
+    next: 'caelid',
   },
   {
-    id: 'altus',
+    id: 'caelid',
     order: 3,
+    name: '盖利德 · 碎星祭典',
+    subtitle: '第三枚大卢恩（可选但强烈建议）',
+    region: '盖利德',
+    dlc: false,
+    optional: true,
+    level: '60 – 90',
+    weapon: '+12 ~ +18',
+    rune: '拉塔恩的大卢恩',
+    duration: '2 – 4 小时',
+    gate: '击败接肢葛瑞克后即可前往；祭典需要先踏上亚坛高原，或直接找杰廉对话开启',
+    goal: '开启红狮子城祭典、击败碎星拉塔恩，让流星砸开雾林，打开永恒之城诺克隆恩的入口。',
+    summary:
+      '这一章不在通关必经路上——两个大卢恩用葛瑞克加蕾娜菈就能进王城。但拉塔恩同时卡着两件事：菈妮线要的「猎杀指头刀」在诺克隆恩，而诺克隆恩要等流星砸开；DLC 的进入条件也是「拉塔恩 + 蒙格」。想走群星结局或进幽影之地，这一章跳不过去。',
+    steps: [
+      {
+        title: '先搞清楚：拉塔恩为什么绕不开',
+        place: '盖利德 · 红狮子城',
+        detail:
+          '本体主线确实不要求他，但他是两个系统的总闸门。第一，菈妮线要的「猎杀指头刀」在永恒之城诺克隆恩，而诺克隆恩的入口是拉塔恩死后流星砸出来的大坑。第二，DLC 的进入条件是击败拉塔恩与鲜血君王蒙格，缺一不可。',
+        tip: '只打本体主线、只要「衰颓时代」结局的话，这一章可以整段跳过；想走群星结局或进 DLC 就必须来。',
+      },
+      {
+        title: '去盖利德的三种方式',
+        place: '宁姆格福 → 盖利德',
+        detail:
+          '最稳的是从宁姆格福东侧沿主路走到「熏火教堂」，一路有赐福。第二种是龙息废墟的传送陷阱宝箱，会直接把玩家丢进瑟利亚结晶坑道，等级不够会很痛苦。第三种是从希芙拉河走到出口井，从盖利德一侧出来。',
+        tip: '走陷阱传送的话，必须先找到赐福休息一次才能传送离开，否则会被困在坑道里。',
+      },
+      {
+        title: '确认祭典是否开启（三种开法）',
+        place: '盖利德 · 红狮子城',
+        detail:
+          '祭典有三种开法，满足任意一个即可：① 在亚坛高原摸任意一个赐福；② 走菈妮线——在希芙拉河岸边东侧的悬崖旁找布莱泽，再找赛尔维斯拿「赛尔维斯的介绍信」交给瑟濂；③ 硬闯红狮子城，打赢广场深处的「混种战士 + 熔炉骑士」双 BOSS，与杰廉对话，再回利耶尼亚找伊吉谈杰廉。祭典开启后广场上的敌人会消失，变成集结的 NPC。',
+        tip: '进城门先看广场：有杰廉和一群 NPC 就是已开启；如果还是雾门和双 BOSS，说明祭典没开。',
+      },
+      {
+        title: '祭典广场：把该说的对话说完',
+        place: '盖利德 · 红狮子城 广场',
+        detail:
+          '广场上的杰廉是祭典主持人，布莱泽与亚历山大是来助战的。三个人都要对话到重复为止：布莱泽的对话关系到菈妮线后续，亚历山大的对话关系到他的支线推进，杰廉则会在战后给你奖励。和杰廉对话选「我已准备就绪」，他身后的电梯下去就是恸哭沙丘。',
+        tip: '对话完再坐升降台下去，祭典一旦开始，城里的普通敌人会被清空。',
+      },
+      {
+        title: '恸哭沙丘：碎星拉塔恩',
+        place: '盖利德 · 恸哭沙丘',
+        detail:
+          '一阶段他会骑马绕着场地射重力箭，同时用重力魔法把你拉近或推开。打法是骑马追、贴到他马腹侧面砍，别在正面站着。血量降到一半进入二阶段：开场直接一颗陨石砸下来，之后改用双刀近战，连段更凶。',
+        tip: '雾门前的金色符可以召唤布莱泽与亚历山大，两个人能吃掉大量仇恨；二阶段陨石落地时骑马横向跑，不要原地滚。',
+      },
+      {
+        title: '流星坠落：雾林的大坑',
+        place: '宁姆格福 · 雾林',
+        detail:
+          '拉塔恩一死，一颗流星会砸在宁姆格福的雾林，形成一个巨大的坑洞，这就是诺克隆恩的入口。坑壁是一层层的岩石平台，必须沿着边缘一级一级往下跳，直接跳到底会摔死。',
+        tip: '这里也是「祖灵之王」「仿身泪滴的骨灰」的入口，菈妮线做完之前别错过。',
+      },
+      {
+        title: '盖利德神授塔：激活大卢恩',
+        place: '盖利德 · 神授塔',
+        detail:
+          '和葛瑞克一样，击败拉塔恩只拿到灰色的「拉塔恩的大卢恩」，必须去盖利德神授塔顶层触碰符文才算激活。塔在盖利德北部，从龙墓一侧的传送门进入塔内，再坐升降台上塔顶。',
+        tip: '拉塔恩的大卢恩效果是提升生命、专注、耐力上限，是本体最泛用的一枚，建议尽早激活。',
+      },
+      {
+        title: '顺路收尾：艾奥尼亚沼泽与法洛斯要塞',
+        place: '盖利德 · 艾奥尼亚沼泽 / 法洛斯要塞',
+        detail:
+          '沼泽中央有老将欧尼尔，打完可以回去找贤者格威推进米莉森线；沼泽北边的法洛斯要塞里有「迪可达斯符节（右）」，配合海德要塞的左半，可以直接坐大升降机上亚坛高原。',
+        tip: '沼泽全程猩红腐败，带好解腐败药或「免疫角饰品」，别在水里久站。',
+      },
+    ],
+    bosses: [
+      {
+        name: '碎星拉塔恩',
+        place: '恸哭沙丘',
+        required: true,
+        note: '二阶段开场陨石是秒杀点，骑马横向跑。',
+      },
+      {
+        name: '老将欧尼尔',
+        place: '艾奥尼亚沼泽',
+        note: '米莉森线的关键一战，会召唤两个骑士。',
+      },
+      {
+        name: '熔岩土龙',
+        place: '盖尔坑道',
+        note: '地城 BOSS，掉熔岩系武器。',
+      },
+      {
+        name: '腐败化身',
+        place: '小黄金树',
+        note: '掉腐败相关露滴。',
+      },
+      {
+        name: '诺克斯的剑士与修士',
+        place: '瑟利亚镇',
+        note: '需先点燃三座烛台解封。',
+      },
+    ],
+    keyItems: [
+      { name: '拉塔恩的大卢恩', note: '神授塔激活后提升生命 / 专注 / 耐力上限' },
+      { name: '迪可达斯符节（右）', note: '法洛斯要塞，配合左半可坐大升降机' },
+      { name: '猎杀指头刀', note: '诺克隆恩 · 黑夜神域，菈妮线必需' },
+    ],
+    warnings: [
+      { text: '祭典没开启就硬闯红狮子城，会被普通配置的士兵围殴，先确认广场上有没有杰廉。', quest: null },
+      { text: '二阶段陨石落地时不要站在原地喝药，骑马横向拉开距离。', quest: null },
+      { text: '打完一定要捡「拉塔恩的追忆」，并去神授塔激活大卢恩。', quest: null },
+      { text: '跳过这章也能通关本体，但群星结局与 DLC 都会卡住。', quest: 'ranni' },
+    ],
+    relatedQuests: ['ranni', 'millicent', 'alexander', 'blaidd', 'jerren', 'gowry'],
+    nextCondition: '击败拉塔恩、打开诺克隆恩后，主线仍从亚坛高原继续（两个大卢恩已够进王城）。',
+    next: 'altus',
+  },
+
+  {
+    id: 'altus',
+    order: 4,
     name: '亚坛高原 · 王城外围',
     subtitle: '两个大卢恩换一张门票',
     region: '亚坛高原',
@@ -279,7 +397,7 @@ export const mainChapters = [
   },
   {
     id: 'leyndell',
-    order: 4,
+    order: 5,
     name: '王城罗德尔',
     subtitle: '恶兆王与洛德符节',
     region: '王城罗德尔',
@@ -358,10 +476,10 @@ export const mainChapters = [
       },
     ],
     bosses: [
-      { name: '初始之王葛孚雷（灵体）', place: '艾尔登王座前', required: true, note: '纯物理，投技很痛' },
+      { name: '初始之王葛孚雷（幻影）', place: '艾尔登王座前', required: true, note: '纯物理，投技很痛' },
       { name: '恶兆王蒙葛特', place: '艾尔登王座', required: true, note: '玛尔基特的本体，掉落大卢恩与洛德符节线索' },
       { name: '恶兆之子蒙格', place: '弃置恶兆的地底', required: false, note: '通往三指封印的必经 BOSS' },
-      { name: '接肢贵族', place: '王城 屋顶区域', required: false, note: '多条隐藏路线的守卫' },
+      { name: '恶兆孪生子（两只）', place: '东亚坛神授塔', required: false, note: '塔顶 BOSS，掉恶兆系装备' },
     ],
     keyItems: [
       { name: '洛德符节', note: '击败蒙葛特后由梅琳娜给予，前往巨人山顶的凭证' },
@@ -382,7 +500,7 @@ export const mainChapters = [
   },
   {
     id: 'mountaintops',
-    order: 5,
+    order: 6,
     name: '巨人山顶 · 火焰大锅',
     subtitle: '不可逆的烧树',
     region: '巨人山顶',
@@ -448,8 +566,9 @@ export const mainChapters = [
     ],
     bosses: [
       { name: '火焰巨人', place: '火焰大锅', required: true, note: '打脚踝，二阶段骑马拉扯' },
-      { name: '神皮使徒 / 神皮贵族', place: '索尔城', required: false, note: '索尔城支线 BOSS' },
-      { name: '黑刀刺客', place: '禁域 附近', required: false, note: '掉落相关护符' },
+      { name: '唤灵蜗牛', place: '唤灵洞窟', required: false, note: '本体是蜗牛，会召唤神皮使徒与神皮贵族' },
+      { name: '老将尼奥', place: '索尔城', required: false, note: '会召唤两个骑士，掉圣树秘密符节（右）' },
+      { name: '萨米尔的古英雄', place: '巨人战争的英雄墓地', required: false, note: '掉萨米尔套装与冰系弯刀' },
     ],
     keyItems: [
       { name: '防寒斗篷', note: '巨人山顶生存必需' },
@@ -468,7 +587,7 @@ export const mainChapters = [
   },
   {
     id: 'farum',
-    order: 6,
+    order: 7,
     name: '逐渐崩毁的法姆亚兹拉',
     subtitle: '释放死亡卢恩',
     region: '法姆亚兹拉',
@@ -546,7 +665,7 @@ export const mainChapters = [
   },
   {
     id: 'ashen',
-    order: 7,
+    order: 8,
     name: '灰烬王城 · 最终决战',
     subtitle: '艾尔登之王',
     region: '王城罗德尔',
@@ -612,8 +731,8 @@ export const mainChapters = [
     ],
     bosses: [
       { name: '百智爵士基甸·奥夫尼尔', place: '王座前', required: true, note: '纯法师，贴身压制' },
-      { name: '荷莱露', place: '艾尔登王座', required: true, note: '二阶段纯投技，全游戏最痛' },
-      { name: '黄金律法拉达冈', place: '黄金树内部', required: true, note: '打完不回血，直接接下一场' },
+      { name: '荷莱·露', place: '艾尔登王座', required: true, note: '二阶段纯投技，全游戏最痛' },
+      { name: '拉达冈', place: '黄金树内部', required: true, note: '打完不回血，直接接下一场' },
       { name: '艾尔登之兽', place: '黄金树内部', required: true, note: '追头打，远程更轻松' },
     ],
     keyItems: [
@@ -634,7 +753,7 @@ export const mainChapters = [
   // ==================== DLC 黄金树幽影 ====================
   {
     id: 'dlc-entry',
-    order: 8,
+    order: 9,
     name: 'DLC · 进入幽影之地',
     subtitle: '触碰茧中的手',
     region: '影之地·墓地平原',
@@ -695,7 +814,7 @@ export const mainChapters = [
   },
   {
     id: 'dlc-gravesite',
-    order: 9,
+    order: 10,
     name: 'DLC · 墓地平原与恩希斯城',
     subtitle: '双月骑士',
     region: '影之地·墓地平原',
@@ -753,8 +872,8 @@ export const mainChapters = [
       },
     ],
     bosses: [
-      { name: '双月骑士蕾拉娜', place: '恩希斯城', required: true, note: '主线守门 BOSS；也可从波尼村绕进保藏库跳过' },
-      { name: '神兽舞狮', place: '塔之镇贝瑞特', required: false, note: '支线 BOSS，掉落神兽头部（角人老妪线必需）' },
+      { name: '双月骑士蕾菈娜', place: '恩希斯城', required: false, note: '追忆 BOSS，推荐打；也可从波尼村绕行直接进幽影城' },
+      { name: '神兽舞狮', place: '塔之镇贝瑞特', required: false, note: 'DLC 第一场追忆战，掉落神兽头部（角人老妪线必需）' },
     ],
     keyItems: [
       { name: '神兽头部', note: '戴上后可与角人老妪学「守护灵」祷告' },
@@ -773,7 +892,7 @@ export const mainChapters = [
   },
   {
     id: 'dlc-shadowkeep',
-    order: 10,
+    order: 11,
     name: 'DLC · 幽影城与梅瑟莫',
     subtitle: '火种与封印之树',
     region: '影之地·斯卡杜阿尔图斯',
@@ -881,7 +1000,7 @@ export const mainChapters = [
   },
   {
     id: 'dlc-enir',
-    order: 11,
+    order: 12,
     name: 'DLC · 艾尼尔·伊利姆',
     subtitle: '约定之王',
     region: '影之地·斯卡杜阿尔图斯',

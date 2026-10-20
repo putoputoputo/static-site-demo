@@ -1,0 +1,1348 @@
+// 区域与 BOSS 图鉴数据
+// 主线章节回答的是「怎么走」，这个文件回答的是「这片地区有什么、谁在守、要不要打」。
+// 覆盖范围：本体地表 12 区 + 地下 7 区 + 据点 1 个 + 幽影之地 13 区，共 33 个区域。
+// 追忆 BOSS 本体 15 个、DLC 10 个，全部收录；另有大量可选 / 野外 / 地城 BOSS。
+export const regionLayers = [
+  {
+    id: 'surface',
+    name: '地表',
+    desc: '本体主线的必经区域与几个可以绕开、但会影响结局或解锁的关键区域。',
+  },
+  {
+    id: 'hub',
+    name: '据点',
+    desc: '不是战斗区域，但没有它支线推不动：追忆兑换、武器强化、关键 NPC 都在这里。',
+  },
+  {
+    id: 'under',
+    name: '地下',
+    desc: '希芙拉河、安瑟尔河、深根底层、腐败湖、月光祭坛与蒙格温王朝。入口分散在地表各处，不看攻略很容易整片漏掉。',
+  },
+  {
+    id: 'dlc',
+    name: '幽影之地',
+    desc: 'DLC 区域。进去之前请先击败拉塔恩与蒙格，并准备好幽影树碎片——这里的难度不看本体等级。',
+  },
+]
+
+export const mainRegions = [
+  // ==================== 地表 ====================
+  {
+    id: 'limgrave',
+    name: '宁姆格福',
+    alias: 'Limgrave',
+    layer: 'surface',
+    dlc: false,
+    order: 1,
+    level: '1 – 30',
+    mainPath: 'must',
+    access: '开局即在此处，无前置',
+    chapters: ['limgrave'],
+    summary:
+      '教学区，也是全游戏节奏最舒服的一段。主线只要求打倒葛瑞克，但这里的支线密度极高：柏克、罗德里卡、布莱泽、肯尼斯都从这里起步。',
+    subAreas: ['漂流墓地', '求学洞窟', '艾雷教堂', '风暴关卡', '雾林废墟', '亚基尔湖', '召唤水村', '史东薇尔城'],
+    bosses: [
+      {
+        name: '大树守卫',
+        place: '引导之始北侧',
+        note: '开局挡在正路上的精英，绕开就行，30 级后再来。',
+      },
+      {
+        name: '恶兆妖鬼玛尔基特',
+        place: '风暴关卡',
+        required: true,
+        note: '主线第一道门槛，雾门前可召唤涅斐丽。',
+      },
+      {
+        name: '接肢葛瑞克',
+        place: '史东薇尔城 · 接肢场地',
+        remembrance: true,
+        required: true,
+        note: '第一枚大卢恩，打完记得去神授塔激活。',
+      },
+      {
+        name: '腐烂树灵',
+        place: '史东薇尔城 · 地下',
+        note: '掉「死王子的脓疮」，菲雅线要用。',
+      },
+      {
+        name: '飞龙亚基尔',
+        place: '亚基尔湖',
+        note: '野外飞龙，掉龙心，前期别硬碰。',
+      },
+      {
+        name: '提比亚的船夫',
+        place: '召唤水村',
+        note: '掉死根，交给野兽祭司古兰格。',
+        quest: 'gurranq',
+      },
+      {
+        name: '黑夜骑兵',
+        place: '主路夜间巡逻',
+        note: '只在夜晚出现，掉战灰与装备。',
+      },
+      {
+        name: '死鸟',
+        place: '遗迹夜间',
+        note: '夜间 BOSS，掉「死鸟」系列道具。',
+      },
+    ],
+    keyItems: [
+      { name: '灵马哨笛', note: '关卡前方赐福与梅琳娜对话获得' },
+      { name: '葛瑞克的大卢恩', note: '史东薇尔城神授塔激活' },
+    ],
+  },
+  {
+    id: 'weeping',
+    name: '啜泣半岛',
+    alias: 'Weeping Peninsula',
+    layer: 'surface',
+    dlc: false,
+    order: 2,
+    level: '10 – 30',
+    mainPath: 'optional',
+    access: '宁姆格福向南过桥，无前置',
+    chapters: ['limgrave'],
+    summary:
+      '新手最该先来的地方：怪弱、赐福密、黄金种子多。柏克的支线起点（海岸洞窟）和伊蕾娜的送信任务都在这里。',
+    subAreas: ['摩恩城', '海岸洞窟', '玛莉卡第四教堂', '归还塔', '病村', '巡礼教堂'],
+    bosses: [
+      {
+        name: '狮子混种',
+        place: '摩恩城 · 城墙尽头',
+        note: '摩恩城守关 BOSS；打完它，城主艾德格才会离开城墙去找伊蕾娜。',
+        quest: 'irina',
+      },
+      {
+        name: '亚人首领（两只）',
+        place: '海岸洞窟',
+        note: '柏克就在洞里，先对话再打，别误伤。',
+        quest: 'boc',
+      },
+      {
+        name: '死鸟',
+        place: '摩恩城外围 · 夜间',
+        note: '夜间限定。',
+      },
+      {
+        name: '黑夜骑兵',
+        place: '半岛主路 · 夜间',
+        note: '夜间限定，掉战灰。',
+      },
+    ],
+    keyItems: [
+      { name: '伊蕾娜的信', note: '交给摩恩城城主艾德格' },
+      { name: '黄金种子 ×3', note: '教堂与要塞附近' },
+    ],
+  },
+  {
+    id: 'liurnia',
+    name: '利耶尼亚',
+    alias: 'Liurnia of the Lakes · 湖之利耶尼亚',
+    layer: 'surface',
+    dlc: false,
+    order: 3,
+    level: '30 – 50',
+    mainPath: 'must',
+    access: '史东薇尔城后门或绕城小路',
+    chapters: ['liurnia'],
+    summary:
+      '第二枚大卢恩所在。学院钥匙在开门时会被消耗，别提前交给托普斯；卡利亚庄园是菈妮线的前置，不打禁卫骑士罗蕾塔进不去三姐妹塔。',
+    subAreas: ['魔法学院雷亚卢卡利亚', '卡利亚庄园', '三姐妹塔', '谷底秘村', '断桥', '四钟楼', '白金村'],
+    bosses: [
+      {
+        name: '拉冈的红狼',
+        place: '学院 · 讨论室',
+        required: true,
+        note: '魔法学院守门 BOSS，速度快，弱盾反。',
+      },
+      {
+        name: '满月女王蕾娜菈',
+        place: '学院 · 大书库',
+        remembrance: true,
+        required: true,
+        note: '第二枚大卢恩；她的大卢恩不开神授塔，作用是洗点。',
+      },
+      {
+        name: '禁卫骑士罗蕾塔',
+        place: '卡利亚庄园',
+        note: '不打她进不了三姐妹塔，菈妮线直接卡住。',
+        quest: 'ranni',
+      },
+      {
+        name: '辉石龙史玛拉格',
+        place: '学院西侧湖面',
+        note: '野外飞龙，掉魔法相关道具。',
+      },
+      {
+        name: '辉石龙亚杜拉',
+        place: '三姐妹塔 / 月光祭坛',
+        note: '菈妮线会反复遇到，最后一次在月光祭坛。',
+        quest: 'ranni',
+      },
+      {
+        name: '黑刀刺客',
+        place: '黑刀地下墓地',
+        note: '掉「黑刀烙印」，与死根线相关。',
+      },
+    ],
+    keyItems: [
+      { name: '学院辉石钥匙', note: '学院门前镇的小怪与湖底各有一把' },
+      { name: '卡利亚倒转像', note: '卡利亚庄园，用于倒转书斋' },
+    ],
+  },
+  {
+    id: 'caelid',
+    name: '盖利德',
+    alias: 'Caelid · 猩红腐败之地',
+    layer: 'surface',
+    dlc: false,
+    order: 4,
+    level: '60 – 90',
+    mainPath: 'optional',
+    access: '宁姆格福向东，或瑟利亚结晶坑道传送陷阱',
+    chapters: ['caelid', 'dlc-entry'],
+    summary:
+      '本体最劝退的区域，猩红腐败满地。但这里是绕不开的：拉塔恩既是菈妮线必经，也是进入 DLC 的两个前置之一。',
+    subAreas: ['红狮子城', '恸哭沙丘', '艾奥尼亚沼泽', '瑟利亚镇', '龙墓', '盖尔坑道', '法洛斯要塞'],
+    bosses: [
+      {
+        name: '碎星拉塔恩',
+        place: '红狮子城 · 恸哭沙丘',
+        remembrance: true,
+        note: '祭典开启后才能打；DLC 前置 + 菈妮线必经。',
+        quest: 'ranni',
+      },
+      {
+        name: '老将欧尼尔',
+        place: '艾奥尼亚沼泽',
+        note: '掉「纯净金针」，交给贤者格威才能推进米莉森线。',
+        quest: 'millicent',
+      },
+      {
+        name: '熔岩土龙',
+        place: '盖尔坑道',
+        note: '地城 BOSS，掉「熔岩土龙」系列武器。',
+      },
+      {
+        name: '腐败化身',
+        place: '小黄金树',
+        note: '掉「腐败」相关的露滴。',
+      },
+      {
+        name: '诺克斯的剑士与修士',
+        place: '瑟利亚镇',
+        note: '需要先点燃三座烛台解封。',
+      },
+      {
+        name: '黑夜骑兵',
+        place: '盖利德主路 · 夜间',
+        note: '夜间限定。',
+      },
+      {
+        name: '死鸟',
+        place: '艾奥尼亚沼泽 · 夜间',
+        note: '夜间限定。',
+      },
+    ],
+    keyItems: [
+      { name: '拉塔恩的大卢恩', note: '击败后获得，需去盖利德神授塔激活' },
+      { name: '瑟利亚镇封印钥匙', note: '解瑟利亚镇封印' },
+    ],
+  },
+  {
+    id: 'altus',
+    name: '亚坛高原',
+    alias: 'Altus Plateau',
+    layer: 'surface',
+    dlc: false,
+    order: 5,
+    level: '50 – 80',
+    mainPath: 'must',
+    access: '迪可达斯大升降机（需左右两半符节）或古遗迹断崖',
+    chapters: ['altus', 'leyndell'],
+    summary:
+      '进王城前的缓冲带。上来的方式有两种：凑齐符节坐大升降机，或者从谷底秘村打熔岩土龙走古遗迹断崖。这里也是金面具、柯林、柏克几条支线的交汇点。',
+    subAreas: ['迪可达斯大升降机', '谷底秘村', '古遗迹断崖', '风车村', '日荫城', '威达姆废墟', '尊贵者的英雄墓地', '亚坛大道的三叉口'],
+    bosses: [
+      {
+        name: '龙装大树守卫',
+        place: '王城北门',
+        required: true,
+        note: '王城准入的守门 BOSS，必须打；雷击骑马横拉就能躲。',
+      },
+      {
+        name: '熔岩土龙玛卡尔',
+        place: '古遗迹断崖',
+        note: '走升降机的替代路线 BOSS。',
+      },
+      {
+        name: '神皮使徒',
+        place: '风车村',
+        note: '掉「神皮使徒」系列，弱睡眠。',
+      },
+      {
+        name: '铁棘艾隆梅尔',
+        place: '日荫城',
+        note: '掉「铁棘」大剑，攻击带荆棘。',
+      },
+      {
+        name: '古龙兰斯桑克斯',
+        place: '城墙旁小径南侧高地',
+        note: '野外古龙，掉古龙岩。',
+      },
+      {
+        name: '接肢葛孚亚',
+        place: '黄金一族的封印监牢',
+        note: '葛瑞克的亲戚，掉「接肢」相关。',
+      },
+      {
+        name: '提比亚的船夫',
+        place: '威达姆废墟',
+        note: '掉死根。',
+        quest: 'gurranq',
+      },
+      {
+        name: '萨米尔的古英雄',
+        place: '尊贵者的英雄墓地',
+        note: '掉「萨米尔」套装与冰系武器。',
+      },
+    ],
+    keyItems: [
+      { name: '迪可达斯符节（左）', note: '海德要塞' },
+      { name: '迪可达斯符节（右）', note: '法洛斯要塞' },
+    ],
+  },
+  {
+    id: 'gelmir',
+    name: '格密尔火山',
+    alias: 'Mt. Gelmir · 火山官邸',
+    layer: 'surface',
+    dlc: false,
+    order: 6,
+    level: '70 – 100',
+    mainPath: 'optional',
+    access: '亚坛高原向西，或学院大水车底的擄人少女人偶传送',
+    chapters: ['altus'],
+    summary:
+      '拉卡德的地盘，也是火山官邸支线的主场。注意：接了塔妮丝的委托就先别打拉卡德，打完委托会全部断掉。',
+    subAreas: ['火山官邸', '艾格蕾教堂', '牢镇教堂', '沸滚河', '遁世者村落', '火山口'],
+    bosses: [
+      {
+        name: '亵渎君王拉卡德',
+        place: '火山官邸 · 大蛇',
+        remembrance: true,
+        note: '机制 BOSS，用场地里的「大蛇狩猎矛」打；打完官邸支线关闭。',
+        quest: 'tanith',
+      },
+      {
+        name: '神皮贵族',
+        place: '艾格蕾教堂',
+        note: '掉「神皮贵族」系列，弱睡眠。',
+      },
+      {
+        name: '坠星成兽',
+        place: '火山口',
+        note: '野外 BOSS，掉「坠星」系列。',
+      },
+    ],
+    keyItems: [
+      { name: '大蛇狩猎矛', note: '拉卡德 BOSS 场地内拾取' },
+      { name: '火山官邸客房钥匙', note: '加入官邸后由塔妮丝给予' },
+    ],
+  },
+  {
+    id: 'leyndell',
+    name: '王城罗德尔',
+    alias: 'Leyndell, Royal Capital',
+    layer: 'surface',
+    dlc: false,
+    order: 7,
+    level: '80 – 110',
+    mainPath: 'must',
+    access: '任意两个已激活的大卢恩 + 击败龙装大树守卫',
+    chapters: ['leyndell'],
+    summary:
+      '主线中段的核心。王城下水道（弃置恶兆的地底）通往三指癫火封印，是癫火结局的唯一入口；错过这里，结局就锁不上了。',
+    subAreas: ['王城外围', '弃置恶兆的地底', '罗德尔地下墓地', '东亚坛神授塔', '亚雷萨英雄墓地', '封印坑道'],
+    bosses: [
+      {
+        name: '初始之王葛孚雷（幻影）',
+        place: '王城 · 黄金树大教堂上方',
+        required: true,
+        note: '只是幻影，动作慢，是白给的一战。',
+      },
+      {
+        name: '恶兆王蒙葛特',
+        place: '艾尔登宝座',
+        remembrance: true,
+        required: true,
+        note: '第三枚大卢恩；打完梅琳娜给洛德符节。',
+      },
+      {
+        name: '恶兆之子蒙格',
+        place: '弃置恶兆的地底',
+        note: '不是鲜血君王；打完往下就是三指癫火封印。',
+        quest: 'hyetta',
+      },
+      {
+        name: '熔炉骑士（两只）',
+        place: '亚雷萨英雄墓地',
+        note: '双熔炉，掉熔炉系装备。',
+      },
+      {
+        name: '恶兆孪生子（两只）',
+        place: '东亚坛神授塔',
+        note: '塔顶 BOSS，掉「恶兆」相关。',
+      },
+      {
+        name: '鲜血祭司艾斯加',
+        place: '罗德尔地下墓地',
+        note: '地城 BOSS，掉鲜血系祷告。',
+      },
+    ],
+    keyItems: [
+      { name: '洛德符节', note: '击败蒙葛特后梅琳娜给予' },
+      { name: '黄金律法原本', note: '王城内，柯林线要用' },
+    ],
+  },
+  {
+    id: 'mountaintops',
+    name: '巨人山顶',
+    alias: 'Mountaintops of the Giants',
+    layer: 'surface',
+    dlc: false,
+    order: 8,
+    level: '90 – 120',
+    mainPath: 'must',
+    access: '洛德大升降机（需洛德符节）',
+    chapters: ['mountaintops'],
+    summary:
+      '通往火焰大锅的最后一段。这里最大的坑不是 BOSS，而是「烧树」这个动作：一旦点燃大锅，王城会变成灰烬王城，大量支线当场关闭。',
+    subAreas: ['禁域', '洛德大升降机', '索尔城', '结冰湖', '唤灵洞窟', '巨人战争的英雄墓地', '火焰大锅'],
+    bosses: [
+      {
+        name: '火焰巨人',
+        place: '巨人火焰大锅',
+        remembrance: true,
+        required: true,
+        note: '打之前把所有支线收尾；二阶段会翻滚，别贴脚。',
+      },
+      {
+        name: '老将尼奥',
+        place: '索尔城',
+        note: '会召唤两个骑士，掉圣树秘密符节（右）。',
+      },
+      {
+        name: '玻列琉斯',
+        place: '结冰湖',
+        note: '冰雾飞龙，视野差，掉龙心。',
+      },
+      {
+        name: '唤灵蜗牛',
+        place: '唤灵洞窟',
+        note: '本体是蜗牛，会召唤神皮使徒与神皮贵族。',
+      },
+      {
+        name: '萨米尔的古英雄',
+        place: '巨人战争的英雄墓地',
+        note: '掉「萨米尔」套装与冰系弯刀。',
+      },
+      {
+        name: '死亡仪式鸟',
+        place: '离群独行者的破屋北侧 · 夜间',
+        note: '夜间限定，比普通死鸟强一档。',
+      },
+      {
+        name: '黑剑眷属',
+        place: '洛德大升降机前',
+        note: '守在升降机口的石像鬼，掉黑剑系武器。',
+      },
+      {
+        name: '圆桌骑士维克',
+        place: '准王者的封印监牢',
+        note: '圆桌出身的叛律者，掉「维克的龙雷」祷告。',
+      },
+      {
+        name: '腐烂树灵',
+        place: '巨人山顶地下墓地',
+        note: '掉黄金种子与铃珠。',
+      },
+    ],
+    keyItems: [
+      { name: '圣树秘密符节（右）', note: '索尔城' },
+      { name: '洛德符节', note: '蒙葛特战后获得' },
+    ],
+  },
+  {
+    id: 'snowfield',
+    name: '化圣雪原',
+    alias: 'Consecrated Snowfield',
+    layer: 'surface',
+    dlc: false,
+    order: 9,
+    level: '110 – 140',
+    mainPath: 'optional',
+    access: '洛德大升降机使用「圣树秘密符节」切换隐藏路线',
+    chapters: ['mountaintops'],
+    summary:
+      '隐藏雪原，能见度极低。这里通往米凯拉的圣树，是打玛莲妮亚的必经之路；仪典镇的解谜（点燃四座烛台）是很多人的卡点。',
+    subAreas: ['通往圣树的密道', '仪典镇奥兰维斯', '耶罗·亚尼斯坑道', '安身洞窟', '离教废屋', '化圣雪原地下墓地'],
+    bosses: [
+      {
+        name: '黑刀刺客',
+        place: '仪典镇奥兰维斯',
+        note: '点燃四座烛台后才会出现，掉「黑刀」相关。',
+      },
+      {
+        name: '离群仿身泪滴',
+        place: '通往圣树的密道',
+        note: '会复制你的装备，掉「仿身泪滴」骨灰相关。',
+      },
+      {
+        name: '黑暗繁星艾丝缇',
+        place: '耶罗·亚尼斯坑道',
+        note: '和腐败湖的黑暗弃子不是同一只。',
+      },
+      {
+        name: '大土龙席欧朵利克',
+        place: '安身洞窟外侧',
+        note: '岩浆土龙，掉龙心。',
+      },
+      {
+        name: '混种圣骑士',
+        place: '安身洞窟',
+        note: '掉「黄金律法大剑」。',
+      },
+      {
+        name: '腐败守墓斗士',
+        place: '化圣雪原地下墓地',
+        note: '地城 BOSS，掉斗士系武器。',
+      },
+      {
+        name: '死亡仪式鸟',
+        place: '离教废屋下方冰河 · 夜间',
+        note: '夜间限定。',
+      },
+    ],
+    keyItems: [
+      { name: '圣树秘密符节（左）', note: '白金村，需完成勒缇娜线' },
+      { name: '仪典镇烛台 ×4', note: '点燃后开启圣树传送门' },
+    ],
+  },
+  {
+    id: 'haligtree',
+    name: '米凯拉的圣树',
+    alias: "Miquella's Haligtree",
+    layer: 'surface',
+    dlc: false,
+    order: 10,
+    level: '120 – 150',
+    mainPath: 'optional',
+    access: '仪典镇传送门（需两半圣树秘密符节）',
+    chapters: ['mountaintops'],
+    summary:
+      '全游戏最难的区域之一，也是玛莲妮亚的所在地。这里没有主线剧情，但「腐败女神的追忆」和米凯拉相关线索都在这里。',
+    subAreas: ['圣树镇', '圣树分枝艾布雷菲尔', '祈祷室'],
+    bosses: [
+      {
+        name: '圣树骑士罗蕾塔',
+        place: '圣树镇',
+        note: '卡利亚庄园那只的本体，掉「罗蕾塔的战镰」。',
+      },
+      {
+        name: '玛莲妮亚',
+        place: '艾布雷菲尔 · 深处',
+        remembrance: true,
+        note: '全游戏最强 BOSS 之一，二阶段猩红腐败女神。',
+        quest: 'millicent',
+      },
+    ],
+    keyItems: [
+      { name: '玛莲妮亚的大卢恩', note: '击败后获得，需去神授塔激活' },
+      { name: '米凯拉的针', note: '用于解除癫火，可在龙王场地使用' },
+    ],
+  },
+  {
+    id: 'farum',
+    name: '逐渐崩毁的法姆亚兹拉',
+    alias: 'Crumbling Farum Azula',
+    layer: 'surface',
+    dlc: false,
+    order: 11,
+    level: '110 – 140',
+    mainPath: 'must',
+    access: '火焰大锅烧树后自动传送',
+    chapters: ['farum'],
+    summary:
+      '线性天空城，主线必经。除了神皮双子与黑剑，这里还藏着龙王——需要在大桥侧边的一个平台上躺下才会被传送过去，很多人通完关都不知道。',
+    subAreas: ['龙教堂', '龙教堂（耳堂）', '大桥侧边', '风暴中心'],
+    bosses: [
+      {
+        name: '神皮双子',
+        place: '龙教堂',
+        required: true,
+        note: '双 BOSS，先杀使徒会简单很多。',
+      },
+      {
+        name: '黑剑玛利喀斯',
+        place: '大桥侧边',
+        remembrance: true,
+        required: true,
+        note: '一阶段是野兽祭司；打完直接进灰烬王城。',
+      },
+      {
+        name: '龙王普拉顿桑克斯',
+        place: '风暴中心',
+        remembrance: true,
+        note: '隐藏 BOSS：在大桥侧边外侧平台躺下传送。',
+      },
+      {
+        name: '古龙',
+        place: '龙祭坛',
+        note: '天空城常见的龙形精英，掉古龙岩锻造石。',
+      },
+    ],
+    keyItems: [
+      { name: '黑剑玛利喀斯的追忆', note: '可换「黑剑」或「黑剑祷告」' },
+      { name: '古龙岩锻造石', note: '龙王场地与龙祭坛' },
+    ],
+  },
+  {
+    id: 'ashen',
+    name: '灰烬王城',
+    alias: 'Leyndell, Capital of Ash',
+    layer: 'surface',
+    dlc: false,
+    order: 12,
+    level: '120 – 150',
+    mainPath: 'must',
+    access: '击败黑剑玛利喀斯后自动传送',
+    chapters: ['ashen'],
+    summary:
+      '最终章。注意：变成灰城后，王城下水道、部分 NPC 与支线全部关闭，癫火结局就再也拿不到了。想走癫火，必须在烧树之前做完。',
+    subAreas: ['灰烬王城罗德尔', '黄金树内部'],
+    bosses: [
+      {
+        name: '百智爵士基甸·奥夫尼尔',
+        place: '灰烬王城 · 阶梯',
+        required: true,
+        note: '不掉追忆，但会掉他的套装与法杖。',
+      },
+      {
+        name: '荷莱·露',
+        place: '黄金树大教堂上方',
+        remembrance: true,
+        required: true,
+        note: '二阶段徒手，摔投必躲。',
+      },
+      {
+        name: '拉达冈',
+        place: '黄金树内部',
+        required: true,
+        note: '没有独立追忆，打完立刻接艾尔登之兽。',
+      },
+      {
+        name: '艾尔登之兽',
+        place: '黄金树内部',
+        remembrance: true,
+        required: true,
+        note: '最终 BOSS，掉「艾尔登的追忆」。',
+      },
+    ],
+    keyItems: [
+      { name: '艾尔登的追忆', note: '可换玛莉卡的锤或神圣遗物剑' },
+    ],
+  },
+
+  // ==================== 地下 ====================
+  {
+    id: 'siofra',
+    name: '希芙拉河',
+    alias: 'Siofra River（攻略里常被写成「伊芙拉河」）',
+    layer: 'under',
+    dlc: false,
+    order: 13,
+    level: '40 – 70',
+    mainPath: 'optional',
+    access: '宁姆格福 · 雾林的小黄金树旁，希芙拉河入口井',
+    chapters: ['limgrave'],
+    summary:
+      '第一个地下区域，头顶是伪造的星空。点满 8 座火盆才能打开角骸灵地的门——这是祖灵战的全部前置，很多人找不到 BOSS 就是因为漏了火盆。',
+    subAreas: ['希芙拉河入口井', '希芙拉河畔', '角骸灵地', '希芙拉河东侧'],
+    bosses: [
+      {
+        name: '祖灵',
+        place: '角骸灵地',
+        note: '点亮 8 座火盆后进入；掉「祖灵之民的骨灰」。',
+      },
+      {
+        name: '龙人士兵',
+        place: '希芙拉河东侧传送门',
+        note: '掉「龙戟」，可选。',
+      },
+    ],
+    keyItems: [
+      { name: '希芙拉河地图碎片', note: '入口井下来沿路走到建筑内' },
+      { name: '祖灵之民的骨灰', note: '击败祖灵后获得' },
+    ],
+  },
+  {
+    id: 'nokron',
+    name: '诺克隆恩（永恒之城）',
+    alias: 'Nokron, Eternal City',
+    layer: 'under',
+    dlc: false,
+    order: 14,
+    level: '60 – 90',
+    mainPath: 'optional',
+    access: '击败拉塔恩后，陨石砸开雾林的大坑',
+    chapters: ['caelid'],
+    summary:
+      '菈妮线的核心地下城，「猎杀指头刀」和「仿身泪滴的骨灰」都在这里。祖灵之王也在这片区域，需要点亮 6 座火盆。',
+    subAreas: ['黑夜神域', '祖灵森林', '希芙拉导水桥'],
+    bosses: [
+      {
+        name: '仿身泪滴',
+        place: '黑夜神域',
+        note: '会复制你本人，打自己是最难受的。',
+      },
+      {
+        name: '祖灵之王',
+        place: '祖灵森林 · 角骸灵地',
+        remembrance: true,
+        note: '点亮 6 座火盆后进入，掉「祖灵之王的追忆」。',
+      },
+      {
+        name: '英雄石像鬼（两只）',
+        place: '希芙拉导水桥',
+        note: '打完坐石棺去深根底层；这是菲雅线的入口。',
+        quest: 'fia',
+      },
+    ],
+    keyItems: [
+      { name: '猎杀指头刀', note: '黑夜神域，菈妮线必需' },
+      { name: '仿身泪滴的骨灰', note: '黑夜神域 · 石剑钥匙房间' },
+    ],
+  },
+  {
+    id: 'ainsel',
+    name: '安瑟尔河',
+    alias: 'Ainsel River',
+    layer: 'under',
+    dlc: false,
+    order: 15,
+    level: '50 – 80',
+    mainPath: 'optional',
+    access: '利耶尼亚 · 安瑟尔河入口井，或深根底层石棺',
+    chapters: ['liurnia'],
+    summary:
+      '菈妮线的长廊，连接乌鲁王朝遗迹、诺克史黛拉与腐败湖。诺克史黛拉的龙人兵是可打可不打的守门 BOSS。',
+    subAreas: ['安瑟尔河主流', '乌鲁王朝遗迹', '诺克史黛拉'],
+    bosses: [
+      {
+        name: '诺克史黛拉的龙人兵',
+        place: '诺克史黛拉',
+        note: '掉「龙人」系列武器，可选。',
+      },
+    ],
+    keyItems: [
+      { name: '安瑟尔河地图碎片', note: '乌鲁王朝遗迹的商人神殿' },
+      { name: '猎杀指头刀（交给菈妮）', note: '菈妮线推进' },
+    ],
+  },
+  {
+    id: 'deeproot',
+    name: '深根底层',
+    alias: 'Deeproot Depths',
+    layer: 'under',
+    dlc: false,
+    order: 16,
+    level: '80 – 110',
+    mainPath: 'optional',
+    access: '希芙拉导水桥击败英雄石像鬼后坐石棺；或王城地底密道',
+    chapters: ['leyndell'],
+    summary:
+      '黄金树的树根层，「死龙弗尔桑克斯」就在这里。菲雅线要在这里走完，它同时是「潜藏者时代」结局的钥匙。',
+    subAreas: ['大瀑布顶端', '深根底层', '死王子宝座', '无名永恒之城'],
+    bosses: [
+      {
+        name: '菲雅的勇士',
+        place: '死王子宝座',
+        note: '菲雅线的守门战，是玩家红灵。',
+        quest: 'fia',
+      },
+      {
+        name: '死龙弗尔桑克斯',
+        place: '死王子宝座（菲雅的梦）',
+        remembrance: true,
+        note: '进入菲雅的梦境才会触发，掉「死龙的追忆」。',
+        quest: 'fia',
+      },
+    ],
+    keyItems: [
+      { name: '死王子的修复卢恩', note: '菲雅线结尾获得' },
+      { name: '深根底层地图碎片', note: '大瀑布顶端前方的亭子' },
+    ],
+  },
+  {
+    id: 'rotlake',
+    name: '腐败湖',
+    alias: 'Lake of Rot',
+    layer: 'under',
+    dlc: false,
+    order: 17,
+    level: '90 – 120',
+    mainPath: 'optional',
+    access: '安瑟尔河主流尽头，需菈妮线推进',
+    chapters: ['liurnia'],
+    summary:
+      '整片湖都是猩红腐败，站久了必死。带上「免疫角饰品」和解腐败药，沿着平台走，尽头的大回廊就是黑暗弃子。',
+    subAreas: ['腐败湖', '大回廊'],
+    bosses: [
+      {
+        name: '龙人士兵',
+        place: '腐败湖',
+        note: '湖中游荡，可绕开。',
+      },
+      {
+        name: '黑暗弃子艾丝缇',
+        place: '大回廊',
+        remembrance: true,
+        note: '菈妮线必经，打完坐石棺上月光祭坛。',
+        quest: 'ranni',
+      },
+    ],
+    keyItems: [
+      { name: '腐败湖地图碎片', note: '大回廊前' },
+      { name: '免疫角饰品 +1', note: '腐败湖探索用' },
+    ],
+  },
+  {
+    id: 'moonaltar',
+    name: '月光祭坛',
+    alias: 'Moonlight Altar',
+    layer: 'under',
+    dlc: false,
+    order: 18,
+    level: '100 – 130',
+    mainPath: 'optional',
+    access: '腐败湖大回廊击败黑暗弃子后坐石棺',
+    chapters: ['liurnia'],
+    summary:
+      '菈妮线的终点。在这里给菈妮戴上「暗月戒指」，群星时代结局才算锁定；同时能拿到「暗月大剑」。',
+    subAreas: ['月光祭坛', '玛努斯·瑟利斯大教堂'],
+    bosses: [
+      {
+        name: '辉石龙亚杜拉',
+        place: '月光祭坛',
+        note: '菈妮线的最后一次阻拦，掉「亚杜拉的月光剑」。',
+        quest: 'ranni',
+      },
+    ],
+    keyItems: [
+      { name: '暗月戒指', note: '菈妮线获得，戴在菈妮手上' },
+      { name: '暗月大剑', note: '菈妮赠予' },
+    ],
+  },
+  {
+    id: 'mohgwyn',
+    name: '蒙格温王朝',
+    alias: 'Mohgwyn Dynasty',
+    layer: 'under',
+    dlc: false,
+    order: 19,
+    level: '100 – 130',
+    mainPath: 'optional',
+    access: '梵雷支线（血指）或化圣雪原西部传送门',
+    chapters: ['dlc-entry'],
+    summary:
+      '鲜血君王蒙格的地盘，也是 DLC 的两个前置之一。这里还是全游戏最著名的刷卢恩点——「通往王朝的崖上道路」。',
+    subAreas: ['王朝灵庙', '血沼泽', '通往王朝的崖上道路'],
+    bosses: [
+      {
+        name: '鲜血君王蒙格',
+        place: '王朝灵庙',
+        remembrance: true,
+        note: 'DLC 前置；二阶段的血焰仪式必须用「净血结晶露滴」免疫。',
+        quest: 'varre',
+      },
+    ],
+    keyItems: [
+      { name: '蒙格的大卢恩', note: '击败后获得' },
+      { name: '净血结晶露滴', note: '对付蒙格大招的唯一手段' },
+    ],
+  },
+  {
+    id: 'roundtable',
+    name: '圆桌厅堂',
+    alias: 'Roundtable Hold',
+    layer: 'hub',
+    dlc: false,
+    order: 20,
+    level: '—',
+    mainPath: 'optional',
+    access: '在任意赐福休息后被邀请',
+    chapters: ['limgrave'],
+    summary:
+      '不是战斗区域，是所有支线的枢纽：恩雅兑换追忆、修古强化武器、菲雅与罗德里卡常驻。这里没有 BOSS，但很多支线必须回来对话才会推进。',
+    subAreas: ['大厅', '书房', '底层（菲雅）'],
+    bosses: [],
+    keyItems: [
+      { name: '追忆兑换', note: '找解指恩雅，每个追忆二选一' },
+      { name: '漫步灵庙', note: '可复制追忆，全地图共 7 座' },
+    ],
+  },
+
+  // ==================== 幽影之地 ====================
+  {
+    id: 'gravesite',
+    name: '墓地平原',
+    alias: 'Gravesite Plain',
+    layer: 'dlc',
+    dlc: true,
+    order: 21,
+    level: '150+',
+    mainPath: 'dlc',
+    access: '击败拉塔恩与蒙格后，触碰蒙格温王朝的茧手',
+    chapters: ['dlc-entry', 'dlc-gravesite'],
+    summary:
+      'DLC 的入口与中枢，三叉口的十字记号是米凯拉十字标记的第一站。这一片没有独立追忆 BOSS，主要战斗集中在旁边的塔之镇与恩希斯城。',
+    subAreas: ['三叉口的十字记号', '火吻废墟', '慰借教堂', '正门前方的十字记号', '通柱坡'],
+    bosses: [],
+    keyItems: [
+      { name: '幽影树碎片', note: '全 DLC 共 50 个，优先收集' },
+      { name: '灵灰', note: '强化骨灰，共 25 个' },
+    ],
+  },
+  {
+    id: 'belurat',
+    name: '塔之镇贝瑞特',
+    alias: 'Belurat, Tower Settlement',
+    layer: 'dlc',
+    dlc: true,
+    order: 22,
+    level: '150+',
+    mainPath: 'dlc',
+    access: '墓地平原向西北',
+    chapters: ['dlc-gravesite'],
+    summary:
+      'DLC 第一个大型遗产地城，角人一族的圣地。神兽舞狮是这里的主 BOSS，打完后戴上狮子头去找角人老妪，能拿到「守护灵」祷告。',
+    subAreas: ['民宅小祭坛', '仓库', '舞台前方', '下水道'],
+    bosses: [
+      {
+        name: '神兽舞狮',
+        place: '舞台前方',
+        remembrance: true,
+        note: '会切换雷 / 风 / 冰三属性，雾门前可召唤弗蕾亚。',
+        quest: 'freyja',
+      },
+      {
+        name: '腐烂树灵（腐败）',
+        place: '下水道毒潭',
+        note: '掉「免疫角饰品 +2」，打腐败湖很好用。',
+      },
+    ],
+    keyItems: [
+      { name: '仓库钥匙', note: '主线路上获得，开民宅小祭坛旁的仓库' },
+      { name: '神兽头部', note: '击败舞狮后获得，戴上去见角人老妪' },
+    ],
+  },
+  {
+    id: 'ensis',
+    name: '恩希斯城',
+    alias: 'Castle Ensis',
+    layer: 'dlc',
+    dlc: true,
+    order: 23,
+    level: '150 – 160',
+    mainPath: 'dlc',
+    access: '墓地平原 · 艾拉克大桥向东北',
+    chapters: ['dlc-gravesite'],
+    summary:
+      '通往幽影亚坛的关卡城堡，双月骑士蕾菈娜守在这里。她是 DLC 第一个真正的难关，也是「双月骑士的追忆」的来源。',
+    subAreas: ['恩希斯城关卡', '城主的房间', '城墙'],
+    bosses: [
+      {
+        name: '双月骑士蕾菈娜',
+        place: '城主的房间',
+        remembrance: true,
+        note: 'DLC 第一个硬门槛，弱弹反，二阶段双月是秒杀技。',
+      },
+    ],
+    keyItems: [
+      { name: '双月骑士的追忆', note: '可换「蕾菈娜的对剑」或魔法「蕾菈娜的双月」' },
+    ],
+  },
+  {
+    id: 'scadu',
+    name: '幽影亚坛',
+    alias: 'Scadu Altus（也写作「斯卡杜阿尔图斯」）',
+    layer: 'dlc',
+    dlc: true,
+    order: 24,
+    level: '155 – 175',
+    mainPath: 'dlc',
+    access: '穿过恩希斯城，或从通柱坡绕行',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      '幽影之地的中部高原，DLC 内容最密的一片。穆斯废墟、圣战教堂、惩罚要塞、隐者河都在这里；尤弥尔线、角人线、丹恩线也在此交汇。',
+    subAreas: ['穆斯废墟', '圣战教堂', '惩罚要塞', '隐者河', '大道旁的十字记号', '指岩山丘'],
+    bosses: [
+      {
+        name: '黑骑士艾瑞德',
+        place: '惩罚要塞',
+        note: '掉「熔炉百相之羽」战灰。',
+      },
+      {
+        name: '大红熊拉鲁瓦',
+        place: '大道旁山上水池',
+        note: '掉「拉鲁瓦毛皮」。',
+      },
+      {
+        name: '大红熊鲁格利亚',
+        place: '峡谷北方',
+        note: '掉「鲁格利亚的咆哮」。',
+      },
+      {
+        name: '坠星兽物',
+        place: '指岩山丘',
+        note: '掉魔法「引力球」。',
+      },
+      {
+        name: '落叶丹恩',
+        place: '穆斯废墟',
+        note: '丹恩线的支线战斗，掉「落叶格斗术」。',
+        quest: 'dane',
+      },
+      {
+        name: '大树守卫（两只）',
+        place: '隐匿之地',
+        note: '掉「玛莉卡的赐福」。',
+      },
+    ],
+    keyItems: [
+      { name: '幽影亚坛地图碎片', note: '大道旁的十字记号附近' },
+      { name: '母亲的肢体动作', note: '波尼村树下，尤弥尔线要用' },
+    ],
+  },
+  {
+    id: 'shadowkeep',
+    name: '幽影城',
+    alias: 'Shadow Keep（暗影要塞）',
+    layer: 'dlc',
+    dlc: true,
+    order: 25,
+    level: '160 – 180',
+    mainPath: 'dlc',
+    access: '幽影亚坛 · 幽影城正门',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      'DLC 的核心遗产地城，结构复杂到容易迷路。正门是黄金河马，保藏库七楼是梅瑟莫；后门出去还有老将盖乌斯。打梅瑟莫会掉「梅瑟莫的火种」，是烧封印之树的钥匙。',
+    subAreas: ['正门广场', '物种保藏库', '暗室门前', '教区', '望影露台（后门）'],
+    bosses: [
+      {
+        name: '黄金河马',
+        place: '正门广场',
+        required: true,
+        note: 'DLC 主线守门 BOSS，掉幽影树碎片 ×2。',
+      },
+      {
+        name: '穿刺者梅瑟莫',
+        place: '保藏库七楼 · 暗室门前',
+        remembrance: true,
+        required: true,
+        note: '掉「梅瑟莫的火种」；二阶段蛇群别站在正面。',
+      },
+      {
+        name: '老将盖乌斯',
+        place: '幽影城后门',
+        remembrance: true,
+        note: '骑野猪的指挥官，冲撞判定很迷，建议侧滚。',
+      },
+    ],
+    keyItems: [
+      { name: '梅瑟莫的火种', note: '烧封印之树，通往艾尼尔·伊利姆' },
+      { name: '保藏库钥匙', note: '开启七楼暗室' },
+    ],
+  },
+  {
+    id: 'scaduview',
+    name: '幽影顶野',
+    alias: 'Scaduview · 幽影树脚下',
+    layer: 'dlc',
+    dlc: true,
+    order: 26,
+    level: '170 – 190',
+    mainPath: 'dlc',
+    access: '幽影城退水后，从教区 / 礼树暗道进入',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      '幽影树脚下的高地，「幽影树的化身」在这里。它是 DLC 里最容易被错过的一条追忆线——入口藏在退水后的暗道里。',
+    subAreas: ['礼树暗道', '幽影树脚下', '隐匿之地'],
+    bosses: [
+      {
+        name: '幽影树化身',
+        place: '礼树暗道',
+        remembrance: true,
+        note: '三条血的机制 BOSS，弱火；掉「影轮草的追忆」与米凯拉的大卢恩。',
+      },
+    ],
+    keyItems: [
+      { name: '米凯拉的大卢恩', note: '击败幽影树化身后获得' },
+      { name: '赐福覆眼膜', note: '礼树暗道内，约兰线要用' },
+    ],
+  },
+  {
+    id: 'rauh',
+    name: '劳弗古遗迹',
+    alias: 'Ancient Ruins of Rauh',
+    layer: 'dlc',
+    dlc: true,
+    order: 27,
+    level: '170 – 190',
+    mainPath: 'dlc',
+    access: '幽影城 · 西边城墙 → 高架桥的小塔 → 劳弗古遗迹',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      'DLC 后半段的主线区域，尽头是花蕾教堂与萝蜜娜。用梅瑟莫的火种烧掉封印之树后，才能继续往艾尼尔·伊利姆走。',
+    subAreas: ['高架桥的小塔', '劳弗古遗迹（东方）', '劳弗古遗迹（西方）', '花蕾教堂', '神殿镇废墟'],
+    bosses: [
+      {
+        name: '花蕾圣女萝蜜娜',
+        place: '花蕾教堂',
+        remembrance: true,
+        required: true,
+        note: 'DLC 主线必打，二阶段猩红腐败；可弹反。',
+      },
+      {
+        name: '神兽舞狮（第二只）',
+        place: '劳弗古遗迹东方赐福下方',
+        note: '无追忆，掉「神兽龙卷风」，容易和塔之镇那只搞混。',
+      },
+    ],
+    keyItems: [
+      { name: '花蕾圣女的追忆', note: '可换「花蕾刀」或祷告' },
+      { name: '封印之树', note: '用梅瑟莫的火种烧掉' },
+    ],
+  },
+  {
+    id: 'cerulean',
+    name: '青蓝海岸',
+    alias: 'Cerulean Coast · 南部海岸',
+    layer: 'dlc',
+    dlc: true,
+    order: 28,
+    level: '160 – 180',
+    mainPath: 'dlc',
+    access: '幽影亚坛向东南，或劳弗古遗迹下方峡谷',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      '幽影之地的南岸，风景最好也最空。石棺大洞、密亚指头遗迹、玛努斯·梅提尔大教堂都从这里分出去，尤弥尔线的主场就在这片。',
+    subAreas: ['青蓝海岸', '卡罗隐藏墓地', '玛努斯·梅提尔大教堂', '石棺大洞入口'],
+    bosses: [
+      {
+        name: '大祭司尤弥尔',
+        place: '玛努斯·梅提尔大教堂',
+        note: '尤弥尔线的最终战，掉他的套装与「母亲杖」。',
+        quest: 'ymir',
+      },
+    ],
+    keyItems: [
+      { name: '青蓝海岸地图碎片', note: '海岸西侧' },
+      { name: '遗迹地图', note: '尤弥尔给予，指头遗迹线要用' },
+    ],
+  },
+  {
+    id: 'coffin',
+    name: '石棺大洞',
+    alias: 'Stone Coffin Fissure',
+    layer: 'dlc',
+    dlc: true,
+    order: 29,
+    level: '170 – 190',
+    mainPath: 'dlc',
+    access: '青蓝海岸东侧的大洞',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      '一路向下的大裂谷，尽头是托莉娜的深紫花园。融泥骑士守在花园前，是托莉娜线（休里耶线）的必经一战。',
+    subAreas: ['大洞深处', '深紫花园'],
+    bosses: [
+      {
+        name: '融泥骑士',
+        place: '大洞深处',
+        remembrance: true,
+        note: '人马四连冲很难滚，建议盾挡；掉「融泥的追忆」。',
+        quest: 'trina',
+      },
+    ],
+    keyItems: [
+      { name: '托莉娜的花蜜', note: '深紫花园，托莉娜线要用' },
+      { name: '融泥的追忆', note: '可换武器或祷告' },
+    ],
+  },
+  {
+    id: 'fingers',
+    name: '密亚指头遗迹',
+    alias: 'Finger Ruins of Rhia（也译「利亚指头遗迹」）',
+    layer: 'dlc',
+    dlc: true,
+    order: 30,
+    level: '170 – 190',
+    mainPath: 'dlc',
+    access: '青蓝海岸东南，沿悬崖下到海岸后向东',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      '指头之母梅蒂尔所在。这里需要先完成尤弥尔线的吹钟步骤，遗迹深处才会开放——直接跑过去只会看到空地。',
+    subAreas: ['指头遗迹', '遗迹深处'],
+    bosses: [
+      {
+        name: '指头之母梅蒂尔',
+        place: '遗迹最深处',
+        remembrance: true,
+        note: '尤弥尔线终点之一；掉「指头之母的追忆」。',
+        quest: 'ymir',
+      },
+    ],
+    keyItems: [
+      { name: '指头之母的追忆', note: '可换「母亲杖」相关' },
+    ],
+  },
+  {
+    id: 'abyss',
+    name: '谷底森林',
+    alias: 'Abyssal Woods',
+    layer: 'dlc',
+    dlc: true,
+    order: 31,
+    level: '170 – 190',
+    mainPath: 'dlc',
+    access: '幽影城广场正门 → 城墙梯子 → 隐藏墙 → 积水处 → 驱暗的地下墓地',
+    chapters: ['dlc-shadowkeep'],
+    summary:
+      'DLC 最阴间的区域，满地图的「不可名状」追着你跑。米德拉府邸在森林最深处，癫火之王米德拉就在里面。',
+    subAreas: ['谷底森林', '驱暗的地下墓地', '废弃教堂', '米德拉府邸'],
+    bosses: [
+      {
+        name: '死亡骑士',
+        place: '驱暗的地下墓地',
+        note: '守门 BOSS，无追忆。',
+      },
+      {
+        name: '癫火之王米德拉',
+        place: '米德拉府邸',
+        remembrance: true,
+        note: 'DLC 隐藏追忆 BOSS，二阶段全屏癫火。',
+        quest: 'thiollier',
+      },
+    ],
+    keyItems: [
+      { name: '癫火之王的追忆', note: '可换「米德拉的癫火」相关' },
+      { name: '癫火调香瓶', note: '废弃教堂' },
+    ],
+  },
+  {
+    id: 'jagged',
+    name: '锯齿峰（尖刺山）',
+    alias: 'Jagged Peak',
+    layer: 'dlc',
+    dlc: true,
+    order: 32,
+    level: '170 – 190',
+    mainPath: 'dlc',
+    access: '墓地平原 · 通柱坡中段向南，穿过龙洞',
+    chapters: ['dlc-gravesite'],
+    summary:
+      '一路向上的龙之山道，山顶是 DLC 最强野外 BOSS「狂龙贝勒」。它不掉追忆，但掉专属龙餐素材，也是埃贡线的终点。',
+    subAreas: ['龙洞', '尖刺山山脚', '尖刺山山顶'],
+    bosses: [
+      {
+        name: '古龙瑟涅桑克斯',
+        place: '尖刺山山道',
+        note: '固定野外古龙，无需触发条件。',
+      },
+      {
+        name: '尖刺山的飞龙',
+        place: '山道',
+        note: '成对出现，会互相攻击。',
+      },
+      {
+        name: '狂龙贝勒',
+        place: '尖刺山山顶',
+        note: 'DLC 最强野外 BOSS，无追忆；埃贡线会给你召唤符。',
+        quest: 'igon',
+      },
+    ],
+    keyItems: [
+      { name: '贝勒的心脏', note: '可在龙餐大祭坛兑换龙餐祷告' },
+      { name: '埃贡的大弓', note: '埃贡线结尾获得' },
+    ],
+  },
+  {
+    id: 'enir',
+    name: '艾尼尔·伊利姆',
+    alias: 'Enir-Ilim',
+    layer: 'dlc',
+    dlc: true,
+    order: 33,
+    level: '180+',
+    mainPath: 'dlc',
+    access: '烧掉封印之树后进入',
+    chapters: ['dlc-enir'],
+    summary:
+      'DLC 最终区域。进最终 BOSS 前要先打一场「净身厅前室混战」，你的选择决定能召唤哪些盟友；结局只有拉塔恩一战，没有分支。',
+    subAreas: ['螺旋塔', '螺旋塔广场', '净身厅前室', '神之门'],
+    bosses: [
+      {
+        name: '净身厅前室混战',
+        place: '净身厅前室',
+        required: true,
+        note: '与蕾妲一方对峙，场上多套装备记得捡。',
+        quest: 'leda',
+      },
+      {
+        name: '约定之王拉塔恩',
+        place: '螺旋塔',
+        remembrance: true,
+        required: true,
+        note: 'DLC 最终 BOSS，二阶段全屏光柱；掉「神祇与王的追忆」。',
+      },
+    ],
+    keyItems: [
+      { name: '神祇与王的追忆', note: '可换拉塔恩的大剑（光 / 王）' },
+      { name: '光芒头冠', note: '触碰记忆后获得' },
+    ],
+  },
+]
+
+// 追忆 BOSS 总表：本体 15 + DLC 10，用来自检「有没有漏」
+export const remembranceBosses = mainRegions.flatMap((region) =>
+  region.bosses
+    .filter((boss) => boss.remembrance)
+    .map((boss) => ({
+      name: boss.name,
+      place: boss.place,
+      regionId: region.id,
+      regionName: region.name,
+      dlc: region.dlc,
+      quest: boss.quest || null,
+    }))
+)
+
+export const regionStats = {
+  total: mainRegions.length,
+  surface: mainRegions.filter((item) => item.layer === 'surface').length,
+  hub: mainRegions.filter((item) => item.layer === 'hub').length,
+  under: mainRegions.filter((item) => item.layer === 'under').length,
+  dlc: mainRegions.filter((item) => item.layer === 'dlc').length,
+  bosses: mainRegions.reduce((sum, item) => sum + item.bosses.length, 0),
+  remembrance: remembranceBosses.length,
+  remembranceBase: remembranceBosses.filter((item) => !item.dlc).length,
+  remembranceDlc: remembranceBosses.filter((item) => item.dlc).length,
+  required: mainRegions.reduce(
+    (sum, item) => sum + item.bosses.filter((boss) => boss.required).length,
+    0
+  ),
+}
+
+export default mainRegions

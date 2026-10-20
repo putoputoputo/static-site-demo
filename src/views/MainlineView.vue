@@ -18,6 +18,16 @@
             已通关 {{ completedCount }} / {{ stats.total }} 章
           </span>
         </div>
+        <div class="hero-actions">
+          <RouterLink to="/main-quest/regions" class="guide-link">
+            <el-icon :size="13"><Grid /></el-icon>
+            区域 &amp; BOSS 图鉴 · {{ regionStats.total }} 区域 / {{ regionStats.bosses }} BOSS
+          </RouterLink>
+          <span class="guide-hint">
+            含追忆 BOSS {{ regionStats.remembrance }} 个（本体 {{ regionStats.remembranceBase }} + DLC
+            {{ regionStats.remembranceDlc }}）
+          </span>
+        </div>
       </div>
       <div class="hero-badges">
         <div v-for="item in highlights" :key="item.label" class="hero-badge">
@@ -70,6 +80,7 @@
               <h2 class="chapter-name">
                 {{ chapter.name }}
                 <span v-if="chapter.dlc" class="dlc-tag">(DLC)</span>
+                <span v-else-if="chapter.optional" class="optional-tag">可选</span>
               </h2>
               <p class="chapter-sub">{{ chapter.subtitle }}</p>
             </div>
@@ -149,7 +160,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { Search, RefreshLeft, Location, Check } from '@element-plus/icons-vue'
+import { Search, RefreshLeft, Location, Check, Grid } from '@element-plus/icons-vue'
 import {
   mainChapters,
   mainEndings,
@@ -157,6 +168,7 @@ import {
   matchChapter,
   requiredBossNames,
 } from '../utils/mainline'
+import { regionStats } from '../data/summary'
 import { getQuest } from '../utils/quest'
 import { useMainProgress } from '../composables/useMainProgress'
 
@@ -276,6 +288,38 @@ function goDetail(id) {
 .progress-text {
   font-size: 12px;
   color: #8a8574;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.guide-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 6px;
+  background: rgba(212, 175, 55, 0.07);
+  text-decoration: none;
+  transition: all 0.16s ease;
+}
+
+.guide-link:hover {
+  border-color: rgba(212, 175, 55, 0.7);
+  background: rgba(212, 175, 55, 0.14);
+}
+
+.guide-hint {
+  font-size: 11px;
+  color: #6f6a5a;
 }
 
 .hero-badges {
@@ -426,6 +470,15 @@ function goDetail(id) {
   font-size: 11px;
   color: #c98b3f;
   font-weight: 400;
+}
+
+.optional-tag {
+  font-size: 11px;
+  color: #8a8574;
+  font-weight: 400;
+  border: 1px solid #383225;
+  border-radius: 3px;
+  padding: 0 4px;
 }
 
 .chapter-sub {

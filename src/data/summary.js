@@ -11,11 +11,23 @@ export const questStats = {
   "ready": 51
 }
 export const mainStats = {
-  "total": 11,
-  "base": 7,
+  "total": 12,
+  "base": 8,
   "dlc": 4,
-  "steps": 78,
-  "bosses": 35,
+  "steps": 86,
+  "bosses": 41,
   "requiredBosses": 22,
   "endings": 6
+}
+export const regionStats = {
+  "total": 33,
+  "surface": 12,
+  "hub": 1,
+  "under": 7,
+  "dlc": 13,
+  "bosses": 105,
+  "remembrance": 25,
+  "remembranceBase": 15,
+  "remembranceDlc": 10,
+  "required": 19
 }
