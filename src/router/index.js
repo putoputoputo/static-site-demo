@@ -11,8 +11,12 @@ const routes = [
   {
     path: '/main-quest',
     name: 'main-quest',
-    component: () => import('../views/PlaceholderView.vue'),
-    props: { title: '主线' },
+    component: () => import('../views/MainlineView.vue'),
+  },
+  {
+    path: '/main-quest/:id',
+    name: 'main-chapter',
+    component: () => import('../views/MainlineDetailView.vue'),
   },
   {
     path: '/runes',

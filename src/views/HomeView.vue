@@ -27,10 +27,16 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise } from '@element-plus/icons-vue'
-import { weaponCount, weaponTypeCount, questStats } from '../data/summary'
+import { weaponCount, weaponTypeCount, questStats, mainStats } from '../data/summary'
 
 const boards = [
-  { label: '主线', desc: '主线流程、Boss 顺序与关键节点攻略', path: '/main-quest', icon: Flag, ready: false },
+  {
+    label: '主线',
+    desc: `本体 ${mainStats.base} 章 + DLC ${mainStats.dlc} 章，${mainStats.steps} 个推进步骤、${mainStats.requiredBosses} 场必打 BOSS 与 ${mainStats.endings} 个结局分支`,
+    path: '/main-quest',
+    icon: Flag,
+    ready: true,
+  },
   {
     label: '支线',
     desc: `${questStats.total} 条 NPC 支线（本体 ${questStats.base} + DLC ${questStats.dlc}），含 ${questStats.missable} 条易错过预警与分支结局`,
