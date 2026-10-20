@@ -27,20 +27,50 @@ const routes = [
   {
     path: '/runes',
     name: 'runes',
-    component: () => import('../views/PlaceholderView.vue'),
-    props: { title: '符文' },
+    component: () => import('../views/CodexView.vue'),
+    props: { moduleKey: 'talismans' },
+  },
+  {
+    path: '/runes/:id',
+    name: 'rune-detail',
+    component: () => import('../views/CodexDetailView.vue'),
+    props: { moduleKey: 'talismans' },
   },
   {
     path: '/sorceries',
     name: 'sorceries',
-    component: () => import('../views/PlaceholderView.vue'),
-    props: { title: '魔法' },
+    component: () => import('../views/CodexView.vue'),
+    props: { moduleKey: 'sorceries' },
+  },
+  {
+    path: '/sorceries/:id',
+    name: 'sorcery-detail',
+    component: () => import('../views/CodexDetailView.vue'),
+    props: { moduleKey: 'sorceries' },
   },
   {
     path: '/incantations',
     name: 'incantations',
-    component: () => import('../views/PlaceholderView.vue'),
-    props: { title: '祷告' },
+    component: () => import('../views/CodexView.vue'),
+    props: { moduleKey: 'incantations' },
+  },
+  {
+    path: '/incantations/:id',
+    name: 'incantation-detail',
+    component: () => import('../views/CodexDetailView.vue'),
+    props: { moduleKey: 'incantations' },
+  },
+  {
+    path: '/spirits',
+    name: 'spirits',
+    component: () => import('../views/CodexView.vue'),
+    props: { moduleKey: 'spirits' },
+  },
+  {
+    path: '/spirits/:id',
+    name: 'spirit-detail',
+    component: () => import('../views/CodexDetailView.vue'),
+    props: { moduleKey: 'spirits' },
   },
 ]
 

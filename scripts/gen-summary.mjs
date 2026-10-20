@@ -8,6 +8,10 @@ import weapons from '../src/data/weapons.js'
 import { questStats } from '../src/data/quests.js'
 import { mainStats } from '../src/data/mainline.js'
 import { regionStats } from '../src/data/regions.js'
+import { talismanStats } from '../src/data/talismans.js'
+import { sorcerySummary } from '../src/data/sorceries.js'
+import { incantationSummary } from '../src/data/incantations.js'
+import { spiritStats } from '../src/data/spiritAshes.js'
 
 const weaponTypeCount = new Set(weapons.map((item) => item.type)).size
 const dlcCount = weapons.filter((item) => item.dlc).length
@@ -20,10 +24,14 @@ export const weaponDlcCount = ${dlcCount}
 export const questStats = ${JSON.stringify(questStats, null, 2)}
 export const mainStats = ${JSON.stringify(mainStats, null, 2)}
 export const regionStats = ${JSON.stringify(regionStats, null, 2)}
+export const talismanStats = ${JSON.stringify(talismanStats, null, 2)}
+export const sorceryStats = ${JSON.stringify(sorcerySummary, null, 2)}
+export const incantationStats = ${JSON.stringify(incantationSummary, null, 2)}
+export const spiritStats = ${JSON.stringify(spiritStats, null, 2)}
 `
 
 const target = resolve(dirname(fileURLToPath(import.meta.url)), '../src/data/summary.js')
 writeFileSync(target, out, 'utf-8')
 console.log(
-  `[gen-summary] 武器 ${weapons.length} 件 / ${weaponTypeCount} 类（DLC ${dlcCount}），支线 ${questStats.total} 条 / 已整理 ${questStats.ready} 条，主线 ${mainStats.total} 章（本体 ${mainStats.base} + DLC ${mainStats.dlc}）/ ${mainStats.steps} 步，区域 ${regionStats.total} 个 / BOSS ${regionStats.bosses} 个（追忆 ${regionStats.remembrance}）`
+  `[gen-summary] 武器 ${weapons.length} 件 / ${weaponTypeCount} 类（DLC ${dlcCount}），支线 ${questStats.total} 条，主线 ${mainStats.total} 章 / ${mainStats.steps} 步，区域 ${regionStats.total} 个 / BOSS ${regionStats.bosses} 个，护符 ${talismanStats.total} 个，魔法 ${sorcerySummary.total} 个，祷告 ${incantationSummary.total} 个，骨灰 ${spiritStats.total} 个`
 )

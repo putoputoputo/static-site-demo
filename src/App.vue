@@ -43,6 +43,7 @@ const navItems = [
   { path: '/runes', label: '符文' },
   { path: '/sorceries', label: '魔法' },
   { path: '/incantations', label: '祷告' },
+  { path: '/spirits', label: '骨灰' },
 ]
 
 const route = useRoute()

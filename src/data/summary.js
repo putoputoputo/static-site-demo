@@ -31,3 +31,27 @@ export const regionStats = {
   "remembranceDlc": 10,
   "required": 19
 }
+export const talismanStats = {
+  "total": 149,
+  "dlc": 28,
+  "categories": 7,
+  "greatRunes": 6
+}
+export const sorceryStats = {
+  "total": 84,
+  "dlc": 14,
+  "schools": 12,
+  "legend": 13
+}
+export const incantationStats = {
+  "total": 129,
+  "dlc": 28,
+  "schools": 14,
+  "legend": 21
+}
+export const spiritStats = {
+  "total": 84,
+  "dlc": 20,
+  "types": 6,
+  "legend": 11
+}

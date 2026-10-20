@@ -26,8 +26,18 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise } from '@element-plus/icons-vue'
-import { weaponCount, weaponTypeCount, questStats, mainStats, regionStats } from '../data/summary'
+import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar } from '@element-plus/icons-vue'
+import {
+  weaponCount,
+  weaponTypeCount,
+  questStats,
+  mainStats,
+  regionStats,
+  talismanStats,
+  sorceryStats,
+  incantationStats,
+  spiritStats,
+} from '../data/summary'
 
 const boards = [
   {
@@ -51,9 +61,34 @@ const boards = [
     icon: KnifeFork,
     ready: true,
   },
-  { label: '符文', desc: '护符收集与强力符文搭配推荐', path: '/runes', icon: Medal, ready: false },
-  { label: '魔法', desc: '魔法列表与法师流派构筑指南', path: '/sorceries', icon: MagicStick, ready: false },
-  { label: '祷告', desc: '祷告一览与信仰流玩法攻略', path: '/incantations', icon: Sunrise, ready: false },
+  {
+    label: '符文',
+    desc: `${talismanStats.total} 个护符（含 ${talismanStats.dlc} 个 DLC）与 ${talismanStats.greatRunes} 个大卢恩：重量、效果、获取位置与流派取舍`,
+    path: '/runes',
+    icon: Medal,
+    ready: true,
+  },
+  {
+    label: '魔法',
+    desc: `${sorceryStats.total} 个魔法、${sorceryStats.schools} 个学派：FP 消耗、记忆格、智力需求与各阶段输出核心`,
+    path: '/sorceries',
+    icon: MagicStick,
+    ready: true,
+  },
+  {
+    label: '祷告',
+    desc: `${incantationStats.total} 个祷告、${incantationStats.schools} 个体系：治疗、防护、附魔与龙飨吐息全收录`,
+    path: '/incantations',
+    icon: Sunrise,
+    ready: true,
+  },
+  {
+    label: '骨灰',
+    desc: `${spiritStats.total} 个骨灰（含 ${spiritStats.dlc} 个 DLC）：FP 消耗、定位、强化材料与召唤时机`,
+    path: '/spirits',
+    icon: Avatar,
+    ready: true,
+  },
 ]
 </script>
 

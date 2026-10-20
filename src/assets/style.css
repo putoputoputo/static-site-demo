@@ -121,3 +121,19 @@ body {
   font-size: 12px;
   font-weight: normal;
 }
+
+/* 顶部导航项目增加到 8 个后，窄屏需要收紧间距 */
+@media (max-width: 980px) {
+  .logo {
+    font-size: 15px;
+  }
+
+  .nav {
+    gap: 0;
+  }
+
+  .nav-link {
+    padding: 6px 7px;
+    font-size: 13px;
+  }
+}
