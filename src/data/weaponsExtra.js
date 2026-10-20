@@ -63,7 +63,7 @@ const weaponsExtra = [
   // ==================== 投掷刃 ====================
   {
     id: 'smithscript-dagger',
-    name: '铁匠制短刀',
+    name: '流纹短剑',
     dlc: true,
     type: '投掷刃',
     region: '影之地·墓地平原',
@@ -74,20 +74,19 @@ const weaponsExtra = [
     stats: { physical: 67, magic: 0, fire: 0, lightning: 0, holy: 0, critical: 100, weight: 1.5 },
     scaling: { str: 'E', dex: 'D', int: '-', fai: '-', arc: '-' },
     requirements: { str: 5, dex: 11, int: 0, fai: 0, arc: 0 },
-    skill: null,
-        skill: { name: '投掷连击', description: '把短刀掷出后手上会补充新的短刀，可连续投掷。' },
-gameplay: [
+    skill: { name: '投掷连击', description: '把短刀掷出后手上会补充新的短刀，可连续投掷。' },
+    gameplay: [
       '重攻击是投掷，蓄力后伤害更高，适合在不靠近的情况下补刀。',
       '全类型只有这一件，收集控拿它就等于解锁了投掷刃分类。',
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 12, dex: 45, int: 9, fai: 9, arc: 9 },
       talismans: ['钩爪护符', '绿龟护符', '红羽剩徽记'],
-      weapons: ['铁匠制短刀', '任意主手武器'],
+      weapons: ['流纹短剑', '任意主手武器'],
       sorceries: [],
       incantations: [],
     },
-    location: '影之地·墓地平原·熔岩管锻造遗迹：入口内侧不远的尸体上拾取（附近有石像鬼巡逻）。',
+    location: 'DLC·熔岩管锻造遗迹内拾取，大管道前有石偶守着。',
   },
 
   // ==================== 刺剑 ====================
@@ -289,7 +288,7 @@ gameplay: [
   // ==================== 轻大剑 ====================
   {
     id: 'ledas-sword',
-    name: '雷妲的剑',
+    name: '蕾妲的剑',
     dlc: true,
     type: '轻大剑',
     region: '影之地·艾尼尔·伊利姆',
@@ -459,7 +458,7 @@ gameplay: [
   // ==================== 反手剑 ====================
   {
     id: 'backhand-blade',
-    name: '反手刀',
+    name: '反手剑',
     dlc: true,
     type: '反手剑',
     region: '影之地·墓地平原',
@@ -2062,7 +2061,7 @@ gameplay: [
   // ==================== 刺盾 ====================
   {
     id: 'dueling-shield',
-    name: '决斗之盾',
+    name: '决斗盾',
     dlc: true,
     type: '刺盾',
     region: '影之地·幽影城',

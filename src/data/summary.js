@@ -1,8 +1,8 @@
 // 本文件由 scripts/gen-summary.mjs 自动生成，请勿手动修改。
 // 首页只从这里读取统计数字，避免把整份武器 / 支线 / 主线数据打进首屏。
-export const weaponCount = 475
+export const weaponCount = 480
 export const weaponTypeCount = 42
-export const weaponDlcCount = 123
+export const weaponDlcCount = 102
 export const questStats = {
   "total": 51,
   "base": 37,

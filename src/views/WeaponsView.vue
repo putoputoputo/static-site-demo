@@ -6,8 +6,8 @@
         <h1 class="hero-title">武器图鉴</h1>
         <p class="hero-sub">
           共收录 <strong>{{ weapons.length }}</strong> 件武器，覆盖
-          <strong>{{ typeOptions.length }}</strong> 个类型（本体 32 类 + DLC 新增 8 类，盾牌按小/中/大分层），其中 DLC 武器
-          <strong>{{ dlcCount }}</strong> 件，追忆与 BOSS 掉落武器均已收录。面板为未强化基础值，
+          <strong>{{ typeOptions.length }}</strong> 个类型（本体 34 类，盾牌拆成小盾 / 中盾 / 大盾；DLC 新增 8
+          类），其中 DLC 武器 <strong>{{ dlcCount }}</strong> 件。面板为未强化基础值，
           冷门武器的个别数值为同类型基准估算，盾牌不计攻击力。
         </p>
       </div>
@@ -127,6 +127,7 @@
     <div class="result-bar">
       <span>
         匹配 <strong>{{ filteredWeapons.length }}</strong> / {{ weapons.length }} 件武器
+        <span class="result-hint">已全部渲染，可直接用浏览器 Ctrl+F 查找</span>
       </span>
       <el-button v-if="isFiltering" text type="warning" size="small" :icon="RefreshLeft" @click="resetFilters">
         清除筛选
@@ -136,7 +137,7 @@
     <!-- 卡片视图 -->
     <div v-if="viewMode === 'card'" class="weapon-grid">
       <RouterLink
-        v-for="weapon in visibleWeapons"
+        v-for="weapon in filteredWeapons"
         :key="weapon.id"
         class="weapon-card"
         :to="`/weapons/${weapon.id}`"
@@ -215,7 +216,7 @@
     <!-- 表格视图 -->
     <el-table
       v-else
-      :data="visibleWeapons"
+      :data="filteredWeapons"
       class="weapon-table"
       row-class-name="weapon-row"
       @row-click="goDetail"
@@ -278,14 +279,6 @@
       </el-table-column>
     </el-table>
 
-    <!-- 分批加载 -->
-    <div v-if="visibleWeapons.length < filteredWeapons.length" class="load-more">
-      <el-button plain @click="limit += PAGE_SIZE">
-        再显示 {{ Math.min(PAGE_SIZE, filteredWeapons.length - visibleWeapons.length) }} 件
-        （已显示 {{ visibleWeapons.length }} / {{ filteredWeapons.length }}）
-      </el-button>
-    </div>
-
     <!-- 空状态 -->
     <el-empty v-if="filteredWeapons.length === 0" description="没有符合条件的武器，换个关键词试试">
       <el-button type="primary" plain @click="resetFilters">清除筛选</el-button>
@@ -294,7 +287,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { Search, RefreshLeft, Star, StarFilled } from '@element-plus/icons-vue'
 import weapons, { weaponTypeGroups } from '../data/weapons'
@@ -416,14 +409,8 @@ const filteredWeapons = computed(() => {
   return sorter ? [...list].sort(sorter) : list
 })
 
-// 453 件武器一次性渲染太重，按批显示
-const PAGE_SIZE = 48
-const limit = ref(PAGE_SIZE)
-const visibleWeapons = computed(() => filteredWeapons.value.slice(0, limit.value))
-
-watch([keyword, selectedTypes, selectedAttrs, selectedStatuses, onlyFavorites, dlcFilter, sortKey], () => {
-  limit.value = PAGE_SIZE
-})
+// 全部结果一次性渲染：分批渲染会让未展示的条目无法被 Ctrl+F 命中，看起来像「漏了」
+// 渲染开销交给 CSS 的 content-visibility: auto（见 .weapon-card）
 
 function toggleType(name) {
   const index = selectedTypes.value.indexOf(name)
@@ -688,13 +675,13 @@ function goDetail(row) {
   color: #d4af37;
 }
 
-/* 卡片 */
-.load-more {
-  display: flex;
-  justify-content: center;
-  margin: 22px 0 8px;
+.result-hint {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #6b6555;
 }
 
+/* 卡片 */
 .weapon-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -702,6 +689,10 @@ function goDetail(row) {
 }
 
 .weapon-card {
+  /* 数百张卡片一次性渲染，屏幕外的内容跳过布局与绘制；
+     加 auto 关键字让浏览器记住实际高度，避免滚动条跳动 */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 230px;
   display: flex;
   flex-direction: column;
   gap: 12px;
