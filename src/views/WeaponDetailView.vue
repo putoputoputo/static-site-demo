@@ -247,7 +247,11 @@ const route = useRoute()
 const router = useRouter()
 const { isFavorite, toggleFavorite } = useWeaponFavorites()
 
-const weapon = computed(() => weapons.find((item) => item.id === route.params.id))
+const weapon = computed(() => {
+  const key = route.params.id
+  // 新增条目直接用中文名作 id；手写条目是英文 id，这里再按名称兜底，保证两种链接都能打开
+  return weapons.find((item) => item.id === key) || weapons.find((item) => item.name === key)
+})
 
 const currentIndex = computed(() => weapons.findIndex((item) => item.id === route.params.id))
 
@@ -263,7 +267,11 @@ const nextWeapon = computed(() =>
 
 const siblings = computed(() => {
   if (!weapon.value) return []
-  return weapons.filter((item) => item.type === weapon.value.type && item.id !== weapon.value.id)
+  // 同类型可能有三四十件（比如中盾），只挑面板最接近的几件，避免侧栏被撑爆
+  return weapons
+    .filter((item) => item.type === weapon.value.type && item.id !== weapon.value.id)
+    .sort((a, b) => Math.abs(a.stats.physical - weapon.value.stats.physical) - Math.abs(b.stats.physical - weapon.value.stats.physical))
+    .slice(0, 6)
 })
 
 const buildGroups = computed(() => {

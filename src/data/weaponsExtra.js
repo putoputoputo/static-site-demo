@@ -75,7 +75,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: 'D', int: '-', fai: '-', arc: '-' },
     requirements: { str: 5, dex: 11, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '投掷连击', description: '把短刀掷出后手上会补充新的短刀，可连续投掷。' },
+gameplay: [
       '重攻击是投掷，蓄力后伤害更高，适合在不靠近的情况下补刀。',
       '全类型只有这一件，收集控拿它就等于解锁了投掷刃分类。',
     ],
@@ -146,7 +147,7 @@ const weaponsExtra = [
   },
   {
     id: 'frozen-needle',
-    name: '冰霜之针',
+    name: '结冰针',
     dlc: false,
     type: '刺剑',
     region: '利耶尼亚',
@@ -158,7 +159,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: 'D', int: 'D', fai: '-', arc: '-' },
     requirements: { str: 11, dex: 18, int: 12, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '冰针突刺', description: '向前突刺并射出冰针，命中后累积冻伤。' },
+gameplay: [
       '自带冻伤累积，配合寒冰附魔可以快速让敌人进入冻伤状态。',
       '魔力伤害对重甲敌人收益不错，适合智力号做近战副武器。',
     ],
@@ -175,7 +177,7 @@ const weaponsExtra = [
   // ==================== 重型刺剑 ====================
   {
     id: 'great-epee',
-    name: '大细剑',
+    name: '大重剑',
     dlc: false,
     type: '重型刺剑',
     region: '大赐福',
@@ -202,7 +204,7 @@ const weaponsExtra = [
   },
   {
     id: 'bloody-helice',
-    name: '血色螺旋',
+    name: '鲜血旋流',
     dlc: false,
     type: '重型刺剑',
     region: '王城罗德尔',
@@ -374,7 +376,7 @@ const weaponsExtra = [
   // ==================== 曲剑 ====================
   {
     id: 'scimitar',
-    name: '弯刀',
+    name: '短弯刀',
     dlc: false,
     type: '曲剑',
     region: '宁姆格福',
@@ -393,7 +395,7 @@ const weaponsExtra = [
     build: {
       stats: { vigor: 40, mind: 15, endurance: 22, str: 12, dex: 45, int: 9, fai: 9, arc: 9 },
       talismans: ['腐败翼剑徽记', '钩爪护符', '绿龟护符'],
-      weapons: ['弯刀', '弯刀（副手双持）'],
+      weapons: ['短弯刀', '弯刀（副手双持）'],
       sorceries: [],
       incantations: [],
     },
@@ -401,7 +403,7 @@ const weaponsExtra = [
   },
   {
     id: 'eclipse-shotel',
-    name: '日蚀弯刀',
+    name: '日蚀钩剑',
     dlc: false,
     type: '曲剑',
     region: '巨人山顶',
@@ -496,7 +498,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: 'D', int: 'D', fai: 'D', arc: '-' },
     requirements: { str: 8, dex: 13, int: 12, fai: 12, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '投掷连击', description: '圆刃掷出后自动补充，近战与投掷两用。' },
+gameplay: [
       '重攻击是投掷，蓄力后飞出距离更远，可以在安全距离补刀。',
       '智信双修时面板收益不错，适合法系角色的近战备选。',
     ],
@@ -832,7 +835,8 @@ const weaponsExtra = [
     scaling: { str: 'C', dex: 'E', int: '-', fai: '-', arc: '-' },
     requirements: { str: 26, dex: 10, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '投掷重击', description: '把大槌掷出造成大范围冲击，之后重新补充。' },
+gameplay: [
       '重攻击投掷槌头，命中后自动回收，可以在安全距离磨血。',
       '纯力量加点，配合「狮子斩」战灰削韧极强。',
     ],
@@ -961,7 +965,7 @@ const weaponsExtra = [
   // ==================== 大枪 ====================
   {
     id: 'mohgwyns-sacred-spear',
-    name: '蒙格温的圣矛',
+    name: '蒙格温圣矛',
     dlc: false,
     type: '大枪',
     region: '蒙格温王朝',
@@ -980,7 +984,7 @@ const weaponsExtra = [
     build: {
       stats: { vigor: 50, mind: 22, endurance: 26, str: 16, dex: 18, int: 9, fai: 9, arc: 50 },
       talismans: ['腐坏血刃护符', '亚历山大的碎片', '绿龟护符'],
-      weapons: ['蒙格温的圣矛'],
+      weapons: ['蒙格温圣矛'],
       sorceries: [],
       incantations: ['血焰武器'],
     },
@@ -988,7 +992,7 @@ const weaponsExtra = [
   },
   {
     id: 'serpent-hunter',
-    name: '猎蛇大矛',
+    name: '大蛇狩猎矛',
     dlc: false,
     type: '大枪',
     region: '火山官邸',
@@ -1612,7 +1616,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: 'D', int: '-', fai: '-', arc: '-' },
     requirements: { str: 8, dex: 11, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '连续射击', description: '快速连续射出箭矢，射速是小弓的优势。' },
+gameplay: [
       '可以在骑乘与跳跃中使用，配合马战消耗非常灵活。',
       '伤害偏低，主要用来引怪、打断与补刀。',
     ],
@@ -1639,7 +1644,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: 'C', int: '-', fai: '-', arc: '-' },
     requirements: { str: 9, dex: 14, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '骨箭射击', description: '射出骨制箭矢，附带少量物理伤害。' },
+gameplay: [
       '轻弓里面板最高的一档，骑射流可以一直用到后期。',
       '同样支持跳跃射击，配合马战打消耗很舒服。',
     ],
@@ -1668,7 +1674,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: 'D', int: '-', fai: '-', arc: '-' },
     requirements: { str: 10, dex: 16, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '连续射击', description: '标准长弓战技，蓄力后伤害更高。' },
+gameplay: [
       '射程较长，适合站在高处逐个点掉营地的敌人。',
       '配合火箭、毒箭可以处理抗性不同的敌人。',
     ],
@@ -1780,7 +1787,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: 'D', int: '-', fai: '-', arc: '-' },
     requirements: { str: 8, dex: 9, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '弩射击', description: '扣扳机直接发射，无需蓄力，适合补刀。' },
+gameplay: [
       '单手可用，另一只手仍能持盾，防御中也能射击。',
       '伤害偏低，主要用于引怪与打落悬挂物。',
     ],
@@ -1892,7 +1900,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: '-', int: 'B', fai: '-', arc: '-' },
     requirements: { str: 8, dex: 0, int: 28, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '旋转', description: '法杖通用战技，旋转杖身敲击，主要作用是施法媒介。' },
+gameplay: [
       '强化满后魔法威力不俗，是陨石杖之后的常规过渡触媒。',
       '智力需求 28，前期需要先把智力堆起来才能装备。',
     ],
@@ -1919,7 +1928,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: '-', int: 'C', fai: 'C', arc: '-' },
     requirements: { str: 8, dex: 0, int: 32, fai: 20, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '旋转', description: '法杖通用战技，旋转杖身敲击，主要作用是施法媒介。' },
+gameplay: [
       '同时支持魔法与祷告，可以省下一个护符位与一把武器位。',
       '智信双修时威力略低于专精触媒，但配装自由度高。',
     ],
@@ -1948,7 +1958,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: '-', int: '-', fai: 'B', arc: '-' },
     requirements: { str: 10, dex: 0, int: 0, fai: 30, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '祷告强化', description: '圣印记不发战技，作用是提升对应体系祷告的威力。' },
+gameplay: [
       '信仰 B 补正，强化后祷告威力稳定，适合各类祷告流。',
       '黄金律法系祷告（如黄金律法基本主义）用它收益更高。',
     ],
@@ -1975,7 +1986,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: '-', int: '-', fai: 'C', arc: '-' },
     requirements: { str: 12, dex: 0, int: 0, fai: 22, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '祷告强化', description: '圣印记不发战技，作用是提升对应体系祷告的威力。' },
+gameplay: [
       '对火焰系祷告有额外加成，配合火对蝎护符伤害很夸张。',
       '信仰需求只有 22，前期也能比较早地用上。',
     ],
@@ -2002,7 +2014,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: '-', int: '-', fai: 'C', arc: '-' },
     requirements: { str: 12, dex: 0, int: 0, fai: 24, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '祷告强化', description: '圣印记不发战技，作用是提升对应体系祷告的威力。' },
+gameplay: [
       '重量只有 2.0，几乎不影响负重，适合副手常备。',
       '信仰补正虽不如专精触媒，但配装灵活度更高。',
     ],
@@ -2031,7 +2044,8 @@ const weaponsExtra = [
     scaling: { str: 'E', dex: '-', int: '-', fai: '-', arc: '-' },
     requirements: { str: 5, dex: 0, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '火焰挥舞', description: '挥动火把造成火焰伤害，同时照亮周围。' },
+gameplay: [
       '举着火把可以照亮黑暗区域，部分怕火的野兽会退避。',
       '伤害极低，只建议作为探索工具随身携带。',
     ],
@@ -2106,7 +2120,7 @@ const weaponsExtra = [
     id: 'brass-shield',
     name: '黄铜盾',
     dlc: false,
-    type: '盾',
+    type: '中盾',
     region: '宁姆格福',
     attackType: '打击',
     status: [],
@@ -2133,7 +2147,7 @@ const weaponsExtra = [
     id: 'erdtree-greatshield',
     name: '黄金树大盾',
     dlc: false,
-    type: '盾',
+    type: '大盾',
     region: '王城罗德尔',
     attackType: '打击',
     status: [],
@@ -2160,7 +2174,7 @@ const weaponsExtra = [
     id: 'fingerprint-stone-shield',
     name: '指纹石盾',
     dlc: false,
-    type: '盾',
+    type: '大盾',
     region: '王城罗德尔',
     attackType: '打击',
     status: [],

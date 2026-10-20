@@ -5,10 +5,10 @@
       <div class="hero-text">
         <h1 class="hero-title">武器图鉴</h1>
         <p class="hero-sub">
-          共收录 <strong>{{ weapons.length }}</strong> 件武器，<strong>{{ typeOptions.length }}</strong>
-          个类型全部覆盖（本体 32 类 + DLC 新增 8 类），其中 DLC 武器
-          <strong>{{ dlcCount }}</strong> 件。全游戏实际约 411 件，本图鉴按类型挑选代表作，
-          面板均为未强化基础值，盾牌不计攻击力。
+          共收录 <strong>{{ weapons.length }}</strong> 件武器，覆盖
+          <strong>{{ typeOptions.length }}</strong> 个类型（本体 32 类 + DLC 新增 8 类，盾牌按小/中/大分层），其中 DLC 武器
+          <strong>{{ dlcCount }}</strong> 件，追忆与 BOSS 掉落武器均已收录。面板为未强化基础值，
+          冷门武器的个别数值为同类型基准估算，盾牌不计攻击力。
         </p>
       </div>
       <div class="hero-badges">
@@ -124,7 +124,7 @@
     <!-- 卡片视图 -->
     <div v-if="viewMode === 'card'" class="weapon-grid">
       <RouterLink
-        v-for="weapon in filteredWeapons"
+        v-for="weapon in visibleWeapons"
         :key="weapon.id"
         class="weapon-card"
         :to="`/weapons/${weapon.id}`"
@@ -203,7 +203,7 @@
     <!-- 表格视图 -->
     <el-table
       v-else
-      :data="filteredWeapons"
+      :data="visibleWeapons"
       class="weapon-table"
       row-class-name="weapon-row"
       @row-click="goDetail"
@@ -266,6 +266,14 @@
       </el-table-column>
     </el-table>
 
+    <!-- 分批加载 -->
+    <div v-if="visibleWeapons.length < filteredWeapons.length" class="load-more">
+      <el-button plain @click="limit += PAGE_SIZE">
+        再显示 {{ Math.min(PAGE_SIZE, filteredWeapons.length - visibleWeapons.length) }} 件
+        （已显示 {{ visibleWeapons.length }} / {{ filteredWeapons.length }}）
+      </el-button>
+    </div>
+
     <!-- 空状态 -->
     <el-empty v-if="filteredWeapons.length === 0" description="没有符合条件的武器，换个关键词试试">
       <el-button type="primary" plain @click="resetFilters">清除筛选</el-button>
@@ -274,7 +282,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { Search, RefreshLeft, Star, StarFilled } from '@element-plus/icons-vue'
 import weapons, { weaponTypeGroups } from '../data/weapons'
@@ -386,6 +394,15 @@ const filteredWeapons = computed(() => {
   }[sortKey.value]
 
   return sorter ? [...list].sort(sorter) : list
+})
+
+// 453 件武器一次性渲染太重，按批显示
+const PAGE_SIZE = 48
+const limit = ref(PAGE_SIZE)
+const visibleWeapons = computed(() => filteredWeapons.value.slice(0, limit.value))
+
+watch([keyword, selectedTypes, selectedAttrs, selectedStatuses, onlyFavorites, onlyDlc, sortKey], () => {
+  limit.value = PAGE_SIZE
 })
 
 function toggleType(name) {
@@ -660,6 +677,12 @@ function goDetail(row) {
 }
 
 /* 卡片 */
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 8px;
+}
+
 .weapon-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

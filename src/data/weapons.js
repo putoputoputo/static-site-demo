@@ -5,6 +5,7 @@
 // 数值整理自游戏内武器面板，仅供配装参考
 
 import weaponsExtra from './weaponsExtra.js'
+import rosterWeapons from './weaponsRoster.js'
 
 const weapons = [
   // ==================== 刀 ====================
@@ -72,7 +73,7 @@ const weapons = [
   },
   {
     id: 'rivers-of-blood',
-    name: '尸山血河',
+    name: '尸山血海',
     dlc: false,
     type: '刀',
     region: '巨人山顶',
@@ -84,7 +85,7 @@ const weapons = [
     scaling: { str: 'E', dex: 'D', int: '-', fai: '-', arc: 'D' },
     requirements: { str: 12, dex: 18, int: 0, fai: 0, arc: 20 },
     skill: {
-      name: '尸山血河',
+      name: '尸山血海',
       description: '交叉刀身连续挥出三段血刃波，攻击范围与出血累积都极为恐怖。',
     },
     gameplay: [
@@ -200,7 +201,7 @@ const weapons = [
   },
   {
     id: 'morgotts-cursed-sword',
-    name: '蒙葛特的咒刀',
+    name: '蒙葛特咒剑',
     dlc: false,
     type: '大曲剑',
     region: '王城罗德尔',
@@ -231,7 +232,7 @@ const weapons = [
   },
   {
     id: 'magma-wyrm-scalesword',
-    name: '熔岩土龙的鳞剑',
+    name: '土龙鳞剑',
     dlc: false,
     type: '大曲剑',
     region: '利耶尼亚',
@@ -739,7 +740,7 @@ const weapons = [
   // ==================== 双头剑 ====================
   {
     id: 'godskin-peeler',
-    name: '神皮双头剑',
+    name: '神皮剥制剑',
     dlc: false,
     type: '双头剑',
     region: '盖利德',
@@ -770,7 +771,7 @@ const weapons = [
   },
   {
     id: 'eleonoras-poleblade',
-    name: '艾蕾诺拉的双持剑',
+    name: '艾琉诺拉双头刀',
     dlc: false,
     type: '双头剑',
     region: '亚坛高原',
@@ -867,7 +868,7 @@ const weapons = [
   // ==================== 戟 ====================
   {
     id: 'golden-halberd',
-    name: '大树守卫的黄金戟',
+    name: '黄金戟',
     dlc: false,
     type: '戟',
     region: '宁姆格福',
@@ -933,7 +934,7 @@ const weapons = [
   // ==================== 锤 ====================
   {
     id: 'mace',
-    name: '战锤',
+    name: '锤矛',
     dlc: false,
     type: '锤',
     region: '宁姆格福',
@@ -956,7 +957,7 @@ const weapons = [
     build: {
       stats: { vigor: 40, mind: 15, endurance: 25, str: 45, dex: 12, int: 9, fai: 12, arc: 9 },
       talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记', '恩惠的肉眼'],
-      weapons: ['战锤', '黄铜盾'],
+      weapons: ['锤矛', '黄铜盾'],
       sorceries: [],
       incantations: ['焰术武器（可选）'],
     },
@@ -966,7 +967,7 @@ const weapons = [
   // ==================== 大锤 ====================
   {
     id: 'giant-crusher',
-    name: '巨型粉碎者',
+    name: '巨型锤矛',
     dlc: false,
     type: '大锤',
     region: '亚坛高原',
@@ -1176,7 +1177,8 @@ const weapons = [
     scaling: { str: 'E', dex: 'D', int: '-', fai: '-', arc: '-' },
     requirements: { str: 9, dex: 15, int: 0, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '连续射击', description: '标准长弓战技，射程远、蓄力伤害高。' },
+gameplay: [
       '配合「箭矢」类道具可以在安全距离处理掉落点与精英怪。',
       '推荐搭配「火箭」「毒箭」等属性箭处理特定敌人，配合弓护符还能进一步提升伤害。',
       '近战角色也可以随身携带，用于触发机关或引怪。',
@@ -1206,7 +1208,8 @@ const weapons = [
     scaling: { str: 'E', dex: '-', int: 'S', fai: '-', arc: '-' },
     requirements: { str: 8, dex: 0, int: 18, fai: 0, arc: 0 },
     skill: null,
-    gameplay: [
+        skill: { name: '旋转', description: '法杖通用战技，旋转杖身敲击，主要作用是施法媒介。' },
+gameplay: [
       '无强化状态即有 S 级智力补正，前期魔法伤害远超强化过的普通辉石杖。',
       '无法强化，中后期需换成学院辉石杖、卢恩杖等可强化触媒。',
       '搭配「重力魔法」系列可额外获得伤害加成，过渡期性价比极高。',
@@ -1264,14 +1267,16 @@ export const weaponTypes = [
   '圣印记',
   '火把',
   '刺盾',
-  '盾',
+  '小盾',
+  '中盾',
+  '大盾',
 ]
 
 const TYPE_ORDER = new Map(weaponTypes.map((name, index) => [name, index]))
 
 // 类型分组：40 类平铺太长，列表页按「近战 / 远程与触媒 / 防御与杂项」分三行展示
 const RANGED_TYPES = ['轻弓', '弓', '大弓', '弩', '弩炮', '法杖', '圣印记']
-const DEFENSE_TYPES = ['火把', '刺盾', '盾']
+const DEFENSE_TYPES = ['火把', '刺盾', '小盾', '中盾', '大盾']
 
 export const weaponTypeGroups = [
   { label: '近战', types: weaponTypes.filter((t) => !RANGED_TYPES.includes(t) && !DEFENSE_TYPES.includes(t)) },
@@ -1280,7 +1285,11 @@ export const weaponTypeGroups = [
 ]
 
 // 合并补充数据，按「类型顺序 + 名称」排列，保证图鉴分类连续
-const allWeapons = [...weapons, ...weaponsExtra].sort((a, b) => {
+const handWritten = [...weapons, ...weaponsExtra]
+const seen = new Set(handWritten.map((item) => item.name))
+const fillers = rosterWeapons.filter((item) => !seen.has(item.name))
+
+const allWeapons = [...handWritten, ...fillers].sort((a, b) => {
   const diff = (TYPE_ORDER.get(a.type) ?? 999) - (TYPE_ORDER.get(b.type) ?? 999)
   if (diff !== 0) return diff
   return a.name.localeCompare(b.name, 'zh-Hans-CN')
