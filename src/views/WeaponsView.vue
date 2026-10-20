@@ -66,6 +66,22 @@
       </div>
 
       <div class="filter-line">
+        <span class="line-label">版本</span>
+        <div class="chips">
+          <button
+            v-for="item in dlcOptions"
+            :key="item.value"
+            class="chip"
+            :class="{ active: dlcFilter === item.value }"
+            @click="dlcFilter = item.value"
+          >
+            {{ item.label }}
+            <span class="chip-count">{{ item.count }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-line">
         <span class="line-label">补正</span>
         <div class="chips">
           <button
@@ -103,10 +119,6 @@
             只看收藏
             <span class="chip-count">{{ favoriteCount }}</span>
           </button>
-          <div class="switch-item" v-if="hasDlc">
-            <el-switch v-model="onlyDlc" size="small" />
-            <span>只看 DLC</span>
-          </div>
         </div>
       </div>
     </section>
@@ -307,7 +319,8 @@ const selectedTypes = ref([])
 const selectedAttrs = ref([])
 const selectedStatuses = ref([])
 const onlyFavorites = ref(false)
-const onlyDlc = ref(false)
+// 版本筛选：all 全部 / base 本体 / dlc 仅 DLC
+const dlcFilter = ref('all')
 const viewMode = ref('card')
 const sortKey = ref('default')
 
@@ -319,9 +332,15 @@ const sortOptions = [
   { value: 'weight-asc', label: '重量 从轻到重' },
 ]
 
-const hasDlc = computed(() => weapons.some((item) => item.dlc))
-
 const dlcCount = computed(() => weapons.filter((item) => item.dlc).length)
+
+const baseCount = computed(() => weapons.length - dlcCount.value)
+
+const dlcOptions = computed(() => [
+  { value: 'all', label: '全部', count: weapons.length },
+  { value: 'base', label: '本体', count: baseCount.value },
+  { value: 'dlc', label: 'DLC', count: dlcCount.value },
+])
 
 const typeOptions = computed(() => {
   const counter = new Map()
@@ -366,14 +385,15 @@ const isFiltering = computed(
     selectedAttrs.value.length > 0 ||
     selectedStatuses.value.length > 0 ||
     onlyFavorites.value ||
-    onlyDlc.value
+    dlcFilter.value !== 'all'
 )
 
 const filteredWeapons = computed(() => {
   const list = weapons.filter((item) => {
     if (!matchKeyword(item, keyword.value)) return false
     if (selectedTypes.value.length && !selectedTypes.value.includes(item.type)) return false
-    if (onlyDlc.value && !item.dlc) return false
+    if (dlcFilter.value === 'dlc' && !item.dlc) return false
+    if (dlcFilter.value === 'base' && item.dlc) return false
     if (onlyFavorites.value && !isFavorite(item.id)) return false
     if (selectedStatuses.value.length) {
       const hit = selectedStatuses.value.some((status) => (item.status || []).includes(status))
@@ -401,7 +421,7 @@ const PAGE_SIZE = 48
 const limit = ref(PAGE_SIZE)
 const visibleWeapons = computed(() => filteredWeapons.value.slice(0, limit.value))
 
-watch([keyword, selectedTypes, selectedAttrs, selectedStatuses, onlyFavorites, onlyDlc, sortKey], () => {
+watch([keyword, selectedTypes, selectedAttrs, selectedStatuses, onlyFavorites, dlcFilter, sortKey], () => {
   limit.value = PAGE_SIZE
 })
 
@@ -438,7 +458,7 @@ function resetFilters() {
   selectedAttrs.value = []
   selectedStatuses.value = []
   onlyFavorites.value = false
-  onlyDlc.value = false
+  dlcFilter.value = 'all'
   sortKey.value = 'default'
 }
 
@@ -642,14 +662,6 @@ function goDetail(row) {
   align-items: center;
   gap: 10px;
   margin-left: auto;
-}
-
-.switch-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #8a8574;
 }
 
 .status-dot {
