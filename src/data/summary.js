@@ -8,5 +8,5 @@ export const questStats = {
   "base": 37,
   "dlc": 14,
   "missable": 36,
-  "ready": 13
+  "ready": 51
 }

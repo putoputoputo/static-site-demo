@@ -7,8 +7,8 @@
         <p class="hero-sub">
           共收录 <strong>{{ stats.total }}</strong> 条 NPC 支线（本体 <strong>{{ stats.base }}</strong>
           条 + DLC <strong>{{ stats.dlc }}</strong> 条），其中
-          <strong>{{ stats.missable }}</strong> 条存在错过节点。目前已完成
-          <strong>{{ stats.ready }}</strong> 条全流程整理，其余先录入索引，攻略逐条补充中。
+          <strong>{{ stats.missable }}</strong> 条存在错过节点。全部
+          <strong>{{ stats.ready }}</strong> 条均已完成全流程整理，含步骤、奖励与分支对照。
         </p>
       </div>
       <div class="hero-badges">
@@ -74,7 +74,12 @@
           <button class="chip warn" :class="{ active: onlyMissable }" @click="onlyMissable = !onlyMissable">
             仅看易错过
           </button>
-          <button class="chip" :class="{ active: onlyReady }" @click="onlyReady = !onlyReady">
+          <button
+            v-if="stats.ready < stats.total"
+            class="chip"
+            :class="{ active: onlyReady }"
+            @click="onlyReady = !onlyReady"
+          >
             仅看已整理
           </button>
         </div>
@@ -175,11 +180,18 @@ const progressOptions = [
   { value: 'done', label: '已完成' },
 ]
 
+const totalSteps = computed(() => quests.reduce((sum, item) => sum + (item.steps?.length || 0), 0))
+
+const branchCount = computed(() =>
+  quests.reduce((sum, item) => sum + (item.branches?.length || 0), 0)
+)
+
 const highlights = computed(() => [
   { value: stats.total, label: '总支线' },
   { value: stats.missable, label: '易错过' },
   { value: `${completedCount.value}/${stats.total}`, label: '我的进度' },
-  { value: stats.ready, label: '已整理' },
+  { value: totalSteps.value, label: '攻略步骤' },
+  { value: branchCount.value, label: '分支对照' },
 ])
 
 const regionOptions = computed(() =>
