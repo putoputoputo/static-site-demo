@@ -59,6 +59,7 @@ const navGroups = [
   {
     label: '工具',
     items: [
+      { path: '/archetypes', label: '流派库', desc: '10 套能直接抄的成型路线' },
       { path: '/build', label: '构筑器', desc: '负重 · 需求 · 记忆格' },
       { path: '/progress', label: '我的进度', desc: '主线 / 支线 / 收藏总览' },
     ],

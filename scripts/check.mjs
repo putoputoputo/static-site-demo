@@ -92,6 +92,10 @@ async function renderView(component, path, props) {
       { path: '/weapons', component: Blank },
       { path: '/weapons/:id', component: Blank },
       { path: '/codex/:id', component: Blank },
+      // renderView 渲染的是传入的组件，不走 router-view；这里补路径只为让
+      // useRoute().params 拿到真实参数（流派详情靠 params.id 取数据）
+      { path: '/archetypes', component: Blank },
+      { path: '/archetypes/:id', component: Blank },
       { path: '/:pathMatch(.*)*', component: Blank },
     ],
   })
@@ -622,6 +626,134 @@ if (existsSync(notFoundStatic)) {
   const { searchAll: searchTools } = await import('../src/utils/search.js')
   check('搜「负重」能进构筑器', searchTools('负重').some((group) => group.group === 'tools' && group.items[0].to === '/build'), true)
   check('搜「进度」能进进度页', searchTools('进度').some((group) => group.group === 'tools' && group.items[0].to === '/progress'), true)
+}
+
+/* ---------- 9. 流派库 ---------- */
+{
+  const A = await import('../src/utils/archetypes.js')
+  const { default: ArchetypesView } = await vite.ssrLoadModule('/src/views/ArchetypesView.vue')
+  const { default: ArchetypeView } = await vite.ssrLoadModule('/src/views/ArchetypeView.vue')
+  const { default: BuildView } = await vite.ssrLoadModule('/src/views/BuildView.vue')
+
+  const list = A.archetypeList
+
+  // ---- 数据完整性 ----
+  check('流派数量', list.length, 10)
+  check('流派 id 唯一', new Set(list.map((item) => item.id)).size, list.length)
+  check('主属性都在筛选表里', list.every((item) => A.archetypeFilterOptions.primaries.includes(item.primary)), true)
+  check('成型阶段合法', list.every((item) => ['starter', 'mid', 'late'].includes(item.stage)), true)
+  check('难度在 1–5 之间', list.every((item) => item.difficulty >= 1 && item.difficulty <= 5), true)
+  check('护符不超过四个栏位', list.every((item) => item.items.talismans.length <= 4), true)
+  check('每套都有主手武器', list.every((item) => Boolean(item.items.main)), true)
+  check('每套都有成型路线与加点计划', list.every((item) => item.phases.length >= 2 && item.statPlan.length >= 2), true)
+  check('每套都写了优点、短板与误区', list.every((item) => item.pros.length > 0 && item.cons.length > 0 && item.mistakes.length > 0), true)
+
+  // 装备缺失位置 / 说明是最容易在补数据时漏掉的：漏了页面就会空一块
+  const allGear = list.flatMap((item) => [
+    ...item.items.weapons,
+    ...item.items.talismans,
+    ...item.items.spells,
+    ...(item.items.spirit ? [item.items.spirit] : []),
+  ])
+  check('每件核心装备都解析到了', allGear.every((gear) => Boolean(gear.name && gear.to)), true)
+  check('每件核心装备都有获取位置', allGear.every((gear) => Boolean(gear.location)), true)
+  check('每件核心装备都有数值说明', allGear.every((gear) => Boolean(gear.effect) || Boolean(gear.note)), true)
+
+  // ---- 派生计算：不能和原始表对不上 ----
+  const weightOf = (item) =>
+    Math.round(
+      ([...item.items.weapons, ...item.items.talismans].reduce((sum, gear) => sum + gear.weight, 0)) * 10
+    ) / 10
+  check('负重 = 逐件相加', list.map((item) => item.load.weight), list.map(weightOf))
+  check(
+    '留给护甲 = 上限 - 装备负重',
+    list.map((item) => item.load.armorRoom),
+    list.map((item) => Math.round((item.load.max - item.load.weight) * 10) / 10)
+  )
+  check('记忆格与法术表一致', A.archetypeDetail('comet-azur').load.spellSlots, 5)
+  check('FP 与法术表一致', A.archetypeDetail('comet-azur').load.spellFp, 65)
+
+  // ---- 筛选 ----
+  check('按主属性筛选', A.filterArchetypes({ primary: '智力' }).length, list.filter((item) => item.primary === '智力').length)
+  check('按阶段筛选开局速成', A.filterArchetypes({ stage: 'starter' }).length, list.filter((item) => item.stage === 'starter').length)
+  check('关键词命中跳劈流', A.filterArchetypes({ keyword: '跳劈' }).map((item) => item.id), ['greatsword-jump'])
+  check('关键词能搜到核心武器', A.filterArchetypes({ keyword: '岩石球' }).length > 0, true)
+  check('筛不到时返回空数组', A.filterArchetypes({ keyword: '不存在的流派' }).length, 0)
+
+  // ---- 带进构筑器 ----
+  const link = A.buildLinkOf(A.archetypeDetail('bleed-dual'))
+  check('链接带主手与副手 id', [link.query.w, link.query.o], ['rivers-of-blood', 'uchigatana'])
+  check('护符用逗号串而不是重复 key', link.query.t.split(',').length, 4)
+  check('属性是八段', link.query.st.split(',').length, 8)
+  check(
+    '法术值带 sc/inc 前缀',
+    A.buildLinkOf(A.archetypeDetail('moonveil'))
+      .query.s.split(',')
+      .every((value) => /^(sc|inc):/.test(value)),
+    true
+  )
+
+  // 最关键的一致性：从流派页带进构筑器，负重必须一模一样
+  const buildRoutes = [
+    { path: '/', component: () => null },
+    { path: '/build', component: BuildView },
+    { path: '/archetypes', component: () => null },
+    { path: '/archetypes/:id', component: () => null },
+    { path: '/weapons/:id', component: () => null },
+    { path: '/runes/:id', component: () => null },
+    { path: '/sorceries/:id', component: () => null },
+    { path: '/incantations/:id', component: () => null },
+    { path: '/spirits/:id', component: () => null },
+  ]
+
+  async function renderBuildOf(archetypeId) {
+    const detail = A.archetypeDetail(archetypeId)
+    const buildLink = A.buildLinkOf(detail)
+    const router = createRouter({ history: createMemoryHistory(), routes: buildRoutes })
+    await router.push({ path: '/build', query: buildLink.query })
+    await router.isReady()
+    const app = createSSRApp(BuildView)
+    app.use(router)
+    const rendered = await renderToString(app)
+    const text = rendered.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ')
+    const matched = text.match(/([\d.]+) \/ ([\d.]+) \d+%/)
+    return { detail, weight: matched ? Number(matched[1]) : null, max: matched ? Number(matched[2]) : null }
+  }
+
+  for (const id of ['bleed-dual', 'moonveil', 'greatsword-jump', 'dragon-communion']) {
+    const built = await renderBuildOf(id)
+    check(`带进构筑器后负重一致（${built.detail.name}）`, built.weight, built.detail.load.weight)
+    check(`带进构筑器后负重上限一致（${built.detail.name}）`, built.max, built.detail.load.max)
+  }
+
+  // ---- SSR 实渲染 ----
+  const archetypeListHtml = await renderView(ArchetypesView, '/archetypes')
+  check('SSR 流派列表渲染全部卡片', (archetypeListHtml.match(/class="card"/g) || []).length, 10)
+  check('SSR 列表显示属性合计', archetypeListHtml.includes('套流派'), true)
+
+  const filteredHtml = await renderView(ArchetypesView, { path: '/archetypes', query: { attr: '智力' } })
+  check('SSR 按主属性筛选生效', (filteredHtml.match(/class="card"/g) || []).length, 4)
+  const emptyHtml = await renderView(ArchetypesView, { path: '/archetypes', query: { q: '不存在的流派' } })
+  check('SSR 搜不到时给空态与清空按钮', emptyHtml.includes('没有匹配的流派') && emptyHtml.includes('清空筛选'), true)
+
+  const detailHtml = await renderView(ArchetypeView, '/archetypes/bleed-dual')
+  check('SSR 详情页渲染装备卡（主副手 + 4 护符 + 骨灰）', (detailHtml.match(/class="gear-card"/g) || []).length, 7)
+  check('SSR 详情页渲染三个阶段', (detailHtml.match(/class="phase"/g) || []).length, 3)
+  check('SSR 详情页有带进构筑器的链接', /href="\/build\?w=rivers-of-blood/.test(detailHtml), true)
+  check('SSR 详情页有打法循环与误区', detailHtml.includes('打法循环') && detailHtml.includes('常见误区'), true)
+  check('SSR 详情页上下篇都能点', (detailHtml.match(/class="neighbor /g) || []).length, 2)
+
+  const cometHtml = await renderView(ArchetypeView, '/archetypes/comet-azur')
+  check('SSR 法系流派显示记忆格与 FP', cometHtml.includes('5') && cometHtml.includes('65 FP'), true)
+
+  const missHtml = await renderView(ArchetypeView, '/archetypes/no-such-build')
+  check('SSR 不存在的流派给空态', missHtml.includes('没有这套流派'), true)
+
+  // ---- 与已有模块的连通 ----
+  const { searchAll: searchArchetypes } = await import('../src/utils/search.js')
+  check('全站搜索能搜到流派', searchArchetypes('跳劈').some((group) => group.group === 'archetypes'), true)
+  check('搜流派名落到详情页', searchArchetypes('龙飨龙息').flatMap((group) => group.items).some((item) => item.to === '/archetypes/dragon-communion'), true)
+  check('主属性配色全覆盖', A.archetypeFilterOptions.primaries.every((name) => /^#[0-9a-f]{6}$/i.test(A.primaryColor(name))), true)
 }
 
 await vite.close()

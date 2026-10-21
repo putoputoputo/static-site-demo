@@ -30,6 +30,14 @@ const routes = [
     name: 'boss-detail',
     component: () => import('../views/BossDetailView.vue'),
   },
+  // 流派库：列表 + 详情。id 是英文短名（bleed-dual 之类），
+  // 不像武器 id 会出现中文，直接用一段路径就够。
+  { path: '/archetypes', name: 'archetypes', component: () => import('../views/ArchetypesView.vue') },
+  {
+    path: '/archetypes/:id',
+    name: 'archetype-detail',
+    component: () => import('../views/ArchetypeView.vue'),
+  },
   { path: '/progress', name: 'progress', component: () => import('../views/ProgressView.vue') },
   { path: '/build', name: 'build', component: () => import('../views/BuildView.vue') },
   {

@@ -26,7 +26,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar, Present, Aim, SetUp, DataLine } from '@element-plus/icons-vue'
+import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar, Present, Aim, SetUp, DataLine, Collection } from '@element-plus/icons-vue'
 import {
   weaponCount,
   weaponTypeCount,
@@ -37,6 +37,7 @@ import {
   sorceryStats,
   incantationStats,
   spiritStats,
+  archetypeStats,
 } from '../data/summary'
 import { remembranceStats } from '../data/remembrances'
 import { bossStats } from '../utils/bosses.js'
@@ -103,6 +104,13 @@ const boards = [
     desc: `${bossStats.total} 个 BOSS（本体 ${bossStats.base} + DLC ${bossStats.dlc}）：推荐等级、弱点抗性、打法要点与可召唤帮手`,
     path: '/bosses',
     icon: Aim,
+    ready: true,
+  },
+  {
+    label: '流派库',
+    desc: `${archetypeStats.total} 套成型路线：先加什么点、先去哪张图拿什么、护符为什么这么配，还能一键带进构筑器`,
+    path: '/archetypes',
+    icon: Collection,
     ready: true,
   },
   {

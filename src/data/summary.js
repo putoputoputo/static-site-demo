@@ -55,3 +55,9 @@ export const spiritStats = {
   "types": 6,
   "legend": 11
 }
+export const archetypeStats = {
+  "total": 10,
+  "starters": 4,
+  "primaries": 5,
+  "phases": 30
+}

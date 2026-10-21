@@ -12,8 +12,18 @@ import { talismanStats } from '../src/data/talismans.js'
 import { sorcerySummary } from '../src/data/sorceries.js'
 import { incantationSummary } from '../src/data/incantations.js'
 import { spiritStats } from '../src/data/spiritAshes.js'
+import { archetypes } from '../src/data/archetypes.js'
 
 const weaponTypeCount = new Set(weapons.map((item) => item.type)).size
+
+// 流派库同理：首页只显示「10 套流派」这种数字，
+// 没必要为了一个数字把十套流派的全部文案（约 47KB）打进首屏
+const archetypeStats = {
+  total: archetypes.length,
+  starters: archetypes.filter((item) => item.stage === 'starter').length,
+  primaries: new Set(archetypes.map((item) => item.primary)).size,
+  phases: archetypes.reduce((sum, item) => sum + item.phases.length, 0),
+}
 const dlcCount = weapons.filter((item) => item.dlc).length
 
 const out = `// 本文件由 scripts/gen-summary.mjs 自动生成，请勿手动修改。
@@ -28,6 +38,7 @@ export const talismanStats = ${JSON.stringify(talismanStats, null, 2)}
 export const sorceryStats = ${JSON.stringify(sorcerySummary, null, 2)}
 export const incantationStats = ${JSON.stringify(incantationSummary, null, 2)}
 export const spiritStats = ${JSON.stringify(spiritStats, null, 2)}
+export const archetypeStats = ${JSON.stringify(archetypeStats, null, 2)}
 `
 
 const target = resolve(dirname(fileURLToPath(import.meta.url)), '../src/data/summary.js')

@@ -36,6 +36,10 @@
         {{ preset.name }}
         <em>{{ preset.tag }}</em>
       </button>
+      <RouterLink to="/archetypes" class="preset-library">
+        更多流派
+        <el-icon :size="11"><ArrowRight /></el-icon>
+      </RouterLink>
     </div>
 
     <div v-if="activePreset" class="preset-note">
@@ -43,6 +47,10 @@
       <ul class="preset-tips">
         <li v-for="tip in activePreset.notes" :key="tip">{{ tip }}</li>
       </ul>
+      <RouterLink v-if="activeArchetype" :to="`/archetypes/${activeArchetype}`" class="preset-link">
+        这套的完整成型路线：先加什么点、先去哪张图拿什么
+        <el-icon :size="11"><ArrowRight /></el-icon>
+      </RouterLink>
     </div>
 
     <div class="build-layout">
@@ -368,7 +376,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { CopyDocument } from '@element-plus/icons-vue'
+import { ArrowRight, CopyDocument } from '@element-plus/icons-vue'
 import ItemPicker from '../components/ItemPicker.vue'
 import { useQuerySync } from '../composables/useQuerySync'
 import weapons from '../data/weapons.js'
@@ -696,6 +704,16 @@ function applyPreset(preset) {
 
 const activePreset = computed(() => buildPresets.find((preset) => preset.key === activePresetKey.value) || null)
 
+// 预设和流派库讲的是同一件事的两面：预设给数字，流派页给「怎么一步步走到这里」。
+// 四套预设里有三套在流派库有对应的完整路线，选中时顺手给个入口。
+const PRESET_ARCHETYPE = {
+  moonveil: 'moonveil',
+  bloodhound: 'bloodhound',
+  'golden-order': 'faith-warrior',
+  greatshield: 'greatshield',
+}
+const activeArchetype = computed(() => PRESET_ARCHETYPE[activePresetKey.value] || '')
+
 // 构筑指纹：任何一项装备或属性变了，就不再算「正在用这套预设」
 const buildSignature = computed(() =>
   [
@@ -881,6 +899,38 @@ function pruneQueryBuild() {
   color: #d4af37;
   background: #241f14;
   border-color: #6b5c2e;
+}
+
+.preset-library {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  font-size: 11.5px;
+  color: #7a745f;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.preset-library:hover {
+  color: #d4af37;
+}
+
+.preset-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #332d20;
+  font-size: 11.5px;
+  color: #8a7c4a;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.preset-link:hover {
+  color: #d4af37;
 }
 
 .preset-note {

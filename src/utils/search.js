@@ -1,4 +1,4 @@
-// 全站搜索：一次输入，跨 11 个模块查
+// 全站搜索：一次输入，跨 12 个模块查
 //
 // 索引是惰性构建的 —— 数据总量上千条，但只在用户第一次打开搜索框时才 import，
 // 这样不会把 quests（53 万字符）、weapons（480 条）全塞进首屏 chunk。
@@ -13,8 +13,9 @@ import mainRegions from '../data/regions.js'
 import { codexModules } from '../data/codex.js'
 import { remembranceList } from './remembrances.js'
 import { bossList, bossHref } from './bosses.js'
+import { archetypes } from '../data/archetypes.js'
 
-export const searchGroupOrder = ['weapons', 'talismans', 'sorceries', 'incantations', 'spirits', 'quests', 'main', 'regions', 'bosses', 'remembrances', 'tools']
+export const searchGroupOrder = ['weapons', 'talismans', 'sorceries', 'incantations', 'spirits', 'quests', 'main', 'regions', 'bosses', 'remembrances', 'archetypes', 'tools']
 
 export const searchGroupLabels = {
   weapons: '武器',
@@ -27,6 +28,7 @@ export const searchGroupLabels = {
   regions: '区域',
   bosses: 'BOSS',
   remembrances: '追忆兑换',
+  archetypes: '流派',
   tools: '工具',
 }
 
@@ -128,6 +130,32 @@ export function buildIndex() {
       sub: '追忆兑换',
       extra: [entry.remembrance, ...entry.items.map((item) => `${item.name} ${item.type}`)].join(' '),
       to: `/main-quest/remembrances?q=${encodeURIComponent(entry.boss)}`,
+    })
+  })
+
+  // 流派：搜「出血」「跳劈」「岩石球」都能落到具体那套。
+  // 这里直接读 data，不引 utils/archetypes —— 搜索只需要名字和关键词，
+  // 没必要为了索引再跑一遍负重计算。
+  const stageLabels = { starter: '开局速成', mid: '中期成型', late: '后期毕业' }
+  archetypes.forEach((item) => {
+    push(map, 'archetypes', {
+      name: item.name,
+      sub: `流派 · ${item.primary} · ${stageLabels[item.stage] || item.stage}`,
+      extra: [
+        ...(item.alias || []),
+        ...(item.tags || []),
+        item.summary,
+        item.hook?.[0],
+        item.core.main,
+        item.core.off,
+        ...(item.core.talismans || []),
+        ...(item.core.spells || []),
+        item.core.spirit,
+        ...(item.loop || []),
+      ]
+        .filter(Boolean)
+        .join(' '),
+      to: `/archetypes/${item.id}`,
     })
   })
 
