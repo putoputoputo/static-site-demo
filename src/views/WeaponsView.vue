@@ -313,6 +313,7 @@ import { Search, RefreshLeft, Star, StarFilled } from '@element-plus/icons-vue'
 import weapons, { weaponTypeGroups } from '../data/weapons'
 import PagerBar from '../components/PagerBar.vue'
 import { usePagination } from '../composables/usePagination'
+import { useQuerySync } from '../composables/useQuerySync'
 import { useWeaponFavorites } from '../composables/useWeaponFavorites'
 import {
   ATTR_KEYS,
@@ -491,6 +492,23 @@ function scrollToList() {
     window.scrollTo({ top, behavior: 'smooth' })
   }
 }
+
+// 筛选 + 分页状态同步进 URL：刷新不丢、链接可分享、后退能回到上一个筛选组合
+useQuerySync(
+  {
+    q: keyword,
+    types: selectedTypes,
+    attrs: selectedAttrs,
+    status: selectedStatuses,
+    fav: onlyFavorites,
+    dlc: dlcFilter,
+    sort: sortKey,
+    view: viewMode,
+    size: pageSize,
+    page: currentPage,
+  },
+  { dlc: 'all', sort: 'default', view: 'card', size: 20, page: 1 }
+)
 
 function toggleType(name) {
   const index = selectedTypes.value.indexOf(name)

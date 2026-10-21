@@ -26,7 +26,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar } from '@element-plus/icons-vue'
+import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar, Present } from '@element-plus/icons-vue'
 import {
   weaponCount,
   weaponTypeCount,
@@ -38,6 +38,7 @@ import {
   incantationStats,
   spiritStats,
 } from '../data/summary'
+import { remembranceStats } from '../data/remembrances'
 
 const boards = [
   {
@@ -87,6 +88,13 @@ const boards = [
     desc: `${spiritStats.total} 个骨灰（含 ${spiritStats.dlc} 个 DLC）：FP 消耗、定位、强化材料与召唤时机`,
     path: '/spirits',
     icon: Avatar,
+    ready: true,
+  },
+  {
+    label: '追忆',
+    desc: `${remembranceStats.total} 个追忆 BOSS、${remembranceStats.items} 件可兑换物品：每个追忆能换什么、该换哪件，一眼看清`,
+    path: '/main-quest/remembrances',
+    icon: Present,
     ready: true,
   },
 ]

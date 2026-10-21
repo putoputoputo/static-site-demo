@@ -155,6 +155,7 @@ import { Search, RefreshLeft, Location, ArrowRight } from '@element-plus/icons-v
 import { getCodexModule } from '../data/codex'
 import PagerBar from '../components/PagerBar.vue'
 import { usePagination } from '../composables/usePagination'
+import { useQuerySync } from '../composables/useQuerySync'
 import { categoryCounts, filterCodex, itemHref, sortCodex, tierColor, tierLabel } from '../utils/codex'
 
 const props = defineProps({
@@ -245,6 +246,20 @@ function scrollToList() {
     window.scrollTo({ top, behavior: 'smooth' })
   }
 }
+
+// 筛选 + 分页状态同步进 URL：刷新不丢、链接可分享、后退能回到上一个筛选组合
+useQuerySync(
+  {
+    q: keyword,
+    cats: categories,
+    dlcOnly: onlyDlc,
+    top: onlyTop,
+    sort: sortKey,
+    size: pageSize,
+    page: currentPage,
+  },
+  { sort: 'default', size: 20, page: 1 }
+)
 
 const isFiltering = computed(
   () =>

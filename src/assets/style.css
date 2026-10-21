@@ -56,6 +56,14 @@ body {
   gap: 4px;
 }
 
+/* 导航 + 全站搜索：窄屏时导航横向滚动，搜索按钮始终可见 */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
 .nav-link {
   padding: 8px 14px;
   border-radius: 6px;
@@ -128,12 +136,43 @@ body {
     font-size: 15px;
   }
 
+  /* 8 个导航项在手机宽度下必然放不下：改成横向滚动，而不是硬挤或折行把头部撑高 */
+  .header-right {
+    flex: 1;
+    justify-content: flex-end;
+    min-width: 0;
+    margin-left: 10px;
+  }
+
   .nav {
     gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-link {
+    flex: none;
     padding: 6px 7px;
     font-size: 13px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 680px) {
+  /* 手机宽度下 logo 只留图标，给导航滚动区让出空间 */
+  .logo span {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  /* 手机宽度下 logo 只留图标，给导航滚动区让出空间 */
+  .logo span {
+    display: none;
   }
 }

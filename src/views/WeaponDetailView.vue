@@ -165,7 +165,14 @@
             <template v-if="group.items.length">
               <h3 class="sub-title">{{ group.label }}</h3>
               <div class="tag-list">
-                <span v-for="name in group.items" :key="name" class="item-tag">{{ name }}</span>
+                <template v-for="tag in group.items" :key="tag.key">
+                  <RouterLink v-if="tag.to" :to="tag.to" class="item-tag is-link" :title="`查看「${tag.text}」详情`">
+                    {{ tag.text }}<em v-if="tag.note" class="tag-note">{{ tag.note }}</em>
+                  </RouterLink>
+                  <span v-else class="item-tag" :title="`${group.label}图鉴中暂无「${tag.text}」条目`">
+                    {{ tag.text }}<em v-if="tag.note" class="tag-note">{{ tag.note }}</em>
+                  </span>
+                </template>
               </div>
             </template>
           </template>
@@ -228,6 +235,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Star, StarFilled } from '@element-plus/icons-vue'
 import weapons from '../data/weapons'
 import { useWeaponFavorites } from '../composables/useWeaponFavorites'
+import { linkBuildTags } from '../utils/buildLinks'
 import {
   ATTR_KEYS,
   ATTR_LABELS,
@@ -277,11 +285,13 @@ const siblings = computed(() => {
 const buildGroups = computed(() => {
   if (!weapon.value) return []
   const { talismans = [], weapons: gear = [], sorceries = [], incantations = [] } = weapon.value.build
+  // 标签转成「可点进去的条目」：护符 / 魔法 / 祷告链到各自图鉴，武器搭配链到武器详情。
+  // 匹配不到图鉴条目的（「副手盾牌或第二把同系武器」这类描述）保持纯文本。
   return [
-    { key: 'talismans', label: '护符', items: talismans },
-    { key: 'gear', label: '武器搭配', items: gear },
-    { key: 'sorceries', label: '魔法', items: sorceries },
-    { key: 'incantations', label: '祷告', items: incantations },
+    { key: 'talismans', label: '护符', items: linkBuildTags('talismans', talismans) },
+    { key: 'gear', label: '武器搭配', items: linkBuildTags('weapons', gear) },
+    { key: 'sorceries', label: '魔法', items: linkBuildTags('sorceries', sorceries) },
+    { key: 'incantations', label: '祷告', items: linkBuildTags('incantations', incantations) },
   ]
 })
 
@@ -711,6 +721,28 @@ function goTo(target) {
   background: #232323;
   border: 1px solid #383225;
   border-radius: 4px;
+}
+
+/* 能链到图鉴的标签给出可点击反馈；纯文本描述保持原样，避免误以为可以点 */
+.item-tag.is-link {
+  color: #d4af37;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.item-tag.is-link:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.55);
+}
+
+.tag-note {
+  margin-left: 4px;
+  padding: 0 4px;
+  font-size: 10px;
+  font-style: normal;
+  color: #8a8574;
+  border: 1px solid #3a3428;
+  border-radius: 3px;
 }
 
 /* 获取方式 */

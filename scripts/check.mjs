@@ -171,6 +171,80 @@ if (existsSync(notFoundStatic)) {
   check('404.html 跳回站点根', restored.every((r) => r.replaced === base), true)
 }
 
+/* ---------- 5. 追忆兑换表 / 跨模块链接 / 全站搜索 ---------- */
+{
+  const { default: remembrances, remembranceStats } = await import('../src/data/remembrances.js')
+  const { remembranceList } = await import('../src/utils/remembrances.js')
+  const { linkBuildTags } = await import('../src/utils/buildLinks.js')
+  const { default: weapons } = await import('../src/data/weapons.js')
+  const { searchAll, searchIndexSize, searchGroupOrder } = await import('../src/utils/search.js')
+
+  check('追忆 BOSS 数', remembranceStats.total, 25)
+  check('追忆 = 本体 15 + DLC 10', [remembranceStats.base, remembranceStats.dlc], [15, 10])
+  check('追忆可兑换物品数', remembranceStats.items, 51)
+
+  const unlinked = remembranceList.flatMap((entry) =>
+    entry.items.filter((item) => !item.to).map((item) => item.name)
+  )
+  // 战灰 / 道具没有对应图鉴模块，DLC 护符「狂怒神兽」还不在 149 条本体护符里 —— 都属于预期内
+  check('追忆物品可链接数', remembranceStats.items - unlinked.length, 46)
+  check('未链接的只有战灰/道具/未收录护符', unlinked.sort(), ['黑暗波动', '狂怒神兽', '神兽冻霜踏地', '王室恶兆幼子像', '荷莱·露的撼地'].sort())
+
+  const everyType = remembrances.every((entry) => entry.items.length >= 2)
+  check('每个追忆至少 2 件兑换物', everyType, true)
+  check('拉塔恩追忆可三选一', remembrances.find((item) => item.id === 'promised-consort').items.length, 3)
+
+  // 武器详情「推荐配装」的护符 / 魔法 / 祷告现在都能点进图鉴
+  let talismanTags = 0
+  let linkedTags = 0
+  weapons.forEach((weapon) => {
+    linkBuildTags('talismans', weapon.build?.talismans || []).forEach((tag) => {
+      talismanTags += 1
+      if (tag.to) linkedTags += 1
+    })
+  })
+  check('配装护符标签全部可点', [linkedTags, talismanTags], [talismanTags, talismanTags])
+
+  const radahn = searchAll('拉塔恩')
+  check('全站搜索跨模块命中', radahn.length >= 5, true)
+  check('搜索分组都在白名单内', radahn.every((group) => searchGroupOrder.includes(group.group)), true)
+  check('搜索按名称优先', searchAll('月隐')[0].items[0].name, '名刀月隐')
+  check('搜索索引非空', searchIndexSize() > 1000, true)
+  check('空关键词不返回结果', searchAll('   ').length, 0)
+
+  const { default: RemembrancesView } = await vite.ssrLoadModule('/src/views/RemembrancesView.vue')
+  const { default: WeaponDetailView } = await vite.ssrLoadModule('/src/views/WeaponDetailView.vue')
+
+  const routes = [
+    { path: '/', component: () => null },
+    { path: '/main-quest', component: () => null },
+    { path: '/main-quest/remembrances', component: RemembrancesView },
+    { path: '/weapons/:id', component: WeaponDetailView },
+    { path: '/weapons', component: () => null },
+  ]
+  const renderPage = async (view, path) => {
+    const router = createRouter({ history: createMemoryHistory(), routes })
+    await router.push(path)
+    await router.isReady()
+    const app = createSSRApp(view)
+    app.use(router)
+    return renderToString(app)
+  }
+
+  const remembranceHtml = await renderPage(RemembrancesView, '/main-quest/remembrances')
+  // Vue SSR 把动态 class 排在静态 class 前面，两种顺序都要算上
+  const cards = (remembranceHtml.match(/class="[^"]*\bremembrance-card\b/g) || []).length
+  const rows = (remembranceHtml.match(/class="item-row"/g) || []).length
+  const links = (remembranceHtml.match(/class="item-name link"/g) || []).length
+  check('SSR 追忆卡片数', cards, 25)
+  check('SSR 兑换物行数', rows, 51)
+  check('SSR 可点物品数', links, 46)
+  check('SSR 三选一提示', remembranceHtml.includes('三选一'), true)
+
+  const detailHtml = await renderPage(WeaponDetailView, '/weapons/uchigatana')
+  check('武器详情配装标签可点', (detailHtml.match(/class="item-tag is-link"/g) || []).length > 0, true)
+}
+
 await vite.close()
 
 console.log(failed ? `\n${failed} 项未通过` : '\n全部通过')

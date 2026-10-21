@@ -7,17 +7,20 @@
             <el-icon :size="26"><Trophy /></el-icon>
             <span>艾尔登法环攻略站</span>
           </RouterLink>
-          <nav class="nav">
-            <RouterLink
-              v-for="item in navItems"
-              :key="item.path"
-              :to="item.path"
-              class="nav-link"
-              :class="{ active: isActive(item.path) }"
-            >
-              {{ item.label }}
-            </RouterLink>
-          </nav>
+          <div class="header-right">
+            <nav class="nav">
+              <RouterLink
+                v-for="item in navItems"
+                :key="item.path"
+                :to="item.path"
+                class="nav-link"
+                :class="{ active: isActive(item.path) }"
+              >
+                {{ item.label }}
+              </RouterLink>
+            </nav>
+            <GlobalSearch />
+          </div>
         </div>
       </header>
       <main class="site-main">
@@ -34,6 +37,7 @@
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { Trophy } from '@element-plus/icons-vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import GlobalSearch from './components/GlobalSearch.vue'
 
 const navItems = [
   { path: '/', label: '首页' },

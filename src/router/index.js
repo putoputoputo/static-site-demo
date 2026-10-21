@@ -34,6 +34,11 @@ const routes = [
     component: () => import('../views/RegionsView.vue'),
   },
   {
+    path: '/main-quest/remembrances',
+    name: 'main-remembrances',
+    component: () => import('../views/RemembrancesView.vue'),
+  },
+  {
     path: '/main-quest/:id',
     name: 'main-chapter',
     component: () => import('../views/MainlineDetailView.vue'),

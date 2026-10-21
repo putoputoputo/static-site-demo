@@ -120,6 +120,13 @@
                 >
                   支线：{{ questName(boss.quest) }} →
                 </RouterLink>
+                <RouterLink
+                  v-if="boss.remembrance"
+                  :to="`/main-quest/remembrances?q=${encodeURIComponent(boss.name)}`"
+                  class="boss-quest"
+                >
+                  追忆兑换 →
+                </RouterLink>
               </div>
             </div>
           </div>
@@ -208,6 +215,7 @@ import {
 } from '../utils/regions'
 import { getChapter } from '../utils/mainline'
 import { getQuest } from '../utils/quest'
+import { useQuerySync } from '../composables/useQuerySync'
 
 const route = useRoute()
 const stats = regionStats
@@ -215,6 +223,9 @@ const stats = regionStats
 const keyword = ref('')
 const layer = ref('all')
 const onlyRemembrance = ref(false)
+
+// 全站搜索 / 追忆兑换表会带 ?q=BOSS 名 过来，筛选状态也一并进 URL
+useQuerySync({ q: keyword, layer, rem: onlyRemembrance }, { layer: 'all', rem: false })
 
 const highlights = computed(() => [
   { value: stats.total, label: '区域' },

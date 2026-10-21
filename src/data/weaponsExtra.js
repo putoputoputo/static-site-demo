@@ -25,7 +25,7 @@ const weaponsExtra = [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 12, dex: 40, int: 9, fai: 9, arc: 9 },
-      talismans: ['红羽剩徽记', '钩爪护符', '绿龟护符'],
+      talismans: ['红羽七刃剑', '钩爪护符', '绿龟护符'],
       weapons: ['匕首（副手）', '任意主手武器'],
       sorceries: [],
       incantations: [],
@@ -52,10 +52,10 @@ const weaponsExtra = [
     ],
     build: {
       stats: { vigor: 40, mind: 18, endurance: 20, str: 10, dex: 30, int: 9, fai: 9, arc: 40 },
-      talismans: ['腐坏血刃护符', '钩爪护符', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '钩爪护符', '绿龟护符'],
       weapons: ['逆刺', '任意副手出血武器'],
       sorceries: [],
-      incantations: ['血焰武器'],
+      incantations: ['血焰刀刃'],
     },
     location: '宁姆格福·穆尔格恩一带：被血指「涅利乌斯」入侵并击败后获得。',
   },
@@ -81,7 +81,7 @@ const weaponsExtra = [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 12, dex: 45, int: 9, fai: 9, arc: 9 },
-      talismans: ['钩爪护符', '绿龟护符', '红羽剩徽记'],
+      talismans: ['钩爪护符', '绿龟护符', '红羽七刃剑'],
       weapons: ['流纹短剑', '任意主手武器'],
       sorceries: [],
       incantations: [],
@@ -137,10 +137,10 @@ const weaponsExtra = [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 22, str: 12, dex: 42, int: 9, fai: 9, arc: 12 },
-      talismans: ['钩爪护符', '绿龟护符', '红羽剩徽记'],
+      talismans: ['钩爪护符', '绿龟护符', '红羽七刃剑'],
       weapons: ['蚁刺细剑', '黄铜盾'],
       sorceries: [],
-      incantations: ['血焰武器（可选）'],
+      incantations: ['血焰刀刃（可选）'],
     },
     location: '亚坛高原·影城（日荫城）外围：击败城外的持剑贵族敌人后获得。',
   },
@@ -165,9 +165,9 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 38, mind: 22, endurance: 20, str: 12, dex: 30, int: 35, fai: 9, arc: 9 },
-      talismans: ['魔对蝎', '钩爪护符', '绿龟护符'],
+      talismans: ['魔力对蝎', '钩爪护符', '绿龟护符'],
       weapons: ['冰霜之针', '任意辉石杖'],
-      sorceries: ['冰结晶'],
+      sorceries: ['辉石冰块'],
       incantations: [],
     },
     location: '利耶尼亚·卡利亚城寨：城寨内部房间的宝箱中拾取。',
@@ -221,10 +221,10 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 45, mind: 18, endurance: 25, str: 15, dex: 30, int: 9, fai: 9, arc: 35 },
-      talismans: ['腐坏血刃护符', '钩爪护符', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '钩爪护符', '绿龟护符'],
       weapons: ['血色螺旋', '黄铜盾'],
       sorceries: [],
-      incantations: ['血焰武器'],
+      incantations: ['血焰刀刃'],
     },
     location: '王城罗德尔·王城地下墓地：击败血指祭司「艾斯加」后获得。',
   },
@@ -277,7 +277,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 18, endurance: 25, str: 35, dex: 25, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['阔剑', '黄铜盾'],
       sorceries: [],
       incantations: [],
@@ -338,7 +338,7 @@ gameplay: [
       talismans: ['火对蝎', '亚历山大的碎片', '绿龟护符'],
       weapons: ['亵渎圣剑'],
       sorceries: [],
-      incantations: ['火焰的授予力量'],
+      incantations: ['火焰啊，赐予我力量！'],
     },
     location: '火山官邸：击败 BOSS「亵渎君王」拉卡德，用其追忆在大赐福兑换。',
   },
@@ -364,7 +364,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 55, mind: 15, endurance: 45, str: 70, dex: 12, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '大壶的武具袋', '绿龟护符'],
+      talismans: ['亚历山大的碎片', '大壶众武护符', '绿龟护符'],
       weapons: ['巨剑', '无盾'],
       sorceries: [],
       incantations: [],
@@ -393,7 +393,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 22, str: 12, dex: 45, int: 9, fai: 9, arc: 9 },
-      talismans: ['腐败翼剑徽记', '钩爪护符', '绿龟护符'],
+      talismans: ['腐败翼剑徽章', '钩爪护符', '绿龟护符'],
       weapons: ['短弯刀', '弯刀（副手双持）'],
       sorceries: [],
       incantations: [],
@@ -450,7 +450,7 @@ gameplay: [
       talismans: ['火对蝎', '亚历山大的碎片', '绿龟护符'],
       weapons: ['熔岩刀'],
       sorceries: [],
-      incantations: ['火焰的授予力量'],
+      incantations: ['火焰啊，赐予我力量！'],
     },
     location: '火山官邸·官邸内部：持熔岩刀的蛇人敌人概率掉落。',
   },
@@ -476,10 +476,10 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 16, endurance: 22, str: 10, dex: 45, int: 9, fai: 9, arc: 12 },
-      talismans: ['腐败翼剑徽记', '钩爪护符', '绿龟护符'],
+      talismans: ['腐败翼剑徽章', '钩爪护符', '绿龟护符'],
       weapons: ['反手刀', '反手刀（副手双持）'],
       sorceries: [],
-      incantations: ['血焰武器（可选）'],
+      incantations: ['血焰刀刃（可选）'],
     },
     location: '影之地·墓地平原·火吻废墟：废墟东北方的石棺旁拾取。',
   },
@@ -504,7 +504,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 25, endurance: 20, str: 10, dex: 28, int: 30, fai: 30, arc: 9 },
-      talismans: ['魔对蝎', '钩爪护符', '绿龟护符'],
+      talismans: ['魔力对蝎', '钩爪护符', '绿龟护符'],
       weapons: ['流纹圆刃刀', '任意辉石杖'],
       sorceries: [],
       incantations: [],
@@ -560,10 +560,10 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 45, mind: 15, endurance: 30, str: 14, dex: 60, int: 9, fai: 9, arc: 12 },
-      talismans: ['腐坏血刃护符', '亚历山大的碎片', '钩爪护符'],
+      talismans: ['鲜血君王的欢愉', '亚历山大的碎片', '钩爪护符'],
       weapons: ['罗刹大刀'],
       sorceries: [],
-      incantations: ['血焰武器（可选）'],
+      incantations: ['血焰刀刃（可选）'],
     },
     location: '影之地·隐者河下游：跳墓碑下到中层瀑布，沿河前进至东方无名灵庙，击败 BOSS「罗刹」后获得。',
   },
@@ -589,7 +589,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 15, endurance: 22, str: 35, dex: 25, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['分岔舌手斧', '黄铜盾'],
       sorceries: [],
       incantations: [],
@@ -616,7 +616,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 45, mind: 15, endurance: 26, str: 45, dex: 12, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['梅瑟莫士兵斧', '黄铜盾'],
       sorceries: [],
       incantations: [],
@@ -627,7 +627,7 @@ gameplay: [
   // ==================== 大斧 ====================
   {
     id: 'axe-of-godrick',
-    name: '葛瑞克之斧',
+    name: '葛瑞克的王斧',
     dlc: false,
     type: '大斧',
     region: '宁姆格福',
@@ -645,8 +645,8 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 50, mind: 15, endurance: 32, str: 55, dex: 15, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
-      weapons: ['葛瑞克之斧'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
+      weapons: ['葛瑞克的王斧'],
       sorceries: [],
       incantations: [],
     },
@@ -672,10 +672,10 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 48, mind: 15, endurance: 28, str: 45, dex: 14, int: 9, fai: 9, arc: 22 },
-      talismans: ['腐坏血刃护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '亚历山大的碎片', '绿龟护符'],
       weapons: ['波尼肢解菜刀'],
       sorceries: [],
-      incantations: ['血焰武器（可选）'],
+      incantations: ['血焰刀刃（可选）'],
     },
     location: '影之地·幽影亚坛·波尼村：村内建筑之间拾取。',
   },
@@ -730,7 +730,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 15, endurance: 26, str: 35, dex: 25, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['连枷', '黄铜盾'],
       sorceries: [],
       incantations: [],
@@ -757,7 +757,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 28, endurance: 22, str: 14, dex: 20, int: 50, fai: 9, arc: 9 },
-      talismans: ['魔对蝎', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['魔力对蝎', '亚历山大的碎片', '绿龟护符'],
       weapons: ['私生子之星', '任意辉石杖'],
       sorceries: ['岩石球'],
       incantations: [],
@@ -787,7 +787,7 @@ gameplay: [
       talismans: ['火对蝎', '亚历山大的碎片', '绿龟护符'],
       weapons: ['蛇连枷'],
       sorceries: [],
-      incantations: ['火焰的授予力量'],
+      incantations: ['火焰啊，赐予我力量！'],
     },
     location: '影之地·墓地平原·雾谷要塞：黑骑士对面的梯子下到地下，沿梅瑟莫士兵防线走到最后方的宝箱。',
   },
@@ -813,7 +813,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 48, mind: 15, endurance: 32, str: 55, dex: 12, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['黑铁大锤', '无盾'],
       sorceries: [],
       incantations: [],
@@ -841,7 +841,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 48, mind: 15, endurance: 32, str: 52, dex: 10, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['流纹大槌', '无盾'],
       sorceries: [],
       incantations: [],
@@ -870,7 +870,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 52, mind: 15, endurance: 38, str: 62, dex: 12, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '大壶的武具袋', '绿龟护符'],
+      talismans: ['亚历山大的碎片', '大壶众武护符', '绿龟护符'],
       weapons: ['铁砧大锤', '无盾'],
       sorceries: [],
       incantations: [],
@@ -897,7 +897,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 55, mind: 15, endurance: 42, str: 70, dex: 14, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '大壶的武具袋', '绿龟护符'],
+      talismans: ['亚历山大的碎片', '大壶众武护符', '绿龟护符'],
       weapons: ['泥盆亚的大槌', '无盾'],
       sorceries: [],
       incantations: [],
@@ -953,10 +953,10 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 45, mind: 15, endurance: 26, str: 16, dex: 30, int: 9, fai: 9, arc: 30 },
-      talismans: ['腐坏血刃护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '亚历山大的碎片', '绿龟护符'],
       weapons: ['血怪叉矛', '黄铜盾'],
       sorceries: [],
-      incantations: ['血焰武器'],
+      incantations: ['血焰刀刃'],
     },
     location: '影之地·眺望镇：镇内的血怪（体型较大的个体）概率掉落。',
   },
@@ -982,10 +982,10 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 50, mind: 22, endurance: 26, str: 16, dex: 18, int: 9, fai: 9, arc: 50 },
-      talismans: ['腐坏血刃护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '亚历山大的碎片', '绿龟护符'],
       weapons: ['蒙格温圣矛'],
       sorceries: [],
-      incantations: ['血焰武器'],
+      incantations: ['血焰刀刃'],
     },
     location: '蒙格温王朝：击败 BOSS「鲜血君王」蒙格，用其追忆在大赐福兑换。',
   },
@@ -1039,7 +1039,7 @@ gameplay: [
       talismans: ['火对蝎', '亚历山大的碎片', '绿龟护符'],
       weapons: ['穿刺者矛'],
       sorceries: [],
-      incantations: ['火焰的授予力量'],
+      incantations: ['火焰啊，赐予我力量！'],
     },
     location: '影之地·幽影城：击败 BOSS「穿刺者」梅瑟莫，用其追忆在大赐福兑换。',
   },
@@ -1065,7 +1065,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 25, endurance: 28, str: 22, dex: 18, int: 40, fai: 9, arc: 9 },
-      talismans: ['魔对蝎', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['魔力对蝎', '亚历山大的碎片', '绿龟护符'],
       weapons: ['灵魂剑刃戟', '任意辉石杖'],
       sorceries: [],
       incantations: [],
@@ -1092,7 +1092,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 46, mind: 20, endurance: 30, str: 26, dex: 24, int: 9, fai: 9, arc: 26 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['花蕾刀'],
       sorceries: [],
       incantations: [],
@@ -1121,7 +1121,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 15, endurance: 28, str: 26, dex: 30, int: 9, fai: 9, arc: 12 },
-      talismans: ['腐坏血刃护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '亚历山大的碎片', '绿龟护符'],
       weapons: ['墓地大镰刀', '无盾'],
       sorceries: [],
       incantations: [],
@@ -1175,7 +1175,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 16, endurance: 28, str: 15, dex: 45, int: 9, fai: 9, arc: 22 },
-      talismans: ['腐坏血刃护符', '钩爪护符', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '钩爪护符', '绿龟护符'],
       weapons: ['黑曜薄刀'],
       sorceries: [],
       incantations: [],
@@ -1204,7 +1204,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 15, endurance: 22, str: 12, dex: 40, int: 9, fai: 9, arc: 25 },
-      talismans: ['腐坏血刃护符', '钩爪护符', '绿龟护符'],
+      talismans: ['鲜血君王的欢愉', '钩爪护符', '绿龟护符'],
       weapons: ['畸齿软鞭', '任意主手武器'],
       sorceries: [],
       incantations: [],
@@ -1233,7 +1233,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 22, str: 16, dex: 42, int: 9, fai: 9, arc: 9 },
-      talismans: ['腐败翼剑徽记', '钩爪护符', '绿龟护符'],
+      talismans: ['腐败翼剑徽章', '钩爪护符', '绿龟护符'],
       weapons: ['帕塔剑', '帕塔剑（副手双持）'],
       sorceries: [],
       incantations: [],
@@ -1289,7 +1289,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 16, endurance: 24, str: 20, dex: 45, int: 9, fai: 9, arc: 9 },
-      talismans: ['腐败翼剑徽记', '钩爪护符', '绿龟护符'],
+      talismans: ['腐败翼剑徽章', '钩爪护符', '绿龟护符'],
       weapons: ['落叶格斗术'],
       sorceries: [],
       incantations: [],
@@ -1316,7 +1316,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 16, endurance: 24, str: 16, dex: 48, int: 9, fai: 9, arc: 9 },
-      talismans: ['腐败翼剑徽记', '钩爪护符', '绿龟护符'],
+      talismans: ['腐败翼剑徽章', '钩爪护符', '绿龟护符'],
       weapons: ['丹恩流踢击术'],
       sorceries: [],
       incantations: [],
@@ -1345,7 +1345,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 15, endurance: 24, str: 14, dex: 45, int: 9, fai: 9, arc: 15 },
-      talismans: ['腐败翼剑徽记', '腐坏血刃护符', '钩爪护符'],
+      talismans: ['腐败翼剑徽章', '鲜血君王的欢愉', '钩爪护符'],
       weapons: ['钩爪', '钩爪（副手双持）'],
       sorceries: [],
       incantations: [],
@@ -1372,7 +1372,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 15, endurance: 24, str: 16, dex: 45, int: 9, fai: 9, arc: 15 },
-      talismans: ['腐败翼剑徽记', '腐坏血刃护符', '钩爪护符'],
+      talismans: ['腐败翼剑徽章', '鲜血君王的欢愉', '钩爪护符'],
       weapons: ['猛禽钩爪', '猛禽钩爪（副手双持）'],
       sorceries: [],
       incantations: [],
@@ -1399,7 +1399,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 16, endurance: 24, str: 14, dex: 45, int: 9, fai: 9, arc: 25 },
-      talismans: ['腐败翼剑徽记', '腐坏血刃护符', '钩爪护符'],
+      talismans: ['腐败翼剑徽章', '鲜血君王的欢愉', '钩爪护符'],
       weapons: ['黑夜爪', '黑夜爪（副手双持）'],
       sorceries: [],
       incantations: [],
@@ -1428,7 +1428,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 15, endurance: 24, str: 18, dex: 45, int: 9, fai: 9, arc: 12 },
-      talismans: ['腐败翼剑徽记', '腐坏血刃护符', '钩爪护符'],
+      talismans: ['腐败翼剑徽章', '鲜血君王的欢愉', '钩爪护符'],
       weapons: ['野兽爪', '野兽爪（副手双持）'],
       sorceries: [],
       incantations: [],
@@ -1455,7 +1455,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 48, mind: 15, endurance: 28, str: 45, dex: 18, int: 9, fai: 9, arc: 10 },
-      talismans: ['亚历山大的碎片', '腐败翼剑徽记', '绿龟护符'],
+      talismans: ['亚历山大的碎片', '腐败翼剑徽章', '绿龟护符'],
       weapons: ['红熊爪', '红熊爪（副手双持）'],
       sorceries: [],
       incantations: [],
@@ -1538,7 +1538,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 24, endurance: 20, str: 10, dex: 30, int: 25, fai: 9, arc: 9 },
-      talismans: ['魔对蝎', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['魔力对蝎', '亚历山大的碎片', '绿龟护符'],
       weapons: ['寒气调香瓶'],
       sorceries: [],
       incantations: [],
@@ -1592,7 +1592,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 22, endurance: 22, str: 10, dex: 35, int: 9, fai: 9, arc: 25 },
-      talismans: ['亚历山大的碎片', '绿龟护符', '红羽剩徽记'],
+      talismans: ['亚历山大的碎片', '绿龟护符', '红羽七刃剑'],
       weapons: ['剧毒调香瓶'],
       sorceries: [],
       incantations: [],
@@ -1622,7 +1622,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 14, dex: 35, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '绿龟护符', '红羽剩徽记'],
+      talismans: ['远箭护符', '绿龟护符', '红羽七刃剑'],
       weapons: ['短弓', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1650,7 +1650,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 14, dex: 40, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '绿龟护符', '红羽剩徽记'],
+      talismans: ['远箭护符', '绿龟护符', '红羽七刃剑'],
       weapons: ['骸骨弓', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1680,7 +1680,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 16, dex: 40, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '绿龟护符', '红羽剩徽记'],
+      talismans: ['远箭护符', '绿龟护符', '红羽七刃剑'],
       weapons: ['白金弓', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1707,7 +1707,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 12, dex: 45, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '绿龟护符', '红羽剩徽记'],
+      talismans: ['远箭护符', '绿龟护符', '红羽七刃剑'],
       weapons: ['黑弓', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1736,7 +1736,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 18, endurance: 26, str: 30, dex: 32, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['远箭护符', '亚历山大的碎片', '绿龟护符'],
       weapons: ['狮子大弓', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1763,7 +1763,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 18, endurance: 28, str: 30, dex: 35, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['远箭护符', '亚历山大的碎片', '绿龟护符'],
       weapons: ['埃贡的大弓', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1793,7 +1793,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 14, dex: 30, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '绿龟护符', '大盾护符'],
+      talismans: ['远箭护符', '绿龟护符', '大盾护符'],
       weapons: ['轻弩', '黄铜盾'],
       sorceries: [],
       incantations: [],
@@ -1820,7 +1820,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 42, mind: 15, endurance: 24, str: 20, dex: 40, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['远箭护符', '亚历山大的碎片', '绿龟护符'],
       weapons: ['连射弩', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1847,7 +1847,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 15, endurance: 26, str: 22, dex: 40, int: 9, fai: 9, arc: 9 },
-      talismans: ['鹰眼护符', '亚历山大的碎片', '绿龟护符'],
+      talismans: ['远箭护符', '亚历山大的碎片', '绿龟护符'],
       weapons: ['多击发弩', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -1876,7 +1876,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 46, mind: 15, endurance: 30, str: 40, dex: 18, int: 9, fai: 9, arc: 9 },
-      talismans: ['亚历山大的碎片', '鹰眼护符', '绿龟护符'],
+      talismans: ['亚历山大的碎片', '远箭护符', '绿龟护符'],
       weapons: ['拉巴斯大炮'],
       sorceries: [],
       incantations: [],
@@ -1906,9 +1906,9 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 35, mind: 32, endurance: 16, str: 8, dex: 12, int: 55, fai: 9, arc: 9 },
-      talismans: ['魔法师球', '蓝秘文戒指', '拉达冈的肖像'],
+      talismans: ['魔法师球护符', '蓝琥珀链坠', '拉达冈的肖像'],
       weapons: ['学院辉石杖', '短剑或细剑（应急）'],
-      sorceries: ['岩石球', '迅魔砾'],
+      sorceries: ['岩石球', '辉石迅魔砾'],
       incantations: [],
     },
     location: '利耶尼亚·雷亚卢卡利亚魔法学院：学院内的魔法师敌人概率掉落。',
@@ -1934,9 +1934,9 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 38, mind: 34, endurance: 16, str: 8, dex: 10, int: 45, fai: 40, arc: 9 },
-      talismans: ['魔法师球', '圣职者司祭', '蓝秘文戒指'],
+      talismans: ['魔法师球护符', '双指的传说', '蓝琥珀链坠'],
       weapons: ['母亲杖'],
-      sorceries: ['迅魔砾', '彗星亚兹勒'],
+      sorceries: ['辉石迅魔砾', '彗星亚兹勒'],
       incantations: ['黄金树的恩惠'],
     },
     location: '影之地·马努斯美特大教堂：击败指头之母梅蒂尔后返回教堂，依次击败黑夜骑士约兰与指头之母尤弥尔后获得。',
@@ -1964,7 +1964,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 30, endurance: 20, str: 12, dex: 10, int: 9, fai: 55, arc: 9 },
-      talismans: ['圣职者司祭', '蓝秘文戒指', '绿龟护符'],
+      talismans: ['双指的传说', '蓝琥珀链坠', '绿龟护符'],
       weapons: ['黄金树圣印记', '短剑（应急）'],
       sorceries: [],
       incantations: ['黄金树的恩惠', '圣律剑刃'],
@@ -1992,10 +1992,10 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 30, endurance: 22, str: 14, dex: 10, int: 9, fai: 50, arc: 9 },
-      talismans: ['火对蝎', '圣职者司祭', '蓝秘文戒指'],
+      talismans: ['火对蝎', '双指的传说', '蓝琥珀链坠'],
       weapons: ['火焰骑士圣印记'],
       sorceries: [],
-      incantations: ['火焰的授予力量', '梅瑟莫的火焰'],
+      incantations: ['火焰啊，赐予我力量！', '梅瑟莫的火球'],
     },
     location: '影之地·幽影城·教区：放水后跳下，在雕像旁边（此前可取幽影树碎片的位置）拾取。',
   },
@@ -2020,7 +2020,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 28, endurance: 22, str: 12, dex: 20, int: 9, fai: 45, arc: 9 },
-      talismans: ['圣职者司祭', '蓝秘文戒指', '绿龟护符'],
+      talismans: ['双指的传说', '蓝琥珀链坠', '绿龟护符'],
       weapons: ['落叶圣印记'],
       sorceries: [],
       incantations: ['黄金树的恩惠'],
@@ -2050,7 +2050,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 40, mind: 15, endurance: 20, str: 12, dex: 12, int: 9, fai: 9, arc: 9 },
-      talismans: ['绿龟护符', '红羽剩徽记', '亚历山大的碎片'],
+      talismans: ['绿龟护符', '红羽七刃剑', '亚历山大的碎片'],
       weapons: ['火把', '任意近战主武器'],
       sorceries: [],
       incantations: [],
@@ -2106,7 +2106,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 24, endurance: 26, str: 14, dex: 16, int: 40, fai: 9, arc: 9 },
-      talismans: ['魔对蝎', '大盾护符', '绿龟护符'],
+      talismans: ['魔力对蝎', '大盾护符', '绿龟护符'],
       weapons: ['卡利亚突刺盾'],
       sorceries: [],
       incantations: [],
@@ -2135,7 +2135,7 @@ gameplay: [
     ],
     build: {
       stats: { vigor: 44, mind: 15, endurance: 30, str: 30, dex: 20, int: 9, fai: 9, arc: 9 },
-      talismans: ['大盾护符', '绿龟护符', '红羽剩徽记'],
+      talismans: ['大盾护符', '绿龟护符', '红羽七刃剑'],
       weapons: ['黄铜盾（左手）', '长剑或阔剑（右手）'],
       sorceries: [],
       incantations: [],
@@ -2185,11 +2185,11 @@ gameplay: [
     skill: { name: '盾击', description: '用盾面向前顶撞，冲击力足以把敌人推开。' },
     gameplay: [
       '防御强度接近满值，几乎可以硬吃所有物理攻击。',
-      '重量 29.0 需要极高耐力，通常搭配「大壶的武具袋」等负重护符。',
+      '重量 29.0 需要极高耐力，通常搭配「大壶众武护符」等负重护符。',
     ],
     build: {
       stats: { vigor: 55, mind: 15, endurance: 45, str: 55, dex: 10, int: 9, fai: 9, arc: 9 },
-      talismans: ['大盾护符', '大壶的武具袋', '绿龟护符'],
+      talismans: ['大盾护符', '大壶众武护符', '绿龟护符'],
       weapons: ['指纹石盾（左手）', '大锤或大斧（右手）'],
       sorceries: [],
       incantations: [],

@@ -23,6 +23,10 @@
             <el-icon :size="13"><Grid /></el-icon>
             区域 &amp; BOSS 图鉴 · {{ regionStats.total }} 区域 / {{ regionStats.bosses }} BOSS
           </RouterLink>
+          <RouterLink to="/main-quest/remembrances" class="guide-link">
+            <el-icon :size="13"><Present /></el-icon>
+            追忆兑换表 · {{ remembranceStats.total }} 个追忆 / {{ remembranceStats.items }} 件物品
+          </RouterLink>
           <span class="guide-hint">
             含追忆 BOSS {{ regionStats.remembrance }} 个（本体 {{ regionStats.remembranceBase }} + DLC
             {{ regionStats.remembranceDlc }}）
@@ -160,7 +164,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { Search, RefreshLeft, Location, Check, Grid } from '@element-plus/icons-vue'
+import { Search, RefreshLeft, Location, Check, Grid, Present } from '@element-plus/icons-vue'
 import {
   mainChapters,
   mainEndings,
@@ -169,6 +173,7 @@ import {
   requiredBossNames,
 } from '../utils/mainline'
 import { regionStats } from '../data/summary'
+import { remembranceStats } from '../data/remembrances'
 import { getQuest } from '../utils/quest'
 import { useMainProgress } from '../composables/useMainProgress'
 
