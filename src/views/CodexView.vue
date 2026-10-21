@@ -37,6 +37,11 @@
             只看 DLC
             <span class="chip-count">{{ dlcCount }}</span>
           </button>
+          <button class="chip" :class="{ active: onlyFavorites }" @click="onlyFavorites = !onlyFavorites">
+            <el-icon :size="12"><Star /></el-icon>
+            只看收藏
+            <span class="chip-count">{{ moduleFavoriteCount }}</span>
+          </button>
         </div>
       </div>
 
@@ -91,6 +96,17 @@
             {{ item.name }}
             <span v-if="item.dlc" class="dlc-tag">(DLC)</span>
           </h2>
+          <button
+            class="fav-btn"
+            :class="{ active: isFavorite(module.key, item.id) }"
+            :title="isFavorite(module.key, item.id) ? '取消收藏' : '加入收藏'"
+            @click.prevent.stop="toggleFavorite(module.key, item.id)"
+          >
+            <el-icon :size="15">
+              <StarFilled v-if="isFavorite(module.key, item.id)" />
+              <Star v-else />
+            </el-icon>
+          </button>
           <span
             class="tier-badge"
             :style="{ color: tierColor(item.tier), borderColor: tierColor(item.tier) }"
@@ -151,11 +167,12 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Search, RefreshLeft, Location, ArrowRight } from '@element-plus/icons-vue'
+import { Search, RefreshLeft, Location, ArrowRight, Star, StarFilled } from '@element-plus/icons-vue'
 import { getCodexModule } from '../data/codex'
 import PagerBar from '../components/PagerBar.vue'
 import { usePagination } from '../composables/usePagination'
 import { useQuerySync } from '../composables/useQuerySync'
+import { useCodexFavorites } from '../composables/useCodexFavorites'
 import { categoryCounts, filterCodex, itemHref, sortCodex, tierColor, tierLabel } from '../utils/codex'
 
 const props = defineProps({
@@ -168,6 +185,7 @@ const keyword = ref('')
 const categories = ref([])
 const onlyDlc = ref(false)
 const onlyTop = ref(false)
+const onlyFavorites = ref(false)
 const sortKey = ref('default')
 const listRef = ref(null)
 const pageSizeOptions = [
@@ -183,6 +201,10 @@ const dlcCount = computed(() => module.value.items.filter((item) => item.dlc).le
 
 const topCount = computed(() => module.value.items.filter((item) => ['S', 'A'].includes(item.tier)).length)
 
+// 收藏是跨模块共用一个 key，这里只统计当前模块的条目
+const { isFavorite, toggleFavorite, favoritesOf } = useCodexFavorites()
+const moduleFavoriteCount = computed(() => favoritesOf(module.value.key).length)
+
 const highlights = computed(() => [
   { value: module.value.items.length, label: module.value.itemLabel },
   { value: categoryOptions.value.length, label: module.value.categoryLabel },
@@ -197,13 +219,16 @@ const filtered = computed(() => {
     onlyDlc: onlyDlc.value,
     onlyTop: onlyTop.value,
   })
-  return sortCodex(list, sortKey.value)
+  const withFavorites = onlyFavorites.value
+    ? list.filter((item) => isFavorite(module.value.key, item.id))
+    : list
+  return sortCodex(withFavorites, sortKey.value)
 })
 
 // 分页：护符 149 / 祷告 129 / 魔法 84 / 骨灰 84 都超过一屏，全量渲染会让首屏变重。
 // 默认 20 条/页；「全部」选项保留 Ctrl+F 全文查找（此前「每批 48 条」会让第 49 条起搜不到）。
 const filterToken = () =>
-  [keyword.value, sortKey.value, onlyDlc.value, onlyTop.value, categories.value.join(',')].join('|')
+  [keyword.value, sortKey.value, onlyDlc.value, onlyTop.value, onlyFavorites.value, categories.value.join(',')].join('|')
 
 const {
   pageSize,
@@ -254,6 +279,7 @@ useQuerySync(
     cats: categories,
     dlcOnly: onlyDlc,
     top: onlyTop,
+    fav: onlyFavorites,
     sort: sortKey,
     size: pageSize,
     page: currentPage,
@@ -263,6 +289,7 @@ useQuerySync(
 
 const isFiltering = computed(
   () =>
+    onlyFavorites.value ||
     keyword.value.trim() !== '' ||
     categories.value.length > 0 ||
     onlyDlc.value ||
@@ -285,6 +312,7 @@ function resetFilters() {
   categories.value = []
   onlyDlc.value = false
   onlyTop.value = false
+  onlyFavorites.value = false
   sortKey.value = 'default'
 }
 </script>
@@ -492,10 +520,13 @@ function resetFilters() {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
 }
 
+/* 收藏按钮与推荐度徽章并排贴右，标题占满剩余宽度 */
 .card-name {
+  flex: 1;
+  min-width: 0;
   margin: 0;
   font-size: 17px;
   line-height: 1.4;
@@ -507,6 +538,31 @@ function resetFilters() {
   font-size: 11px;
   font-weight: 400;
   color: #c98b3f;
+}
+
+.fav-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: #5d5849;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.18s, background-color 0.18s;
+}
+
+.fav-btn:hover {
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.12);
+}
+
+.fav-btn.active {
+  color: #d4af37;
 }
 
 .tier-badge {

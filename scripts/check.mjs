@@ -319,6 +319,86 @@ if (existsSync(notFoundStatic)) {
   check('搜索能命中 BOSS 详情页', bossHit?.items?.[0]?.to?.startsWith('/bosses/'), true)
 }
 
+/* ---------- 7. 进度存储层与进度总览 ---------- */
+{
+  const { createIdStore, exportProgress, importProgress, clearAllProgress, STORAGE_KEYS } =
+    await import('../src/composables/progress.js')
+
+  // 每个 store 的 key 都不同，测试时用独立命名，避免互相干扰
+  const storeA = createIdStore('er-guide:test-a')
+  const storeB = createIdStore('er-guide:test-a')
+
+  check('同一个 key 只会创建一份状态', storeA === storeB, true)
+  check('add 返回是否真的写入', [storeA.add('x'), storeA.add('x')], [true, false])
+  check('toggle 返回操作后状态', [storeB.toggle('x'), storeB.toggle('x')], [false, true])
+  storeA.clear()
+  check('clear 清空', storeA.count.value, 0)
+  storeA.replace(['a', 'b', 1, null, 'c'])
+  check('replace 过滤非字符串', storeA.ids.value, ['a', 'b', 'c'])
+  storeA.clear()
+
+  const exported = exportProgress()
+  const parsed = JSON.parse(exported)
+  check('导出包含版本号', parsed.version, 1)
+  check('导出覆盖全部 key', Object.keys(parsed.data).sort(), Object.keys(STORAGE_KEYS).sort())
+
+  const bad = importProgress('not json at all')
+  check('导入非 JSON 被拒绝', bad.ok, false)
+  check('导入缺少 data 被拒绝', importProgress('{"foo":1}').ok, false)
+
+  const roundtrip = importProgress(JSON.stringify({ site: 'er-guide', data: { main: ['limgrave'], quest: [] } }))
+  check('导入合法结构成功', roundtrip.ok, true)
+  check('导入后提示包含项数', roundtrip.message.includes('主线进度 1 项'), true)
+
+  clearAllProgress()
+  check('清空全部进度', JSON.parse(exportProgress()).data.main, [])
+
+  // 图鉴收藏用 `${moduleKey}:${id}` 做键，同名条目不会被串到一起
+  const { useCodexFavorites } = await import('../src/composables/useCodexFavorites.js')
+  const codexFav = useCodexFavorites()
+  codexFav.clearFavorites()
+  codexFav.toggleFavorite('sorceries', '同一条目')
+  codexFav.toggleFavorite('incantations', '同一条目')
+  check('图鉴收藏按模块隔离', [
+    codexFav.isFavorite('sorceries', '同一条目'),
+    codexFav.isFavorite('incantations', '同一条目'),
+  ], [true, true])
+  check('按模块统计收藏', codexFav.countsByModule(['sorceries', 'incantations', 'spirits']), {
+    sorceries: 1,
+    incantations: 1,
+    spirits: 0,
+  })
+  codexFav.clearFavorites()
+  check('清空图鉴收藏', codexFav.favoriteCount.value, 0)
+
+  // 三个旧 composable 现在共用同一套存储，key 必须各归各位
+  const { STORAGE_KEYS: keys2 } = await import('../src/composables/progress.js')
+  check('四类进度的 key 互不重复', new Set(Object.values(keys2)).size, 4)
+
+  const { default: ProgressView } = await vite.ssrLoadModule('/src/views/ProgressView.vue')
+  const progressRouter = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/', component: () => null },
+      { path: '/progress', component: ProgressView },
+      { path: '/main-quest/:id', component: () => null },
+      { path: '/side-quests/:id', component: () => null },
+      { path: '/weapons/:id', component: () => null },
+    ],
+  })
+  await progressRouter.push('/progress')
+  await progressRouter.isReady()
+  const progressApp = createSSRApp(ProgressView)
+  progressApp.use(progressRouter)
+  const progressHtml = await renderToString(progressApp)
+
+  check('SSR 进度页渲染主线章节', (progressHtml.match(/class="check-row/g) || []).length, 12)
+  check('SSR 进度页显示四项总览', (progressHtml.match(/class="hero-badge"/g) || []).length, 4)
+  check('SSR 进度页有导出入口', progressHtml.includes('下载 JSON'), true)
+  check('SSR 进度页有清空确认', progressHtml.includes('清空全部进度'), true)
+  check('SSR 进度页统计图鉴收藏', progressHtml.includes('图鉴收藏'), true)
+}
+
 await vite.close()
 
 console.log(failed ? `\n${failed} 项未通过` : '\n全部通过')

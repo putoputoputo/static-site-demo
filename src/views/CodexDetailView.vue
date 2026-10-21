@@ -25,6 +25,18 @@
           >
             {{ item.tier }} · {{ tierLabel(item.tier) }}
           </span>
+          <button
+            class="fav-btn"
+            :class="{ active: isFavorite(module.key, item.id) }"
+            :title="isFavorite(module.key, item.id) ? '取消收藏' : '加入收藏'"
+            @click="toggleFavorite(module.key, item.id)"
+          >
+            <el-icon :size="16">
+              <StarFilled v-if="isFavorite(module.key, item.id)" />
+              <Star v-else />
+            </el-icon>
+            <span class="fav-text">{{ isFavorite(module.key, item.id) ? '已收藏' : '收藏' }}</span>
+          </button>
         </div>
 
         <p class="detail-effect">{{ item.effect }}</p>
@@ -126,9 +138,10 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
-import { Location, ArrowLeft, ArrowRight, Back } from '@element-plus/icons-vue'
+import { Location, ArrowLeft, ArrowRight, Back, Star, StarFilled } from '@element-plus/icons-vue'
 import { getCodexModule } from '../data/codex'
 import { itemHref, neighborsOf, tierColor, tierLabel } from '../utils/codex'
+import { useCodexFavorites } from '../composables/useCodexFavorites'
 
 const props = defineProps({
   moduleKey: { type: String, required: true },
@@ -137,6 +150,7 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 const module = computed(() => getCodexModule(props.moduleKey))
+const { isFavorite, toggleFavorite } = useCodexFavorites()
 
 const item = computed(() => module.value.items.find((entry) => entry.id === route.params.id))
 
@@ -163,6 +177,32 @@ function goTo(target) {
 </script>
 
 <style scoped>
+.fav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  color: #8a8574;
+  background: #1f1f1f;
+  border: 1px solid #383225;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+
+.fav-btn:hover {
+  color: #d4af37;
+  border-color: #6b5c2e;
+}
+
+.fav-btn.active {
+  color: #d4af37;
+  background: #2a2413;
+  border-color: #4a3f1e;
+}
+
 .codex-detail {
   display: flex;
   flex-direction: column;

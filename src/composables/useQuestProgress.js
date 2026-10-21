@@ -1,51 +1,25 @@
-import { computed, ref, watch } from 'vue'
+// 支线进度：记录哪些支线已完成
+//
+// 存储细节收在 composables/progress.js；模块级单例由 createIdStore 保证，
+// 列表页与详情页天然共享同一份状态。
 
-// 支线进度：模块级单例，列表页与详情页共享同一份状态
-const STORAGE_KEY = 'er-guide:quest-progress'
+import { computed } from 'vue'
+import { STORAGE_KEYS, createIdStore } from './progress.js'
 
-function loadCompleted() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed.filter((id) => typeof id === 'string') : []
-  } catch {
-    return []
-  }
-}
-
-const completed = ref(loadCompleted())
-
-watch(
-  completed,
-  (value) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
-    } catch {
-      // 隐私模式或存储已满时静默失败，不影响页面使用
-    }
-  },
-  { deep: true }
-)
+const store = createIdStore(STORAGE_KEYS.quest)
 
 export function useQuestProgress() {
-  const completedCount = computed(() => completed.value.length)
+  const completedCount = computed(() => store.count.value)
 
-  function isCompleted(id) {
-    return completed.value.includes(id)
-  }
+  const isCompleted = (id) => store.has(id)
 
   function toggleCompleted(id) {
-    const index = completed.value.indexOf(id)
-    if (index > -1) {
-      completed.value.splice(index, 1)
-    } else {
-      completed.value.push(id)
-    }
+    store.toggle(id)
   }
 
   function resetProgress() {
-    completed.value = []
+    store.clear()
   }
 
-  return { completed, completedCount, isCompleted, toggleCompleted, resetProgress }
+  return { completed: store.ids, completedCount, isCompleted, toggleCompleted, resetProgress }
 }

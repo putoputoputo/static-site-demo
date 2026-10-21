@@ -1,47 +1,31 @@
-import { computed, ref, watch } from 'vue'
+// 武器收藏：记录收藏了哪些武器
+//
+// 存储细节收在 composables/progress.js；模块级单例由 createIdStore 保证，
+// 列表页与详情页天然共享同一份状态。
 
-// 收藏夹：模块级单例，列表页与详情页共享同一份状态
-const STORAGE_KEY = 'er-guide:weapon-favorites'
+import { computed } from 'vue'
+import { STORAGE_KEYS, createIdStore } from './progress.js'
 
-function loadFavorites() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed.filter((id) => typeof id === 'string') : []
-  } catch {
-    return []
-  }
-}
-
-const favorites = ref(loadFavorites())
-
-watch(
-  favorites,
-  (value) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
-    } catch {
-      // 隐私模式或存储已满时静默失败，不影响页面使用
-    }
-  },
-  { deep: true }
-)
+const store = createIdStore(STORAGE_KEYS.weaponFavorite)
 
 export function useWeaponFavorites() {
-  const favoriteCount = computed(() => favorites.value.length)
+  const favoriteCount = computed(() => store.count.value)
 
-  function isFavorite(id) {
-    return favorites.value.includes(id)
-  }
+  const isFavorite = (id) => store.has(id)
 
   function toggleFavorite(id) {
-    const index = favorites.value.indexOf(id)
-    if (index > -1) {
-      favorites.value.splice(index, 1)
-    } else {
-      favorites.value.push(id)
-    }
+    store.toggle(id)
   }
 
-  return { favorites, favoriteCount, isFavorite, toggleFavorite }
+  function clearFavorites() {
+    store.clear()
+  }
+
+  return {
+    favorites: store.ids,
+    favoriteCount,
+    isFavorite,
+    toggleFavorite,
+    clearFavorites,
+  }
 }

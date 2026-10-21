@@ -56,6 +56,10 @@ const navGroups = [
       { path: '/spirits', label: '骨灰', desc: '84 个' },
     ],
   },
+  {
+    label: '工具',
+    items: [{ path: '/progress', label: '我的进度', desc: '主线 / 支线 / 收藏总览' }],
+  },
 ]
 
 const route = useRoute()
