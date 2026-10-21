@@ -399,6 +399,231 @@ if (existsSync(notFoundStatic)) {
   check('SSR 进度页统计图鉴收藏', progressHtml.includes('图鉴收藏'), true)
 }
 
+/* ---------- 8. 构筑器 ---------- */
+{
+  const {
+    ATTRS,
+    DEFAULT_STATS,
+    equipLoadFromEndurance,
+    maxEquipLoad,
+    loadTier,
+    enduranceForTier,
+    lighterTier,
+    loadBonusFromTalismans,
+    parseRequirements,
+    checkRequirements,
+    canTwoHand,
+    summarize,
+    memoryStatus,
+    tierColor,
+  } = await import('../src/utils/build.js')
+
+  // 官方负重表抽查：这几个点在游戏里能直接读出来
+  const loadTable = [
+    [1, 45], [8, 45], [9, 46.6], [15, 56.1], [20, 64.1], [25, 72],
+    [30, 77.6], [40, 90.9], [50, 105.2], [60, 120], [80, 140.5], [99, 160],
+  ]
+  check('耐力 → 负重 与官方表逐点吻合', loadTable.map(([lv]) => equipLoadFromEndurance(lv)), loadTable.map(([, v]) => v))
+  check('耐力低于 8 固定 45', equipLoadFromEndurance(3), 45)
+  check('耐力超过 99 按 99 算', equipLoadFromEndurance(120), 160)
+
+  const { default: talismansData } = await import('../src/data/talismans.js')
+  const pickTalismans = (names) => talismansData.filter((item) => names.includes(item.name))
+
+  // 负重护符按乘法叠加，且必须只认「装备重量上限 / 负重 +N%」这种写法
+  const loadTalismans = pickTalismans(['大壶众武护符', '黄金树的恩惠+2', '铜绿圆碟'])
+  const bonus = loadBonusFromTalismans(loadTalismans)
+  check('负重护符只算真正加负重的那两件', bonus.sources.map((item) => item.name), ['大壶众武护符', '黄金树的恩惠+2'])
+  check('负重加成按乘法叠加', Math.round(bonus.multiplier * 10000) / 10000, 1.2852)
+  check('铜绿圆碟不被误判为负重加成', loadBonusFromTalismans(pickTalismans(['铜绿圆碟'])).sources, [])
+  check('最大负重 = 基础 × 加成', maxEquipLoad(99, loadTalismans).total, 205.6)
+
+  // 档位边界：29 / 30 / 69.9 / 70 / 99.9 / 100
+  check('负重档位边界', [
+    loadTier(29, 100).key,
+    loadTier(30, 100).key,
+    loadTier(69.9, 100).key,
+    loadTier(70, 100).key,
+    loadTier(99.9, 100).key,
+    loadTier(100, 100).key,
+  ], ['light', 'medium', 'medium', 'heavy', 'heavy', 'overloaded'])
+  check('无最大负重时档位未知', loadTier(10, 0).key, 'unknown')
+  check('四个档位都有颜色', ['light', 'medium', 'heavy', 'overloaded'].every((key) => /^#[0-9a-f]{6}$/i.test(tierColor(key))), true)
+  check('上一档映射', [lighterTier('overloaded'), lighterTier('heavy'), lighterTier('medium'), lighterTier('light')], ['heavy', 'medium', 'light', null])
+
+  // 耐力建议要真的能压进目标档位
+  const needMedium = enduranceForTier(60, [], 'medium')
+  check('60 负重进中负重所需耐力', needMedium.endurance, 37)
+  check('该耐力下确实不到 70%', loadTier(60, needMedium.maxLoad).key, 'medium')
+  check('少一级就超出去', loadTier(60, maxEquipLoad(36, []).total).key, 'heavy')
+  check('负太重时给 null 而不是瞎猜', enduranceForTier(500, loadTalismans, 'light'), null)
+  check('空构筑不需要耐力', enduranceForTier(0, [], 'medium').endurance, 1)
+
+  // 需求解析与检查
+  check('法术需求文本解析', parseRequirements('智力 19 / 信仰 10'), { int: 19, fai: 10 })
+  check('认不出的属性名不瞎猜', parseRequirements('幸运 30'), {})
+  check('空需求返回空对象', parseRequirements(''), {})
+
+  const stats = { ...DEFAULT_STATS }
+  check('需求达标判定', checkRequirements(stats, { str: 20, int: 40 }).map((row) => row.ok), [true, false])
+  check('缺口数量正确', checkRequirements(stats, { int: 40 }).map((row) => row.gap), [30])
+  check('需求为 0 的属性不参与判定', checkRequirements(stats, { fai: 0, arc: 0 }).length, 0)
+  // 双手持握：力气 30 视为 45，够到 40 的大剑需求
+  check('双手持握按 1.5 倍算力气', checkRequirements({ ...stats, str: 30 }, { str: 40 }, { twoHand: true }).map((row) => row.ok), [true])
+  check('不双手持握就够不到', checkRequirements({ ...stats, str: 30 }, { str: 40 }).map((row) => row.ok), [false])
+  check('双手持握向下取整', checkRequirements({ ...stats, str: 21 }, { str: 32 }, { twoHand: true }).map((row) => row.have), [31])
+
+  check('弓弩盾牌不能双手持握', ['轻弓', '弩炮', '大盾', '法杖', '圣印记'].map(canTwoHand), [false, false, false, false, false])
+  check('近战武器可以双手持握', ['刀', '特大剑', '大曲剑', '拳套'].every((type) => canTwoHand(type)), true)
+
+  // 汇总：重量只看武器与护符，FP 与记忆格只看法术
+  const { default: weaponsData } = await import('../src/data/weapons.js')
+  const { default: sorceriesData } = await import('../src/data/sorceries.js')
+  const pickWeapon = (name) => weaponsData.find((item) => item.name === name)
+  const moonveil = pickWeapon('名刀月隐')
+  const uchigatana = pickWeapon('打刀')
+  const rockSling = sorceriesData.find((item) => item.name === '岩石球')
+
+  check('月隐重量与需求', [moonveil.stats.weight, moonveil.requirements.int], [6.5, 23])
+  const sum = summarize({
+    weapons: [moonveil, uchigatana],
+    talismans: pickTalismans(['大壶众武护符', '魔法师球护符']),
+    spells: [rockSling],
+  })
+  check('汇总总负重', sum.totalWeight, 14.2)
+  check('汇总 FP 与记忆格', [sum.spellFp, sum.spellSlots], [18, 1])
+  check('空构筑全为 0', summarize({}).totalWeight, 0)
+
+  check('记忆格够用', memoryStatus(3, 8), { used: 3, capacity: 8, ok: true, over: 0 })
+  check('记忆格超标', memoryStatus(9, 8), { used: 9, capacity: 8, ok: false, over: 1 })
+
+  // 预设不能指向不存在的东西，属性也不能越界
+  const { buildPresets } = await import('../src/data/buildPresets.js')
+  const weaponNames = new Set(weaponsData.map((item) => item.name))
+  const { default: incantationsData } = await import('../src/data/incantations.js')
+  const spellNames = new Set([...sorceriesData, ...incantationsData].map((item) => item.name))
+  const talismanNames = new Set(talismansData.map((item) => item.name))
+
+  check('预设武器都存在', buildPresets.every((preset) => (!preset.main || weaponNames.has(preset.main)) && (!preset.off || weaponNames.has(preset.off))), true)
+  check('预设护符都存在', buildPresets.every((preset) => preset.talismans.every((name) => talismanNames.has(name))), true)
+  check('预设法术都存在', buildPresets.every((preset) => preset.spells.every((name) => spellNames.has(name))), true)
+  check('预设护符不超过 4 个', buildPresets.every((preset) => preset.talismans.length <= 4), true)
+  check('预设属性齐全且不越界', buildPresets.every((preset) => ATTRS.every((attr) => {
+    const value = preset.stats[attr.key]
+    return Number.isInteger(value) && value >= 1 && value <= 99
+  })), true)
+  check('预设 key 不重复', new Set(buildPresets.map((preset) => preset.key)).size, buildPresets.length)
+
+  // SSR 实渲染：默认空构筑要能出结果栏，且不报错
+  const { default: BuildView } = await vite.ssrLoadModule('/src/views/BuildView.vue')
+  const buildRouter = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/', component: () => null },
+      { path: '/build', component: BuildView },
+      { path: '/weapons/:id', component: () => null },
+      { path: '/runes/:id', component: () => null },
+    ],
+  })
+  await buildRouter.push('/build')
+  await buildRouter.isReady()
+  const buildApp = createSSRApp(BuildView)
+  buildApp.use(buildRouter)
+  const buildHtml = await renderToString(buildApp)
+
+  check('SSR 构筑器渲染八个属性', (buildHtml.match(/class="stat-cell"/g) || []).length, 8)
+  check('SSR 构筑器渲染四个护符栏位', (buildHtml.match(/class="slot"/g) || []).length >= 6, true)
+  check('SSR 构筑器显示默认负重上限', buildHtml.includes('72.0'), true)
+  check('SSR 构筑器渲染空态提示', buildHtml.includes('还没装东西'), true)
+
+  // 带参数的构筑：URL → 状态还原，负重与档位要跟着变
+  const withBuild = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/', component: () => null },
+      { path: '/build', component: BuildView },
+      { path: '/weapons/:id', component: () => null },
+      { path: '/runes/:id', component: () => null },
+    ],
+  })
+  await withBuild.push({
+    path: '/build',
+    query: { w: 'moonveil', t: '大壶众武护符', st: '40,25,20,12,20,40,10,10' },
+  })
+  await withBuild.isReady()
+  const builtApp = createSSRApp(BuildView)
+  builtApp.use(withBuild)
+  const builtHtml = await renderToString(builtApp)
+
+  check('SSR 按 URL 还原主手武器', builtHtml.includes('名刀月隐'), true)
+  check('SSR 按 URL 还原护符', builtHtml.includes('大壶众武护符'), true)
+  check('SSR 负重随构筑变化', builtHtml.includes('76.3'), true)
+  // 智力 40 满足月隐 23，标不应出现在缺口列表里
+  check('SSR 满足需求时不列缺口', builtHtml.includes('当前属性满足所有装备的需求'), true)
+
+  // 属性不够时要把缺口列出来
+  const gapRouter = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/', component: () => null },
+      { path: '/build', component: BuildView },
+      { path: '/weapons/:id', component: () => null },
+      { path: '/runes/:id', component: () => null },
+    ],
+  })
+  await gapRouter.push({ path: '/build', query: { w: 'moonveil', st: '10,10,10,10,10,5,10,10' } })
+  await gapRouter.isReady()
+  const gapApp = createSSRApp(BuildView)
+  gapApp.use(gapRouter)
+  const gapHtml = await renderToString(gapApp)
+  check('SSR 属性不足时列出缺口', (gapHtml.match(/class="gap-row"/g) || []).length, 3)
+  check('SSR 缺口包含智力', gapHtml.includes('差 18'), true)
+
+  // 护符的 +1 / +2 强化版在 URL 里是 %2B，被中间环节还原成空格后仍要能认回来
+  const { parseQuery, stringifyQuery } = await import('vue-router')
+  check('护符 +2 能完整往返 URL', parseQuery(stringifyQuery({ t: '黄金树的恩惠+2' })).t, '黄金树的恩惠+2')
+
+  const plusRouter = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/', component: () => null },
+      { path: '/build', component: BuildView },
+      { path: '/weapons/:id', component: () => null },
+      { path: '/runes/:id', component: () => null },
+    ],
+  })
+  await plusRouter.push({ path: '/build', query: { t: '黄金树的恩惠 2', st: '40,10,10,10,10,10,10,10' } })
+  await plusRouter.isReady()
+  const plusApp = createSSRApp(BuildView)
+  plusApp.use(plusRouter)
+  const plusHtml = await renderToString(plusApp)
+  check('护符名里的 + 变成空格也能认回来', plusHtml.includes('黄金树的恩惠+2'), true)
+  check('认回来之后计入负重', plusHtml.includes('1.5'), true)
+
+  // 分享链接里带着已删除的旧 id 时，界面不该凭空多出一件装备
+  const staleRouter = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/', component: () => null },
+      { path: '/build', component: BuildView },
+      { path: '/weapons/:id', component: () => null },
+      { path: '/runes/:id', component: () => null },
+    ],
+  })
+  await staleRouter.push({ path: '/build', query: { w: 'not-a-weapon', t: '不存在的护符', s: 'sc:不存在', st: '40,10,10,10,10,10,10,10' } })
+  await staleRouter.isReady()
+  const staleApp = createSSRApp(BuildView)
+  staleApp.use(staleRouter)
+  const staleHtml = await renderToString(staleApp)
+  check('失效 id 被清掉且不报错', staleHtml.includes('还没装东西'), true)
+  check('失效构筑负重归零', staleHtml.includes('0.0'), true)
+
+  // 工具页也进全站搜索：搜「负重」「进度」应该直接给到页面
+  const { searchAll: searchTools } = await import('../src/utils/search.js')
+  check('搜「负重」能进构筑器', searchTools('负重').some((group) => group.group === 'tools' && group.items[0].to === '/build'), true)
+  check('搜「进度」能进进度页', searchTools('进度').some((group) => group.group === 'tools' && group.items[0].to === '/progress'), true)
+}
+
 await vite.close()
 
 console.log(failed ? `\n${failed} 项未通过` : '\n全部通过')

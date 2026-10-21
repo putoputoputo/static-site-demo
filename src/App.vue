@@ -58,7 +58,10 @@ const navGroups = [
   },
   {
     label: '工具',
-    items: [{ path: '/progress', label: '我的进度', desc: '主线 / 支线 / 收藏总览' }],
+    items: [
+      { path: '/build', label: '构筑器', desc: '负重 · 需求 · 记忆格' },
+      { path: '/progress', label: '我的进度', desc: '主线 / 支线 / 收藏总览' },
+    ],
   },
 ]
 

@@ -31,6 +31,7 @@ const routes = [
     component: () => import('../views/BossDetailView.vue'),
   },
   { path: '/progress', name: 'progress', component: () => import('../views/ProgressView.vue') },
+  { path: '/build', name: 'build', component: () => import('../views/BuildView.vue') },
   {
     path: '/main-quest',
     name: 'main-quest',

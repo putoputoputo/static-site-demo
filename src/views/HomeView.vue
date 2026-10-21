@@ -26,7 +26,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar, Present, Aim } from '@element-plus/icons-vue'
+import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar, Present, Aim, SetUp, DataLine } from '@element-plus/icons-vue'
 import {
   weaponCount,
   weaponTypeCount,
@@ -103,6 +103,20 @@ const boards = [
     desc: `${bossStats.total} 个 BOSS（本体 ${bossStats.base} + DLC ${bossStats.dlc}）：推荐等级、弱点抗性、打法要点与可召唤帮手`,
     path: '/bosses',
     icon: Aim,
+    ready: true,
+  },
+  {
+    label: '构筑器',
+    desc: '武器 + 四个护符 + 记忆格，实时算总负重、负重档位、属性需求与 FP，构筑可分享',
+    path: '/build',
+    icon: SetUp,
+    ready: true,
+  },
+  {
+    label: '我的进度',
+    desc: '主线章节、支线任务、武器与图鉴收藏汇总在一页，支持导出 / 导入 JSON 备份',
+    path: '/progress',
+    icon: DataLine,
     ready: true,
   },
 ]

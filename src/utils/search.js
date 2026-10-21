@@ -1,4 +1,4 @@
-// 全站搜索：一次输入，跨 8 个模块查
+// 全站搜索：一次输入，跨 11 个模块查
 //
 // 索引是惰性构建的 —— 数据总量上千条，但只在用户第一次打开搜索框时才 import，
 // 这样不会把 quests（53 万字符）、weapons（480 条）全塞进首屏 chunk。
@@ -14,7 +14,7 @@ import { codexModules } from '../data/codex.js'
 import { remembranceList } from './remembrances.js'
 import { bossList, bossHref } from './bosses.js'
 
-export const searchGroupOrder = ['weapons', 'talismans', 'sorceries', 'incantations', 'spirits', 'quests', 'main', 'regions', 'bosses', 'remembrances']
+export const searchGroupOrder = ['weapons', 'talismans', 'sorceries', 'incantations', 'spirits', 'quests', 'main', 'regions', 'bosses', 'remembrances', 'tools']
 
 export const searchGroupLabels = {
   weapons: '武器',
@@ -27,7 +27,25 @@ export const searchGroupLabels = {
   regions: '区域',
   bosses: 'BOSS',
   remembrances: '追忆兑换',
+  tools: '工具',
 }
+
+// 工具页没有「条目」，但玩家会直接搜「负重」「配装」「进度」，
+// 所以给两个工具页各放一条静态索引，命中后直接跳到页面。
+const toolEntries = [
+  {
+    name: '构筑器',
+    sub: '工具 · 负重 / 需求 / 记忆格',
+    extra: '配装 装配 加点 属性需求 装备重量 负重档位 记忆格 记忆石 FP 双手持握 预设法术 武器 护符 build',
+    to: '/build',
+  },
+  {
+    name: '我的进度',
+    sub: '工具 · 主线 / 支线 / 收藏总览',
+    extra: '进度 已完成 通关 收藏 备份 导入 导出 存档 换设备',
+    to: '/progress',
+  },
+]
 
 let cache = null
 
@@ -112,6 +130,8 @@ export function buildIndex() {
       to: `/main-quest/remembrances?q=${encodeURIComponent(entry.boss)}`,
     })
   })
+
+  toolEntries.forEach((entry) => push(map, 'tools', entry))
 
   cache = map
   return map
