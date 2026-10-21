@@ -286,40 +286,18 @@
     </div>
 
     <!-- 分页栏 -->
-    <nav v-if="filteredWeapons.length" class="pager" aria-label="武器分页">
-      <div v-if="pageSize" class="pager-main">
-        <button class="pager-step" :disabled="currentPage <= 1" @click="goPage(currentPage - 1)">
-          上一页
-        </button>
-        <button
-          v-for="(item, index) in pageItems"
-          :key="`${item}-${index}`"
-          class="pager-num"
-          :class="{ active: item === currentPage, gap: item === '...' }"
-          :disabled="item === '...'"
-          @click="goPage(item)"
-        >
-          {{ item }}
-        </button>
-        <button class="pager-step" :disabled="currentPage >= totalPages" @click="goPage(currentPage + 1)">
-          下一页
-        </button>
-      </div>
-      <span v-else class="pager-all">已在同一页展示全部 {{ filteredWeapons.length }} 件</span>
-
-      <div class="pager-size">
-        <span class="pager-label">每页</span>
-        <button
-          v-for="option in pageSizeOptions"
-          :key="option.value"
-          class="size-chip"
-          :class="{ active: pageSize === option.value }"
-          @click="setPageSize(option.value)"
-        >
-          {{ option.label }}
-        </button>
-      </div>
-    </nav>
+    <PagerBar
+      v-if="filteredWeapons.length"
+      :page-size="pageSize"
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      :page-items="pageItems"
+      :page-size-options="pageSizeOptions"
+      :total="filteredWeapons.length"
+      unit="件"
+      @change-page="goPage"
+      @change-size="setPageSize"
+    />
 
     <!-- 空状态 -->
     <el-empty v-if="filteredWeapons.length === 0" description="没有符合条件的武器，换个关键词试试">
@@ -333,6 +311,7 @@ import { computed, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { Search, RefreshLeft, Star, StarFilled } from '@element-plus/icons-vue'
 import weapons, { weaponTypeGroups } from '../data/weapons'
+import PagerBar from '../components/PagerBar.vue'
 import { usePagination } from '../composables/usePagination'
 import { useWeaponFavorites } from '../composables/useWeaponFavorites'
 import {
@@ -1006,104 +985,6 @@ function goDetail(row) {
   color: #5d5849;
 }
 
-/* 分页栏 */
-.pager {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 12px 16px;
-  border: 1px solid #302b1f;
-  border-radius: 10px;
-  background: #1a1a1a;
-}
-
-.pager-main {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.pager-step,
-.pager-num {
-  min-width: 34px;
-  height: 32px;
-  padding: 0 10px;
-  font-size: 13px;
-  color: #b8b2a0;
-  background: #202020;
-  border: 1px solid #383225;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.18s;
-}
-
-.pager-step:hover:not(:disabled),
-.pager-num:hover:not(:disabled) {
-  color: #d4af37;
-  border-color: #6b5c2e;
-}
-
-.pager-step:disabled,
-.pager-num:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.pager-num.active {
-  color: #121212;
-  font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
-}
-
-.pager-num.gap {
-  background: transparent;
-  border-color: transparent;
-}
-
-.pager-size {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.pager-label {
-  font-size: 12px;
-  color: #8a8574;
-}
-
-.size-chip {
-  min-width: 46px;
-  padding: 4px 10px;
-  font-size: 12px;
-  color: #b8b2a0;
-  background: #202020;
-  border: 1px solid #383225;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.18s;
-}
-
-.size-chip:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
-}
-
-.size-chip.active {
-  color: #121212;
-  font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
-}
-
-.pager-all {
-  font-size: 12.5px;
-  color: #8a8574;
-}
-
 @media (max-width: 1000px) {
   .weapon-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1124,10 +1005,6 @@ function goDetail(row) {
   }
   .hero-badges {
     flex-wrap: wrap;
-  }
-  .pager {
-    flex-direction: column;
-    align-items: flex-start;
   }
 }
 </style>

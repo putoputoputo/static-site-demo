@@ -1,84 +1,156 @@
 # 艾尔登法环 · 攻略站
 
-基于 Vue 3 + Element Plus + Vite 的《艾尔登法环》中文攻略站，目前完成**武器图鉴**与**支线任务**模块。
+基于 **Vue 3 + Element Plus + Vite** 的《艾尔登法环》中文攻略站，覆盖主线、支线、区域 BOSS、武器、护符、魔法、祷告、骨灰八个模块，全部为数据驱动，无后端。
+
+## 已上线模块
+
+| 模块 | 入口 | 规模 |
+| --- | --- | --- |
+| 主线 | `/main-quest` | 12 章（本体 8 + DLC 4）/ 86 步 / 41 个 BOSS / 6 个结局 |
+| 支线 | `/side-quests` | 51 条 NPC 支线（本体 37 + DLC 14）/ 531 步 / 168 条分支 / 220 项奖励 |
+| 区域 & BOSS | `/main-quest/regions` | 33 个区域（地表 12 / 据点 1 / 地下 7 / DLC 13）/ 105 个 BOSS / 25 个追忆 |
+| 武器 | `/weapons` | 480 件 / 42 个类型（DLC 102 件） |
+| 护符 | `/runes` | 149 个（DLC 28）/ 7 个分类 / 6 个大卢恩 |
+| 魔法 | `/sorceries` | 84 个（DLC 14）/ 12 个学派 |
+| 祷告 | `/incantations` | 129 个（DLC 28）/ 14 个体系 |
+| 骨灰 | `/spirits` | 84 个（DLC 20）/ 6 类定位 |
+
+> BOSS 数有两套口径：主线章节里出现的是 **41 个**（剧情推进相关），区域图鉴收录的是 **105 个**（含全部可选 BOSS）。
 
 ## 功能
 
-### 支线任务
+### 主线
 
-- **收录 51 条 NPC 支线**：本体 37 条 + DLC「黄金树幽影」14 条，标注 36 条易错过节点
-- **全部完成全流程整理**：51 条均含分步流程、前置条件、奖励与分支对照，共 300+ 个步骤、160+ 条分支说明
-- **多维筛选**：关键词搜索（NPC / 区域 / 奖励 / 步骤文本）、区域筛选、本体/DLC 切换、仅看易错过、按完成状态过滤
-- **流程详情**：分步时间轴、每步地点与注意事项、分支与结局对照、前置条件、奖励、关联支线、同区域支线、上下条翻页
-- **本地进度**：`localStorage` 记录已完成支线，列表页显示「我的进度」
+- 章节时间线，标注进入条件、目标等级、武器强化档位、推荐追忆；本体与 DLC 各自成链，不会从灰烬王城直接跳到幽影之地
+- 章节详情：分步流程、BOSS 清单（区分必打）、关键道具、易错过警告（可直接跳转到对应支线）、下一步条件
+- 结局对照：6 个结局的触发条件与前置支线
+- 本地进度：`localStorage` 记录已通关章节
 
-### 武器图鉴
+### 支线
 
-- **武器图鉴**：收录 116 件武器，覆盖本体 32 类与 DLC「黄金树幽影」新增 8 类，共 40 个武器类型
-- **多维筛选**：关键词搜索（名称/战技/玩法/异常状态）、类型分组筛选、补正属性、异常状态（出血/冻伤/黑焰）、DLC / 收藏夹开关
-- **双视图**：卡片视图与表格视图切换，支持按名称、物理面板、补正总和、重量排序
-- **武器详情**：面板速览、攻击力条形图、补正与需求对照、战技说明、玩法要点、推荐配装、获取位置、同类武器速跳与上下翻页
-- **本地收藏**：`localStorage` 持久化，列表页与详情页共享状态
+- 51 条支线全部含分步流程，每步带地点、细节与提示，另附前置条件、奖励、分支对照
+- 关键词搜索覆盖 NPC / 区域 / 奖励 / 步骤正文；支持区域筛选、本体/DLC 切换、仅看易错过、按完成状态过滤
+- 详情页：步骤时间轴、分支后果、关联支线（真实 id 互链，构建期校验）、同区域支线、上下条翻页
+- 本地进度：`localStorage` 记录已完成支线，列表页显示「我的进度」
+
+### 区域 & BOSS 图鉴
+
+- 按地表 / 据点 / 地下 / 幽影之地四层分组，区域卡片含进入方式、子区域、章节归属与关键道具
+- BOSS 可单独搜索，标记是否追忆、是否必打；追忆总表单列 25 个追忆 BOSS
+- BOSS 若关联支线，名字后直接给出跳转链接
+
+### 武器
+
+- 数值、补正、需求、战技、异常状态、获取位置与玩法要点全覆盖
+- 筛选：关键词（名称 / 战技 / 玩法 / 异常状态）、42 个类型分组多选、补正属性、异常状态、版本（全部 / 本体 / DLC）、只看收藏
+- 排序：名称、物理面板、补正总和、重量；卡片与表格双视图
+- 详情页：攻击力条形图、补正与需求对照、战技说明、推荐配装、同类型面板最接近的武器、上下件翻页
+
+### 护符 / 魔法 / 祷告 / 骨灰
+
+四个模块共用一套通用图鉴组件（`views/CodexView.vue` + `views/CodexDetailView.vue`），由 `src/data/codex.js` 注册表注入配置：
+
+- 统一的分类筛选、推荐度（S/A/B/C）、只看核心 / 只看 DLC、按 FP / 记忆格 / 重量排序
+- 详情页含效果、获取位置、分类思路、同类推荐与上下文跳转
+- 每个模块在注册表里附带「分类思路」文案，解释各分类之间的取舍
 
 ## 技术栈
 
 | 依赖 | 版本 |
 | --- | --- |
-| Vue | 3.4 |
-| Vue Router | 4 |
-| Element Plus | 2.x |
-| Vite | 5.x |
+| Vue | 3.5 |
+| Vue Router | 4.5 |
+| Element Plus | 2.8 |
+| Vite | 6.0 |
+| Node.js | 18+ |
 
 ## 开发
 
 ```bash
 npm install
-npm run dev      # 开发服务器
+npm run dev      # 开发服务器（predev 会自动生成统计与 404.html）
 npm run build    # 产物输出到 dist/
 npm run preview  # 预览构建产物
+npm run check    # 页面回归检查（分页逻辑 + SSR 实渲染 + 404 兜底）
 ```
+
+`npm run check` 会跑三类断言：`usePagination` 的纯逻辑（页码折叠、越界钳制、筛选重置、结果变少收敛）、武器与四个图鉴列表的 SSR 实渲染（首屏卡片数、页码、提示文案），以及 404 路由与静态兜底文件。
 
 ## 部署到 GitHub Pages
 
-本项目是 SPA 且使用 history 路由，部署到子路径时需要指定 base：
+仓库已配置 `.github/workflows/deploy.yml`，push 到 `main` 即自动构建并发布。
+
+本地手动构建子路径产物：
 
 ```bash
-BASE_PATH=/static-site-demo/ npm run build
+# Git Bash 需要 MSYS_NO_PATHCONV=1，否则 /static-site-demo/ 会被当成路径转换
+MSYS_NO_PATHCONV=1 BASE_PATH=/static-site-demo/ npm run build
 ```
 
-`vite.config.js` 会读取 `BASE_PATH` 环境变量作为 `base`，路由同步使用 `import.meta.env.BASE_URL`。
-注意：history 路由在 Pages 上直接访问 `/weapons` 这类深链接会 404，需要用 404.html 重写或改用 hash 路由。
+`vite.config.js` 读取 `BASE_PATH` 作为 `base`，路由使用 `import.meta.env.BASE_URL`。
 
-## 构建与性能
+### 深链接如何处理
 
-页面与数据量增长后，单文件 bundle 会一路膨胀（曾达到 1.4MB），因此做了三层拆分：
+这是 history 路由部署到静态托管的经典问题：直接访问 `/weapons/moonveil` 时服务器上没有对应文件，会返回 404。
 
-1. **路由级懒加载**：`router/index.js` 全部使用 `() => import(...)`，各页面与它依赖的数据文件被拆成独立 chunk，首屏只加载首页需要的代码。
-2. **Element Plus 按需引入**：`unplugin-vue-components` + `ElementPlusResolver` 只打包模板里实际用到的 `el-*` 组件（配合 `el-config-provider` 注入中文语言包）；图标改为在组件内显式 `import`，不再整包注册。
-3. **首页统计与数据解耦**：首页只需要几个数字，改由 `scripts/gen-summary.mjs` 在 `predev` / `prebuild` 阶段从数据文件生成 `src/data/summary.js`，首页不再把整份武器 / 支线数据拉进首屏。
+处理方式分两层：
 
-效果（未压缩 / gzip）：
+1. `scripts/gen-404.mjs` 在 `predev` / `prebuild` 阶段生成 `public/404.html`，把部署 `base` 写进脚本。404.html 先把真实路径存进 `sessionStorage`，再跳回站点根。
+2. `src/router/index.js` 在创建 router 之前读回 `sessionStorage`，用 `history.replaceState` 把地址改回目标路径，用户感知不到中间跳转。
 
-| 指标 | 优化前 | 优化后 |
+`public/404.html` 因此不入库（已加入 `.gitignore`），因为它依赖构建期的 `BASE_PATH`。
+
+站内还有一个 catch-all 路由指向 `NotFoundView`，访问不存在的路径不会白屏。
+
+## 架构
+
+```
+数据文件（src/data）→ utils 计算 / 筛选 → 视图渲染
+                          ↑
+              summary.js（构建期生成，首页专用）
+```
+
+几个约定：
+
+1. **数据与视图分离**：每个模块的筛选、排序、匹配逻辑放在 `src/utils/*.js`，视图只负责渲染与交互；同类模块共用一个视图，差异通过注册表注入。
+2. **首页统计独立**：`scripts/gen-summary.mjs` 在构建期从数据文件生成 `src/data/summary.js`，首页只读这几个数字，不引入完整数据集。
+3. **列表分页**：`src/composables/usePagination.js` 接收「已筛选排序完成的完整列表」，输出分页切片。默认 20 条/页，另有 48 / 120 / 全部三档。
+   - 之所以保留「全部」：分页后未展示的条目不在 DOM 里，浏览器 Ctrl+F 搜不到，容易被误认为数据缺失。结果条会提示当前处于哪种模式。
+   - 筛选 / 排序任一变化都回到第 1 页（`resetToken` 指纹），结果变少时收敛越界页码。
+4. **进度与收藏**：`useQuestProgress` / `useMainProgress` / `useWeaponFavorites` 三个独立 `localStorage` key，互不干扰。
+
+### 构建产物
+
+| 产物 | 未压缩 | gzip |
 | --- | --- | --- |
-| 最大单文件 | 1424 KB | 166 KB |
-| 首屏 JS | 1424 KB / ~380 KB | 316 KB / 117 KB |
+| 入口 JS | 171 KB | 66 KB |
+| Element Plus（共享） | 171 KB | 66 KB |
+| 最大业务 chunk（支线数据） | 265 KB | 89 KB |
+| 全站 CSS（含 Element Plus） | 366 KB | 49 KB |
 
-> 修改 `src/data/weapons.js` 或 `quests.js` 后，`npm run dev` / `npm run build` 会自动重新生成 `summary.js`；单独跑 `node scripts/gen-summary.mjs` 也可以。
+最大的一批数据（支线 265 KB、武器 212 KB、图鉴 81 KB）都在路由级懒加载的 chunk 里，不进首屏。
 
 ## 目录结构
 
 ```
-scripts/             # 构建期脚本（生成首页统计）
+scripts/
+├── gen-summary.mjs   # 构建期生成首页统计
+├── gen-404.mjs       # 构建期生成带 base 的 404.html
+├── check.mjs         # 页面回归检查
+└── replace-quest.mjs # 批量改写支线数据的工具
 src/
-├── composables/     # 组合式函数（收藏夹、支线进度等）
-├── data/            # 静态数据（武器图鉴、支线、自动生成的统计）
-├── router/          # 路由配置（懒加载）
-├── utils/           # 通用工具（补正换算、筛选匹配等）
-├── views/           # 页面视图
-└── assets/          # 全局样式
+├── components/       # 跨页面复用组件（分页栏）
+├── composables/      # 分页、收藏、进度
+├── data/             # 静态数据 + 自动生成的 summary.js
+├── router/           # 路由（懒加载 + 深链接恢复 + catch-all）
+├── utils/            # 补正换算、筛选匹配、邻居查询
+├── views/            # 页面视图
+└── assets/           # 全局样式
 ```
 
-## 说明
+## 数据说明
 
-武器面板数值均为游戏内未强化基础值，整理自公开攻略资料，仅供配装参考；盾牌不计攻击力。
+- 武器面板为游戏内**未强化基础值**；盾牌不计攻击力。热门武器数值准确，冷门武器为同类型基准估算。
+- 获取位置只精确到区域或主要地标，不臆造具体房间。
+- 译名以简中官方为准，部分条目在数据文件里保留别名以便搜索。
+- 内容整理自公开攻略资料与社区 Wiki，仅供学习交流，与 FromSoftware / 万代南梦宫无关。

@@ -68,6 +68,10 @@
         <template v-if="categories.length">
           · 已选 {{ categories.map((id) => labelOf(id)).join('、') }}
         </template>
+        <span v-if="filtered.length" class="result-hint">
+          <template v-if="pageSize">当前显示第 {{ pageStart + 1 }}–{{ pageEnd }} 条 · 分页模式，需全文查找请切「全部」</template>
+          <template v-else>已全部渲染，可直接用浏览器 Ctrl+F 查找</template>
+        </span>
       </span>
       <el-button v-if="isFiltering" text type="warning" size="small" :icon="RefreshLeft" @click="resetFilters">
         清除筛选
@@ -75,9 +79,9 @@
     </div>
 
     <!-- 卡片 -->
-    <div v-if="filtered.length" class="codex-grid">
+    <div v-if="filtered.length" ref="listRef" class="codex-grid">
       <RouterLink
-        v-for="item in visibleItems"
+        v-for="item in pagedItems"
         :key="item.id"
         class="codex-card"
         :to="itemHref(module, item)"
@@ -124,11 +128,19 @@
       </RouterLink>
     </div>
 
-    <div v-if="visibleItems.length < filtered.length" class="load-more">
-      <el-button plain @click="limit += 48">
-        再显示 48 条（剩余 {{ filtered.length - visibleItems.length }}）
-      </el-button>
-    </div>
+    <!-- 分页栏 -->
+    <PagerBar
+      v-if="filtered.length"
+      :page-size="pageSize"
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      :page-items="pageItems"
+      :page-size-options="pageSizeOptions"
+      :total="filtered.length"
+      :unit="`条${module.itemLabel}`"
+      @change-page="goPage"
+      @change-size="setPageSize"
+    />
 
     <el-empty v-if="filtered.length === 0" description="没有符合条件的条目，换个关键词或清掉筛选试试">
       <el-button type="primary" plain @click="resetFilters">清除筛选</el-button>
@@ -141,6 +153,8 @@ import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Search, RefreshLeft, Location, ArrowRight } from '@element-plus/icons-vue'
 import { getCodexModule } from '../data/codex'
+import PagerBar from '../components/PagerBar.vue'
+import { usePagination } from '../composables/usePagination'
 import { categoryCounts, filterCodex, itemHref, sortCodex, tierColor, tierLabel } from '../utils/codex'
 
 const props = defineProps({
@@ -154,7 +168,13 @@ const categories = ref([])
 const onlyDlc = ref(false)
 const onlyTop = ref(false)
 const sortKey = ref('default')
-const limit = ref(48)
+const listRef = ref(null)
+const pageSizeOptions = [
+  { value: 20, label: '20' },
+  { value: 48, label: '48' },
+  { value: 120, label: '120' },
+  { value: 0, label: '全部' },
+]
 
 const categoryOptions = computed(() => categoryCounts(module.value.items, module.value.categories))
 
@@ -179,11 +199,52 @@ const filtered = computed(() => {
   return sortCodex(list, sortKey.value)
 })
 
-const visibleItems = computed(() => filtered.value.slice(0, limit.value))
+// 分页：护符 149 / 祷告 129 / 魔法 84 / 骨灰 84 都超过一屏，全量渲染会让首屏变重。
+// 默认 20 条/页；「全部」选项保留 Ctrl+F 全文查找（此前「每批 48 条」会让第 49 条起搜不到）。
+const filterToken = () =>
+  [keyword.value, sortKey.value, onlyDlc.value, onlyTop.value, categories.value.join(',')].join('|')
 
-watch([keyword, categories, onlyDlc, onlyTop, sortKey], () => {
-  limit.value = 48
+const {
+  pageSize,
+  currentPage,
+  totalPages,
+  pageStart,
+  pageEnd,
+  pageItems,
+  pagedList: pagedItems,
+  goPage: changePage,
+  setPageSize: changePageSize,
+} = usePagination(filtered, {
+  initialPageSize: 20,
+  resetToken: filterToken,
 })
+
+// 筛选变化时视口可能停在旧列表底部，拉回列表顶部（须在上面的 watch 之后注册）
+watch(filterToken, () => scrollToList())
+
+// 同一组件被 /runes、/sorceries 等路由复用，切模块时筛选项会残留（护符的分类 id 在魔法里不存在，
+// 结果就是空列表），必须整体重置
+watch(
+  () => props.moduleKey,
+  () => resetFilters()
+)
+
+function goPage(page) {
+  if (changePage(page)) scrollToList()
+}
+
+function setPageSize(size) {
+  if (changePageSize(size)) scrollToList()
+}
+
+function scrollToList() {
+  const element = listRef.value
+  if (!element) return
+  const top = element.getBoundingClientRect().top + window.scrollY - 84
+  if (window.scrollY > top) {
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
+}
 
 const isFiltering = computed(
   () =>
@@ -381,6 +442,12 @@ function resetFilters() {
   color: #d4af37;
 }
 
+.result-hint {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #6b6555;
+}
+
 /* 卡片 */
 .codex-grid {
   display: grid;
@@ -543,12 +610,6 @@ function resetFilters() {
 .arrow {
   margin-left: auto;
   color: #6b6555;
-}
-
-.load-more {
-  display: flex;
-  justify-content: center;
-  padding: 6px 0 2px;
 }
 
 @media (max-width: 1100px) {

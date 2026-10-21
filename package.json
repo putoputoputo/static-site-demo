@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "node scripts/gen-summary.mjs",
+    "predev": "node scripts/gen-summary.mjs && node scripts/gen-404.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/gen-summary.mjs",
+    "prebuild": "node scripts/gen-summary.mjs && node scripts/gen-404.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "check:pager": "node scripts/check-pager.mjs"
+    "gen:404": "node scripts/gen-404.mjs",
+    "check": "node scripts/check.mjs"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",

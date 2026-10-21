@@ -1,5 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+// 静态托管（GitHub Pages）上直接访问深链接会命中 404.html，
+// 它把真实路径存进 sessionStorage 后跳回站点根。这里必须在 createWebHistory
+// 读取 location 之前把地址改回去，否则用户会落在首页。
+const REDIRECT_KEY = 'er-guide:spa-redirect'
+
+if (typeof window !== 'undefined') {
+  const pendingPath = window.sessionStorage.getItem(REDIRECT_KEY)
+  if (pendingPath) {
+    window.sessionStorage.removeItem(REDIRECT_KEY)
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+    window.history.replaceState(null, '', `${base}${pendingPath}`)
+  }
+}
+
 // 路由级懒加载：各页面与它们依赖的数据文件会被拆成独立 chunk，
 // 首屏只下载当前路由需要的代码，避免单文件 bundle 随内容增长一路膨胀。
 const routes = [
@@ -71,6 +85,12 @@ const routes = [
     name: 'spirit-detail',
     component: () => import('../views/CodexDetailView.vue'),
     props: { moduleKey: 'spirits' },
+  },
+  // 必须放最后：未匹配的路径统一落到 404 页，而不是白屏
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('../views/NotFoundView.vue'),
   },
 ]
 
