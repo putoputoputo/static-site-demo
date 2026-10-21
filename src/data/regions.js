@@ -51,7 +51,7 @@ export const mainRegions = [
         name: '恶兆妖鬼玛尔基特',
         place: '风暴关卡',
         required: true,
-        note: '主线第一道门槛，雾门前可召唤涅斐丽。',
+        note: '主线第一道门槛，雾门前可召唤魔法师罗杰尔。',
       },
       {
         name: '接肢葛瑞克',

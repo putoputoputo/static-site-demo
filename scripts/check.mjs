@@ -245,6 +245,80 @@ if (existsSync(notFoundStatic)) {
   check('武器详情配装标签可点', (detailHtml.match(/class="item-tag is-link"/g) || []).length > 0, true)
 }
 
+/* ---------- 6. BOSS 攻略 ---------- */
+{
+  const { bossList, bossStats, bossTypes, bossWeaknesses, filterBosses, getBoss, bossHref, bossRegions } =
+    await import('../src/utils/bosses.js')
+
+  check('BOSS 总数', bossStats.total, 105)
+  check('BOSS = 本体 80 + DLC 25', [bossStats.base, bossStats.dlc], [80, 25])
+  check('每个 BOSS 都有攻略', bossStats.withGuide, 105)
+  check(
+    '每个 BOSS 都有推荐等级与打法要点',
+    bossList.every((boss) => boss.level !== '—' && boss.tips.length > 0),
+    true
+  )
+  check('追忆 BOSS 全部带兑换信息', bossList.filter((boss) => boss.remembrance).every((boss) => boss.exchange), true)
+  check('DLC 追忆 BOSS 带幽影树祝福等级', bossList.filter((boss) => boss.dlc && boss.remembrance).every((boss) => boss.blessing), true)
+  check('BOSS 地址唯一', new Set(bossList.map((boss) => bossHref(boss))).size, 105)
+  check('必打筛选', filterBosses(bossList, { kind: 'required' }).length, 19)
+  check('追忆筛选', filterBosses(bossList, { kind: 'remembrance' }).length, 25)
+  check('弱点筛选（出血）命中足够多', filterBosses(bossList, { weaknesses: ['出血'] }).length > 10, true)
+  check('区域筛选只返回该区域', filterBosses(bossList, { region: 'limgrave' }).length, 8)
+  check('区域筛选与 DLC 筛选叠加', filterBosses(bossList, { region: 'enir' }).every((boss) => boss.dlc), true)
+  check('类型标签非空', bossTypes.length > 5 && bossWeaknesses.length > 5, true)
+  check('区域列表排除了无 BOSS 区域', bossRegions.length, 31)
+
+  // 同名 BOSS 分布在不同区域，必须能分别取到，否则详情页会串
+  check('同名 BOSS 按区域区分', [
+    getBoss('limgrave', '死鸟')?.regionName,
+    getBoss('caelid', '死鸟')?.regionName,
+  ], ['宁姆格福', '盖利德'])
+  check('不存在的 BOSS 返回 null', getBoss('limgrave', '不存在的王'), null)
+
+  const { default: BossesView } = await vite.ssrLoadModule('/src/views/BossesView.vue')
+  const { default: BossDetailView } = await vite.ssrLoadModule('/src/views/BossDetailView.vue')
+
+  const bossRoutes = [
+    { path: '/', component: () => null },
+    { path: '/bosses', component: BossesView },
+    { path: '/bosses/:region/:name', component: BossDetailView },
+    { path: '/main-quest/regions', component: () => null },
+    { path: '/main-quest/remembrances', component: () => null },
+    { path: '/side-quests/:id', component: () => null },
+  ]
+  const renderBoss = async (view, path) => {
+    const router = createRouter({ history: createMemoryHistory(), routes: bossRoutes })
+    await router.push(path)
+    await router.isReady()
+    const app = createSSRApp(view)
+    app.use(router)
+    return renderToString(app)
+  }
+
+  const listHtml = await renderBoss(BossesView, '/bosses')
+  check('SSR BOSS 首屏卡片数', (listHtml.match(/class="[^"]*\bboss-card\b/g) || []).length, 20)
+  check('SSR BOSS 总页数', pagerOf(listHtml).nums.at(-1), '6')
+  check('SSR BOSS 英雄区统计', listHtml.includes('105'), true)
+
+  const detailHtml = await renderBoss(BossDetailView, `/bosses/${encodeURIComponent('limgrave')}/${encodeURIComponent('接肢葛瑞克')}`)
+  check('SSR BOSS 详情渲染标题', detailHtml.includes('接肢葛瑞克'), true)
+  check('SSR BOSS 详情有打法要点', (detailHtml.match(/class="tip-index"/g) || []).length >= 3, true)
+  check('SSR BOSS 详情弱点标签', (detailHtml.match(/class="attr-tag"/g) || []).length >= 3, true)
+  check('SSR BOSS 详情含追忆兑换', detailHtml.includes('追忆兑换 ·'), true)
+
+  const dlcHtml = await renderBoss(BossDetailView, `/bosses/enir/${encodeURIComponent('约定之王拉塔恩')}`)
+  check('SSR DLC BOSS 详情含祝福等级', dlcHtml.includes('幽影树祝福'), true)
+
+  const missHtml = await renderBoss(BossDetailView, `/bosses/limgrave/${encodeURIComponent('不存在的王')}`)
+  check('SSR 未知 BOSS 走空态', missHtml.includes('找不到这个 BOSS'), true)
+
+  // 首页与全站搜索都要能进到新模块
+  const { searchAll } = await import('../src/utils/search.js')
+  const bossHit = searchAll('接肢葛瑞克').find((group) => group.group === 'bosses')
+  check('搜索能命中 BOSS 详情页', bossHit?.items?.[0]?.to?.startsWith('/bosses/'), true)
+}
+
 await vite.close()
 
 console.log(failed ? `\n${failed} 项未通过` : '\n全部通过')

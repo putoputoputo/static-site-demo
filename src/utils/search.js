@@ -12,6 +12,7 @@ import { mainChapters } from '../data/mainline.js'
 import mainRegions from '../data/regions.js'
 import { codexModules } from '../data/codex.js'
 import { remembranceList } from './remembrances.js'
+import { bossList, bossHref } from './bosses.js'
 
 export const searchGroupOrder = ['weapons', 'talismans', 'sorceries', 'incantations', 'spirits', 'quests', 'main', 'regions', 'bosses', 'remembrances']
 
@@ -90,13 +91,16 @@ export function buildIndex() {
       extra: [region.summary, region.access, ...(region.subAreas || [])].filter(Boolean).join(' '),
       to: `/main-quest/regions?q=${encodeURIComponent(region.name)}`,
     })
-    ;(region.bosses || []).forEach((boss) => {
-      push(map, 'bosses', {
-        name: boss.name,
-        sub: `BOSS · ${region.name}${boss.remembrance ? ' · 追忆' : ''}`,
-        extra: [boss.place, boss.note].filter(Boolean).join(' '),
-        to: `/main-quest/regions?q=${encodeURIComponent(boss.name)}`,
-      })
+  })
+
+  // BOSS 现在有独立攻略页，索引直接指向详情；
+  // extra 里塞进弱点与掉落，这样搜「出血」「弱火」也能落到具体 BOSS
+  bossList.forEach((boss) => {
+    push(map, 'bosses', {
+      name: boss.name,
+      sub: `BOSS · ${boss.regionName}${boss.remembrance ? ' · 追忆' : ''}${boss.dlc ? ' · DLC' : ''}`,
+      extra: [boss.place, boss.note, boss.type, ...boss.weak, ...boss.drop].filter(Boolean).join(' '),
+      to: bossHref(boss),
     })
   })
 

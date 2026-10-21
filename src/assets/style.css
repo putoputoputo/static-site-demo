@@ -130,13 +130,13 @@ body {
   font-weight: normal;
 }
 
-/* 顶部导航项目增加到 8 个后，窄屏需要收紧间距 */
+/* 导航按「流程 / 图鉴 / 工具」分组后只剩 4 个入口，窄屏仍然收紧间距以便放得下 */
 @media (max-width: 980px) {
   .logo {
     font-size: 15px;
   }
 
-  /* 8 个导航项在手机宽度下必然放不下：改成横向滚动，而不是硬挤或折行把头部撑高 */
+  /* 分组后仍有 4 个入口 + 搜索按钮，窄屏放不下时横向滚动，而不是折行把头部撑高 */
   .header-right {
     flex: 1;
     justify-content: flex-end;
@@ -160,13 +160,6 @@ body {
     padding: 6px 7px;
     font-size: 13px;
     white-space: nowrap;
-  }
-}
-
-@media (max-width: 680px) {
-  /* 手机宽度下 logo 只留图标，给导航滚动区让出空间 */
-  .logo span {
-    display: none;
   }
 }
 

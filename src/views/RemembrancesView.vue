@@ -86,7 +86,12 @@
       >
         <div class="card-head">
           <div class="head-main">
-            <h2 class="boss-name">{{ entry.boss }}</h2>
+            <h2 class="boss-name">
+              <RouterLink v-if="entry.regionId" :to="bossHref(entry)" class="boss-link">
+                {{ entry.boss }}
+              </RouterLink>
+              <template v-else>{{ entry.boss }}</template>
+            </h2>
             <span class="remembrance-name">{{ entry.remembrance }}</span>
           </div>
           <span class="origin-chip" :class="entry.dlc ? 'dlc' : 'base'">
@@ -129,6 +134,9 @@ import { RouterLink } from 'vue-router'
 import { Search, RefreshLeft, InfoFilled } from '@element-plus/icons-vue'
 import { remembranceNotice, remembranceStats } from '../data/remembrances'
 import { remembranceList, exchangeTypeOptions, filterRemembrances } from '../utils/remembrances'
+
+// 追忆表里的 BOSS 名可点进「BOSS 攻略」详情，避免玩家为了查弱点再回列表翻一遍
+const bossHref = (entry) => `/bosses/${entry.regionId}/${encodeURIComponent(entry.boss)}`
 import { useQuerySync } from '../composables/useQuerySync'
 
 const notice = remembranceNotice
@@ -396,6 +404,18 @@ function typeClass(value) {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.boss-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+  transition: color 0.16s, border-color 0.16s;
+}
+
+.boss-link:hover {
+  color: #d4af37;
+  border-bottom-color: #6b5c2e;
 }
 
 .boss-name {

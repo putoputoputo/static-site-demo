@@ -26,7 +26,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar, Present } from '@element-plus/icons-vue'
+import { Flag, ChatDotRound, KnifeFork, Medal, MagicStick, Sunrise, Avatar, Present, Aim } from '@element-plus/icons-vue'
 import {
   weaponCount,
   weaponTypeCount,
@@ -39,6 +39,7 @@ import {
   spiritStats,
 } from '../data/summary'
 import { remembranceStats } from '../data/remembrances'
+import { bossStats } from '../utils/bosses.js'
 
 const boards = [
   {
@@ -95,6 +96,13 @@ const boards = [
     desc: `${remembranceStats.total} 个追忆 BOSS、${remembranceStats.items} 件可兑换物品：每个追忆能换什么、该换哪件，一眼看清`,
     path: '/main-quest/remembrances',
     icon: Present,
+    ready: true,
+  },
+  {
+    label: 'BOSS 攻略',
+    desc: `${bossStats.total} 个 BOSS（本体 ${bossStats.base} + DLC ${bossStats.dlc}）：推荐等级、弱点抗性、打法要点与可召唤帮手`,
+    path: '/bosses',
+    icon: Aim,
     ready: true,
   },
 ]

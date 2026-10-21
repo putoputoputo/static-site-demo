@@ -106,13 +106,27 @@
               :class="{ hit: isHit(boss) }"
             >
               <div class="boss-main">
-                <span class="boss-name">{{ boss.name }}</span>
+                <RouterLink
+                  v-if="bossGuideHref(region, boss)"
+                  :to="bossGuideHref(region, boss)"
+                  class="boss-name link"
+                >
+                  {{ boss.name }}
+                </RouterLink>
+                <span v-else class="boss-name">{{ boss.name }}</span>
                 <span v-if="boss.required" class="chip must">必打</span>
                 <span v-if="boss.remembrance" class="chip remembrance">追忆</span>
               </div>
               <div class="boss-meta">
                 <span class="boss-place">{{ boss.place }}</span>
                 <span v-if="boss.note" class="boss-note">{{ boss.note }}</span>
+                <RouterLink
+                  v-if="bossGuideHref(region, boss)"
+                  :to="bossGuideHref(region, boss)"
+                  class="boss-quest guide"
+                >
+                  打法 →
+                </RouterLink>
                 <RouterLink
                   v-if="boss.quest && questName(boss.quest)"
                   :to="`/side-quests/${boss.quest}`"
@@ -216,6 +230,7 @@ import {
 import { getChapter } from '../utils/mainline'
 import { getQuest } from '../utils/quest'
 import { useQuerySync } from '../composables/useQuerySync'
+import { getBoss, bossHref } from '../utils/bosses.js'
 
 const route = useRoute()
 const stats = regionStats
@@ -263,6 +278,12 @@ function visibleBosses(region) {
 
 function remembranceCount(region) {
   return region.bosses.filter((boss) => boss.remembrance).length
+}
+
+// 区域页只拿到 region + boss，攻略详情路由需要区域 id，这里统一拼好
+function bossGuideHref(region, boss) {
+  const guide = getBoss(region.id, boss.name)
+  return guide ? bossHref(guide) : ''
 }
 
 function isHit(boss) {
@@ -619,6 +640,24 @@ onMounted(async () => {
 .boss-name {
   font-size: 13px;
   color: #ddd9cb;
+}
+
+/* 区域页的 BOSS 名可点进「BOSS 攻略」详情 —— 这里必然有对应条目，
+   但用 getBoss 兜一下，避免以后新增 BOSS 忘了写攻略时点出空白页 */
+.boss-name.link {
+  color: #ddd9cb;
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+  transition: color 0.16s, border-color 0.16s;
+}
+
+.boss-name.link:hover {
+  color: #d4af37;
+  border-bottom-color: #6b5c2e;
+}
+
+.boss-quest.guide {
+  color: #8a7a3f;
 }
 
 .chip {

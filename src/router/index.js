@@ -22,6 +22,14 @@ const routes = [
   { path: '/weapons/:id', name: 'weapon-detail', component: () => import('../views/WeaponDetailView.vue') },
   { path: '/side-quests', name: 'side-quests', component: () => import('../views/QuestsView.vue') },
   { path: '/side-quests/:id', name: 'quest-detail', component: () => import('../views/QuestDetailView.vue') },
+  // BOSS 攻略：列表与详情都放在顶层。详情是两段路径（区域 + 名称），
+  // 因为「死鸟」「黑夜骑兵」这类 BOSS 在不同区域各有一只，单用名字无法唯一定位。
+  { path: '/bosses', name: 'bosses', component: () => import('../views/BossesView.vue') },
+  {
+    path: '/bosses/:region/:name',
+    name: 'boss-detail',
+    component: () => import('../views/BossDetailView.vue'),
+  },
   {
     path: '/main-quest',
     name: 'main-quest',
@@ -103,7 +111,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    return savedPosition ? savedPosition : { top: 0 }
+    if (savedPosition) return savedPosition
+    // 区域图鉴靠 #anchor 定位到具体区域，顶部导航约 70px 需要留出余量
+    if (to.hash) return { el: to.hash, top: 84, behavior: 'smooth' }
+    return { top: 0 }
   },
 })
 
