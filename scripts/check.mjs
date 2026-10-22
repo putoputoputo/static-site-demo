@@ -96,6 +96,9 @@ async function renderView(component, path, props) {
       // useRoute().params 拿到真实参数（流派详情靠 params.id 取数据）
       { path: '/archetypes', component: Blank },
       { path: '/archetypes/:id', component: Blank },
+      // 主线详情页靠 params.id 取章节
+      { path: '/main-quest', component: Blank },
+      { path: '/main-quest/:id', component: Blank },
       { path: '/:pathMatch(.*)*', component: Blank },
     ],
   })
@@ -396,7 +399,9 @@ if (existsSync(notFoundStatic)) {
   progressApp.use(progressRouter)
   const progressHtml = await renderToString(progressApp)
 
-  check('SSR 进度页渲染主线章节', (progressHtml.match(/class="check-row/g) || []).length, 12)
+  // 用数据里的章节数，不写死 12 —— 以后补章节不用回来改断言
+  const { mainStats: progressMainStats } = await import('../src/data/mainline.js')
+  check('SSR 进度页渲染主线章节', (progressHtml.match(/class="check-row/g) || []).length, progressMainStats.total)
   check('SSR 进度页显示四项总览', (progressHtml.match(/class="hero-badge"/g) || []).length, 4)
   check('SSR 进度页有导出入口', progressHtml.includes('下载 JSON'), true)
   check('SSR 进度页有清空确认', progressHtml.includes('清空全部进度'), true)
@@ -754,6 +759,102 @@ if (existsSync(notFoundStatic)) {
   check('全站搜索能搜到流派', searchArchetypes('跳劈').some((group) => group.group === 'archetypes'), true)
   check('搜流派名落到详情页', searchArchetypes('龙飨龙息').flatMap((group) => group.items).some((item) => item.to === '/archetypes/dragon-communion'), true)
   check('主属性配色全覆盖', A.archetypeFilterOptions.primaries.every((name) => /^#[0-9a-f]{6}$/i.test(A.primaryColor(name))), true)
+}
+
+/* ---------- 10. 主线 DLC 覆盖 ---------- */
+{
+  const { default: mainChapters, mainStats } = await import('../src/data/mainline.js')
+  const { chapterNeighbors, getChapter } = await import('../src/utils/mainline.js')
+  const { default: remembrances } = await import('../src/data/remembrances.js')
+  const { default: quests } = await import('../src/data/quests.js')
+  const { default: regions } = await import('../src/data/regions.js')
+  const { default: MainlineView } = await vite.ssrLoadModule('/src/views/MainlineView.vue')
+  const { default: MainlineDetailView } = await vite.ssrLoadModule('/src/views/MainlineDetailView.vue')
+
+  const dlcChapters = mainChapters.filter((chapter) => chapter.dlc)
+  const sideChapters = mainChapters.filter((chapter) => chapter.sideTrack)
+
+  check('主线章节总数', mainChapters.length, 14)
+  check('DLC 章节数', dlcChapters.length, 6)
+  check('DLC 可选章节数', sideChapters.length, 2)
+  check('可选章节都是 DLC', sideChapters.every((chapter) => chapter.dlc), true)
+  check(
+    '可选章节的 BOSS 都不是必打',
+    sideChapters.every((chapter) => (chapter.bosses || []).every((boss) => !boss.required)),
+    true
+  )
+
+  // 最关键的一条：DLC 的追忆 BOSS 必须都能在主线里找到。
+  // 之前有 5 个追忆 BOSS 在主线里一次都没出现，玩家按主线走会漏掉一半追忆。
+  const blob = JSON.stringify(mainChapters)
+  const dlcRemembrances = remembrances.filter((entry) => entry.dlc)
+  check('DLC 追忆总数', dlcRemembrances.length, 10)
+  check(
+    '每个 DLC 追忆 BOSS 都在主线出现',
+    dlcRemembrances.filter((entry) => !blob.includes(entry.boss)).map((entry) => entry.boss),
+    []
+  )
+
+  // 三条翻页链互不串味：本体、DLC 主线、DLC 可选
+  check('本体终章没有下一章', chapterNeighbors(getChapter('ashen')).next, null)
+  check('DLC 主线终章没有下一章', chapterNeighbors(getChapter('dlc-enir')).next, null)
+  check('可选链首章没有上一章', chapterNeighbors(sideChapters[0]).prev, null)
+  check('可选链两章相连', chapterNeighbors(sideChapters[0]).next.id, sideChapters[1].id)
+  check('兜底：盖利德仍在本体链里', chapterNeighbors(getChapter('caelid')).next.id, 'altus')
+
+  // 区域反链：区域页点「所属章节」不能指向不存在的 id
+  const chapterIds = new Set(mainChapters.map((chapter) => chapter.id))
+  check(
+    '区域引用的章节都存在',
+    regions.flatMap((region) =>
+      (region.chapters || []).filter((id) => !chapterIds.has(id)).map((id) => `${region.id}->${id}`)
+    ),
+    []
+  )
+  check(
+    'DLC 区域全部有章节归属',
+    regions.filter((region) => region.dlc && !(region.chapters || []).length).map((region) => region.id),
+    []
+  )
+
+  // 支线引用
+  const questIds = new Set(quests.map((quest) => quest.id))
+  const badRefs = [...new Set(mainChapters.flatMap((chapter) => chapter.relatedQuests || []))].filter(
+    (id) => !questIds.has(id)
+  )
+  check('主线引用的支线都存在', badRefs, [])
+  check(
+    'DLC 支线全部挂上了章节',
+    quests
+      .filter(
+        (quest) => quest.dlc && !mainChapters.some((chapter) => (chapter.relatedQuests || []).includes(quest.id))
+      )
+      .map((quest) => quest.id),
+    []
+  )
+
+  // 名称统一：全站其余位置都是「蕾菈娜」
+  check('不再出现旧译名「蕾拉娜」', blob.includes('蕾拉娜'), false)
+
+  // 贝瑞特不再是「可选支线」—— 它掉的头部是角人老妪线刚需，标成可选会让人直接跳过
+  const gravesite = getChapter('dlc-gravesite')
+  const beret = gravesite.steps.find((step) => step.place.includes('贝瑞特'))
+  check('贝瑞特步骤不再写「可选支线」', beret.title.includes('可选支线'), false)
+
+  // SSR 实渲染
+  const listHtml = await renderView(MainlineView, { path: '/main-quest' })
+  check('SSR 主线列表渲染全部章节', (listHtml.match(/class="chapter-card/g) || []).length, mainStats.total)
+  check('SSR 列表里出现可选标记', listHtml.includes('optional-tag'), true)
+
+  const southHtml = await renderView(MainlineDetailView, '/main-quest/dlc-optional-south')
+  check('SSR 可选章节同时标 DLC 与可选', southHtml.includes('DLC 黄金树幽影') && southHtml.includes('可选章节'), true)
+  check('SSR 可选章节显示章节号', southHtml.includes('第 14 章'), true)
+  check('SSR 南线渲染 8 步', (southHtml.match(/class="step-title"/g) || []).length, 8)
+  check('SSR 南线有关联支线', southHtml.includes('尤弥尔') && southHtml.includes('托莉娜'), true)
+
+  const eastHtml = await renderView(MainlineDetailView, '/main-quest/dlc-optional-east')
+  check('SSR 东线渲染 8 步', (eastHtml.match(/class="step-title"/g) || []).length, 8)
+  check('SSR 东线提到魅惑失效', eastHtml.includes('魅惑'), true)
 }
 
 await vite.close()

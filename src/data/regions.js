@@ -1076,7 +1076,7 @@ export const mainRegions = [
     level: '170 – 190',
     mainPath: 'dlc',
     access: '幽影城退水后，从教区 / 礼树暗道进入',
-    chapters: ['dlc-shadowkeep'],
+    chapters: ['dlc-optional-east', 'dlc-shadowkeep'],
     summary:
       '幽影树脚下的高地，「幽影树的化身」在这里。它是 DLC 里最容易被错过的一条追忆线——入口藏在退水后的暗道里。',
     subAreas: ['礼树暗道', '幽影树脚下', '隐匿之地'],
@@ -1136,7 +1136,7 @@ export const mainRegions = [
     level: '160 – 180',
     mainPath: 'dlc',
     access: '幽影亚坛向东南，或劳弗古遗迹下方峡谷',
-    chapters: ['dlc-shadowkeep'],
+    chapters: ['dlc-optional-south', 'dlc-shadowkeep'],
     summary:
       '幽影之地的南岸，风景最好也最空。石棺大洞、密亚指头遗迹、玛努斯·梅提尔大教堂都从这里分出去，尤弥尔线的主场就在这片。',
     subAreas: ['青蓝海岸', '卡罗隐藏墓地', '玛努斯·梅提尔大教堂', '石棺大洞入口'],
@@ -1163,7 +1163,7 @@ export const mainRegions = [
     level: '170 – 190',
     mainPath: 'dlc',
     access: '青蓝海岸东侧的大洞',
-    chapters: ['dlc-shadowkeep'],
+    chapters: ['dlc-optional-south', 'dlc-shadowkeep'],
     summary:
       '一路向下的大裂谷，尽头是托莉娜的深紫花园。融泥骑士守在花园前，是托莉娜线（休里耶线）的必经一战。',
     subAreas: ['大洞深处', '深紫花园'],
@@ -1191,7 +1191,7 @@ export const mainRegions = [
     level: '170 – 190',
     mainPath: 'dlc',
     access: '青蓝海岸东南，沿悬崖下到海岸后向东',
-    chapters: ['dlc-shadowkeep'],
+    chapters: ['dlc-optional-south', 'dlc-shadowkeep'],
     summary:
       '指头之母梅蒂尔所在。这里需要先完成尤弥尔线的吹钟步骤，遗迹深处才会开放——直接跑过去只会看到空地。',
     subAreas: ['指头遗迹', '遗迹深处'],
@@ -1218,7 +1218,7 @@ export const mainRegions = [
     level: '170 – 190',
     mainPath: 'dlc',
     access: '幽影城广场正门 → 城墙梯子 → 隐藏墙 → 积水处 → 驱暗的地下墓地',
-    chapters: ['dlc-shadowkeep'],
+    chapters: ['dlc-optional-south', 'dlc-shadowkeep'],
     summary:
       'DLC 最阴间的区域，满地图的「不可名状」追着你跑。米德拉府邸在森林最深处，癫火之王米德拉就在里面。',
     subAreas: ['谷底森林', '驱暗的地下墓地', '废弃教堂', '米德拉府邸'],
@@ -1251,7 +1251,7 @@ export const mainRegions = [
     level: '170 – 190',
     mainPath: 'dlc',
     access: '墓地平原 · 通柱坡中段向南，穿过龙洞',
-    chapters: ['dlc-gravesite'],
+    chapters: ['dlc-optional-east', 'dlc-gravesite'],
     summary:
       '一路向上的龙之山道，山顶是 DLC 最强野外 BOSS「狂龙贝勒」。它不掉追忆，但掉专属龙餐素材，也是埃贡线的终点。',
     subAreas: ['龙洞', '尖刺山山脚', '尖刺山山顶'],

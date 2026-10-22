@@ -84,7 +84,8 @@
               <h2 class="chapter-name">
                 {{ chapter.name }}
                 <span v-if="chapter.dlc" class="dlc-tag">(DLC)</span>
-                <span v-else-if="chapter.optional" class="optional-tag">可选</span>
+                <!-- 两个标签可能同时出现：DLC 可选章节既标 DLC 也标可选 -->
+                <span v-if="chapter.optional || chapter.sideTrack" class="optional-tag">可选</span>
               </h2>
               <p class="chapter-sub">{{ chapter.subtitle }}</p>
             </div>

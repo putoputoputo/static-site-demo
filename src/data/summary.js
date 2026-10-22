@@ -11,11 +11,11 @@ export const questStats = {
   "ready": 51
 }
 export const mainStats = {
-  "total": 12,
+  "total": 14,
   "base": 8,
-  "dlc": 4,
-  "steps": 86,
-  "bosses": 41,
+  "dlc": 6,
+  "steps": 102,
+  "bosses": 51,
   "requiredBosses": 22,
   "endings": 6
 }

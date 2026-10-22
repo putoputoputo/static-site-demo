@@ -12,7 +12,7 @@
         <div class="hero-eyebrow">
           第 {{ String(chapter.order).padStart(2, '0') }} 章
           <span v-if="chapter.dlc" class="dlc-tag">DLC 黄金树幽影</span>
-          <span v-else-if="chapter.optional" class="optional-tag">可选章节</span>
+          <span v-if="chapter.optional || chapter.sideTrack" class="optional-tag">可选章节</span>
         </div>
         <h1 class="detail-title">{{ chapter.name }}</h1>
         <p class="detail-sub">{{ chapter.subtitle }}</p>

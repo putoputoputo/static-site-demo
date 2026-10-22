@@ -1,4 +1,4 @@
-import mainChapters, { mainEndings, mainStats } from '../data/mainline'
+import mainChapters, { mainEndings, mainStats } from '../data/mainline.js'
 
 export const chapterById = new Map(mainChapters.map((item) => [item.id, item]))
 
@@ -6,11 +6,19 @@ export function getChapter(id) {
   return chapterById.get(id) || null
 }
 
-// 章节分两条链：本体 7 章、DLC 4 章。翻页只在同一条链内走，
-// 避免「灰烬王城」的下一章直接跳到 DLC 入口。
+// 章节分三条链：本体 8 章、DLC 主线 4 章、DLC 可选 2 章。翻页只在同一条链内走，
+// 避免「灰烬王城」的下一章直接跳到 DLC 入口，也避免「约定之王拉塔恩」的下一章
+// 变成可选内容 —— 那读起来像是通关后还有必经步骤。
+// 注意不能拿 optional 当分链依据：盖利德也是 optional，但它串在本体主线顺序里。
+function chainOf(chapter) {
+  if (chapter.sideTrack) return 'side'
+  return chapter.dlc ? 'dlc' : 'base'
+}
+
 export function chapterNeighbors(chapter) {
   const sorted = [...mainChapters].sort((a, b) => a.order - b.order)
-  const group = sorted.filter((item) => Boolean(item.dlc) === Boolean(chapter.dlc))
+  const chain = chainOf(chapter)
+  const group = sorted.filter((item) => chainOf(item) === chain)
   const index = group.findIndex((item) => item.id === chapter.id)
   return {
     prev: index > 0 ? group[index - 1] : null,
