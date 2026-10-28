@@ -22,6 +22,8 @@ const routes = [
   { path: '/', name: 'portal', component: () => import('../views/PortalView.vue') },
   { path: '/game', name: 'game-home', component: () => import('../views/GameHomeView.vue') },
   { path: '/photo', name: 'photo', component: () => import('../views/PhotoView.vue') },
+  // 请求日志单独成页：报文很长，弹窗里读不下，也方便直接分享/截图
+  { path: '/photo/logs', name: 'photo-logs', component: () => import('../views/PhotoLogsView.vue') },
   { path: '/weapons', name: 'weapons', component: () => import('../views/WeaponsView.vue') },
   { path: '/weapons/:id', name: 'weapon-detail', component: () => import('../views/WeaponDetailView.vue') },
   { path: '/side-quests', name: 'side-quests', component: () => import('../views/QuestsView.vue') },

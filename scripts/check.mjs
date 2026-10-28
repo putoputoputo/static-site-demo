@@ -881,6 +881,7 @@ if (existsSync(notFoundStatic)) {
   check('摄影页未选图时给空态', photoHtml.includes('还没有图片'), true)
   check('摄影页有选择模型入口', photoHtml.includes('选择模型'), true)
   check('摄影页有查看日志入口', photoHtml.includes('查看日志'), true)
+  check('摄影页日志入口指向独立页面', photoHtml.includes('href="/photo/logs"'), true)
   check('摄影页未保存配置时提示先选模型', photoHtml.includes('还没选择模型'), true)
   check('摄影页开始分析按钮初始禁用', /<button[^>]*disabled/.test(photoHtml), true)
   check('摄影页分析结果默认不渲染', photoHtml.includes('分析结果'), false)
@@ -996,7 +997,7 @@ if (existsSync(notFoundStatic)) {
   {
     const store = new Map()
     globalThis.window = {
-      sessionStorage: {
+      localStorage: {
         getItem: (key) => (store.has(key) ? store.get(key) : null),
         setItem: (key, value) => store.set(key, String(value)),
         removeItem: (key) => store.delete(key),
@@ -1031,7 +1032,7 @@ if (existsSync(notFoundStatic)) {
     logs.appendLog({ model: 'm1', durationMs: 900, request: { method: 'POST', url: 'https://a.com', headers: {}, body: '{}' } })
     check('追加后有一条', logs.getLogs().length, 1)
     check('最新的一条在最前', logs.getLogs()[0].model, 'm1')
-    check('写入 sessionStorage', store.has('er-guide:ai-logs'), true)
+    check('写入 localStorage', store.has('er-guide:ai-logs'), true)
 
     for (let index = 0; index < logs.MAX_LOGS + 5; index += 1) {
       logs.appendLog({ model: `m${index}`, request: { method: 'POST', url: 'https://a.com', headers: {}, body: '{}' } })
@@ -1055,13 +1056,25 @@ if (existsSync(notFoundStatic)) {
     check('导出文本含响应状态', text.includes('HTTP 200 OK'), true)
     check('导出文本不含完整 Key', text.includes('4d561a25412da6a5b22c0c15393b'), false)
 
-    logs.clearLogs()
-    check('清空后回到 0 条', [logs.getLogs().length, store.has('er-guide:ai-logs')], [0, true])
+    // 刷新页面 = 重新加载模块，应当从 localStorage 把日志读回来
+    const reloadedLogs = await import('../src/utils/aiLog.js?persist=1')
+    check('刷新后日志还在', reloadedLogs.getLogs().length, logs.MAX_LOGS)
+    check('刷新后最新的仍是最后一条', reloadedLogs.getLogs()[0].model, 'm-final')
 
-    // 弹窗真的能把日志渲染出来，而不是只有一个按钮。
-    // 注意必须用 vite 模块图里的 aiLog 实例：组件读的是它，不是上面原生 import 的那份。
+    logs.clearLogs()
+    check('清空后回到 0 条', logs.getLogs().length, 0)
+    check('清空后本机不留存储', store.has('er-guide:ai-logs'), false)
+
+    // 日志页真的能把报文渲染出来，而不是只有一个入口链接。
+    // 注意必须用 vite 模块图里的 aiLog 实例：页面读的是它，不是上面原生 import 的那份。
     const viteLogs = await vite.ssrLoadModule('/src/utils/aiLog.js')
     viteLogs.clearLogs()
+
+    const { default: PhotoLogsView } = await vite.ssrLoadModule('/src/views/PhotoLogsView.vue')
+    const emptyHtml = await renderView(PhotoLogsView, '/photo/logs')
+    check('日志页无记录时给空态', emptyHtml.includes('还没有请求记录'), true)
+    check('日志页有返回摄影入口', emptyHtml.includes('href="/photo"'), true)
+
     viteLogs.appendLog({
       model: 'm-render',
       durationMs: 1500,
@@ -1074,17 +1087,13 @@ if (existsSync(notFoundStatic)) {
       image: { mime: 'image/jpeg', bytes: 2048, width: 1600, height: 1067, shrunk: true },
       response: { status: 200, statusText: 'OK', headers: {}, body: '{"choices":[]}' },
     })
-    const { default: AILogsDialog } = await vite.ssrLoadModule('/src/components/AILogsDialog.vue')
-    const ctx = {}
-    await renderToString(createSSRApp(AILogsDialog, { open: true }), ctx)
-    const bodyHtml = ctx.teleports?.body || ''
-    check('弹窗渲染出标题', bodyHtml.includes('请求日志'), true)
-    check('弹窗渲染出选中条目的请求行', bodyHtml.includes('POST https://a.com/v1/chat/completions'), true)
-    check('弹窗显示图片摘要而不是 base64', bodyHtml.includes('发送前已压缩'), true)
-    check('弹窗显示响应状态', bodyHtml.includes('HTTP 200 OK'), true)
-
-    const closedHtml = await renderToString(createSSRApp(AILogsDialog, { open: false }), {})
-    check('未打开时不渲染内容', closedHtml.includes('请求日志'), false)
+    const filledHtml = await renderView(PhotoLogsView, '/photo/logs')
+    check('日志页渲染出请求行', filledHtml.includes('POST https://a.com/v1/chat/completions'), true)
+    check('日志页显示图片摘要而不是 base64', filledHtml.includes('发送前已压缩'), true)
+    check('日志页显示响应状态', filledHtml.includes('HTTP 200 OK'), true)
+    check('日志页显示模型名与耗时', filledHtml.includes('m-render') && filledHtml.includes('1.5s'), true)
+    check('日志页有清理日志按钮', (filledHtml.match(/清理日志/g) || []).length >= 2, true)
+    check('日志页说明存在本机', filledHtml.includes('localStorage'), true)
 
     viteLogs.clearLogs()
 

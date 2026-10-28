@@ -1,21 +1,23 @@
 // AI 请求日志：记录每次 analyzeImage 实际发出的请求与模型原始返回。
 //
 // 零依赖（不 import vue、不碰 DOM API），因此浏览器和 Node 回归脚本都能直接导入。
-// 存在 sessionStorage 而不是 localStorage：日志只服务于「刚才那次为什么失败」，
-// 换个标签页就该是空的，也不必长期占着配额。
+//
+// 存 localStorage（而不是 sessionStorage）：日志要长期留在这台机器上，
+// 关掉标签页、重开浏览器回来还能对比几次请求。代价是得靠页面上的
+// 「清理日志」手动回收，所以单条响应体上限压到 6 万字符——30 条也远低于 5MB 配额。
 
 const STORAGE_KEY = 'er-guide:ai-logs'
 
 // 保留最近多少次请求：够定位问题，又不至于把内存撑大
 export const MAX_LOGS = 30
 
-// 网关偶尔甩整页 HTML，模型也可能吐几千行，留个上限防止渲染卡死
-const MAX_BODY_CHARS = 200_000
+// 模型正常只返回几 KB；这个上限是给「网关甩整页 HTML」那种异常兜底的
+const MAX_BODY_CHARS = 60_000
 
 const canUseStorage = () => {
   if (typeof window === 'undefined') return false
   try {
-    return Boolean(window.sessionStorage)
+    return Boolean(window.localStorage)
   } catch {
     return false
   }
@@ -24,7 +26,7 @@ const canUseStorage = () => {
 function readStored() {
   if (!canUseStorage()) return []
   try {
-    const raw = window.sessionStorage.getItem(STORAGE_KEY)
+    const raw = window.localStorage.getItem(STORAGE_KEY)
     const parsed = raw ? JSON.parse(raw) : []
     return Array.isArray(parsed) ? parsed : []
   } catch {
@@ -38,12 +40,20 @@ const listeners = new Set()
 let seq = 0
 
 function persist() {
-  if (!canUseStorage()) return
-  try {
-    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
-  } catch {
-    // 配额满：本次会话内存里照常能看，只是刷新后会丢
+  if (!canUseStorage()) return false
+
+  // localStorage 只有 5MB，条目又带完整响应体：写不下时丢掉旧的一半再试，
+  // 保证「最新那条」一定落盘。内存里的 entries 不动，用户当前看到的不会被抽走。
+  let payload = entries
+  while (payload.length) {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
+      return true
+    } catch {
+      payload = payload.slice(0, Math.floor(payload.length / 2))
+    }
   }
+  return false
 }
 
 function notify() {
@@ -74,7 +84,14 @@ export function appendLog(entry) {
 
 export function clearLogs() {
   entries = []
-  persist()
+  // 直接删键而不是写 []：日志已经持久化，清空后不该再在这台机器上留任何痕迹
+  if (canUseStorage()) {
+    try {
+      window.localStorage.removeItem(STORAGE_KEY)
+    } catch {
+      /* 忽略 */
+    }
+  }
   notify()
 }
 

@@ -15,7 +15,7 @@
                 <NavGroup v-for="group in navGroups" :key="group.label" :label="group.label" :items="group.items" />
               </template>
               <RouterLink v-else to="/game" class="nav-link" :class="{ active: route.path === '/game' }">游戏</RouterLink>
-              <RouterLink to="/photo" class="nav-link" :class="{ active: route.path === '/photo' }">摄影</RouterLink>
+              <RouterLink to="/photo" class="nav-link" :class="{ active: route.path.startsWith('/photo') }">摄影</RouterLink>
             </nav>
             <!-- 全站搜索只索引游戏资料，摄影板块下没有可搜内容 -->
             <GlobalSearch v-if="inGame" />
@@ -75,6 +75,6 @@ const navGroups = [
 
 const route = useRoute()
 
-// 除门户页与摄影板块外，其余路径都属于游戏板块（含 404 兜底页）
-const inGame = computed(() => route.path !== '/' && route.path !== '/photo')
+// 除门户页与摄影板块（含 /photo/logs 这类子页）外，其余路径都属于游戏板块（含 404 兜底页）
+const inGame = computed(() => route.path !== '/' && !route.path.startsWith('/photo'))
 </script>

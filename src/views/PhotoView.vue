@@ -28,11 +28,11 @@
           <el-icon :size="16"><Setting /></el-icon>
           选择模型
         </button>
-        <button class="act-btn" type="button" @click="logsOpen = true">
+        <RouterLink to="/photo/logs" class="act-btn">
           <el-icon :size="16"><Document /></el-icon>
           查看日志
           <span v-if="logs.length" class="log-badge">{{ logs.length }}</span>
-        </button>
+        </RouterLink>
         <button
           class="act-btn primary"
           type="button"
@@ -125,24 +125,22 @@
     </div>
 
     <AISettingsDialog v-model:open="settingsOpen" @saved="onSettingsSaved" />
-    <AILogsDialog v-model:open="logsOpen" />
   </div>
 </template>
 
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { Camera, Picture, UploadFilled, MagicStick, WarningFilled, Setting, Document } from '@element-plus/icons-vue'
 import { AI_CONFIG } from '../config/ai'
 import { analyzeImage, parseAnalysis } from '../utils/ai'
 import { useAISettings } from '../composables/useAISettings'
 import { useAILogs } from '../composables/useAILogs'
 import AISettingsDialog from '../components/AISettingsDialog.vue'
-import AILogsDialog from '../components/AILogsDialog.vue'
 
 const { settings, isReady } = useAISettings()
 const { logs } = useAILogs()
 const settingsOpen = ref(false)
-const logsOpen = ref(false)
 
 const cameraInput = ref(null)
 const uploadInput = ref(null)
@@ -390,6 +388,7 @@ onBeforeUnmount(() => {
   font-family: inherit;
   font-size: 13.5px;
   color: #d8d3c2;
+  text-decoration: none;
   background: #202020;
   border: 1px solid #3f3928;
   border-radius: 8px;
