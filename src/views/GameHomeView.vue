@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="banner">
-      <h1>艾尔登法环攻略站</h1>
+      <h1>游戏板块</h1>
       <p>交界地的褪色者啊，愿你在这里找到指引——愿黄金指引与你同在</p>
     </div>
 
@@ -132,7 +132,7 @@ const boards = [
 
 <style scoped>
 .banner {
-  padding: 64px 24px;
+  padding: 48px 24px;
   text-align: center;
   background: linear-gradient(180deg, rgba(212, 175, 55, 0.12), transparent),
     radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08), transparent 70%);
@@ -143,7 +143,7 @@ const boards = [
 
 .banner h1 {
   margin: 0 0 12px;
-  font-size: 36px;
+  font-size: 32px;
   color: #d4af37;
   letter-spacing: 4px;
 }

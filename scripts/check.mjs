@@ -857,6 +857,32 @@ if (existsSync(notFoundStatic)) {
   check('SSR 东线提到魅惑失效', eastHtml.includes('魅惑'), true)
 }
 
+/* ---------- 11. 门户页 / 游戏板块 / 摄影板块 ---------- */
+{
+  const { default: PortalView } = await vite.ssrLoadModule('/src/views/PortalView.vue')
+  const { default: GameHomeView } = await vite.ssrLoadModule('/src/views/GameHomeView.vue')
+  const { default: PhotoView } = await vite.ssrLoadModule('/src/views/PhotoView.vue')
+
+  const portalHtml = await renderView(PortalView, '/')
+  check('门户页渲染两个板块卡片', (portalHtml.match(/class="[^"]*\bportal-card\b/g) || []).length, 2)
+  check('门户页能进游戏板块', portalHtml.includes('href="/game"'), true)
+  check('门户页能进摄影板块', portalHtml.includes('href="/photo"'), true)
+
+  // 原首页整体搬到 /game，卡片数量不变
+  const gameHtml = await renderView(GameHomeView, '/game')
+  check('游戏板块保留原首页 12 张卡片', (gameHtml.match(/class="board-card"/g) || []).length, 12)
+
+  const photoHtml = await renderView(PhotoView, '/photo')
+  check(
+    '摄影页有拍照 / 上传 / 开始分析三个按钮',
+    ['拍照', '上传图片', '开始分析'].every((label) => photoHtml.includes(label)),
+    true
+  )
+  check('摄影页未选图时给空态', photoHtml.includes('还没有图片'), true)
+  check('摄影页开始分析按钮初始禁用', /<button[^>]*disabled/.test(photoHtml), true)
+  check('摄影页分析结果默认不渲染', photoHtml.includes('分析结果'), false)
+}
+
 await vite.close()
 
 console.log(failed ? `\n${failed} 项未通过` : '\n全部通过')

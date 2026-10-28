@@ -17,7 +17,11 @@ if (typeof window !== 'undefined') {
 // 路由级懒加载：各页面与它们依赖的数据文件会被拆成独立 chunk，
 // 首屏只下载当前路由需要的代码，避免单文件 bundle 随内容增长一路膨胀。
 const routes = [
-  { path: '/', name: 'home', component: () => import('../views/HomeView.vue') },
+  // 站点改成「门户 + 板块」两层：根路径是总览，游戏与摄影各占一个板块前缀。
+  // 游戏内容的入口统一收在 /game 下（攻略子页仍是顶层路径，不动已有链接）。
+  { path: '/', name: 'portal', component: () => import('../views/PortalView.vue') },
+  { path: '/game', name: 'game-home', component: () => import('../views/GameHomeView.vue') },
+  { path: '/photo', name: 'photo', component: () => import('../views/PhotoView.vue') },
   { path: '/weapons', name: 'weapons', component: () => import('../views/WeaponsView.vue') },
   { path: '/weapons/:id', name: 'weapon-detail', component: () => import('../views/WeaponDetailView.vue') },
   { path: '/side-quests', name: 'side-quests', component: () => import('../views/QuestsView.vue') },

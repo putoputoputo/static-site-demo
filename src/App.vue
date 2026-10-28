@@ -10,9 +10,15 @@
           <div class="header-right">
             <nav class="nav">
               <RouterLink to="/" class="nav-link" :class="{ active: route.path === '/' }">首页</RouterLink>
-              <NavGroup v-for="group in navGroups" :key="group.label" :label="group.label" :items="group.items" />
+              <!-- 游戏板块内部才展开三个分组下拉；门户页与摄影板块只留板块级入口 -->
+              <template v-if="inGame">
+                <NavGroup v-for="group in navGroups" :key="group.label" :label="group.label" :items="group.items" />
+              </template>
+              <RouterLink v-else to="/game" class="nav-link" :class="{ active: route.path === '/game' }">游戏</RouterLink>
+              <RouterLink to="/photo" class="nav-link" :class="{ active: route.path === '/photo' }">摄影</RouterLink>
             </nav>
-            <GlobalSearch />
+            <!-- 全站搜索只索引游戏资料，摄影板块下没有可搜内容 -->
+            <GlobalSearch v-if="inGame" />
           </div>
         </div>
       </header>
@@ -27,6 +33,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { Trophy } from '@element-plus/icons-vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
@@ -67,4 +74,7 @@ const navGroups = [
 ]
 
 const route = useRoute()
+
+// 除门户页与摄影板块外，其余路径都属于游戏板块（含 404 兜底页）
+const inGame = computed(() => route.path !== '/' && route.path !== '/photo')
 </script>
