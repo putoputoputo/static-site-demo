@@ -879,18 +879,24 @@ if (existsSync(notFoundStatic)) {
     true
   )
   check('摄影页未选图时给空态', photoHtml.includes('还没有图片'), true)
+  check('摄影页有选择模型入口', photoHtml.includes('选择模型'), true)
+  check('摄影页有查看日志入口', photoHtml.includes('查看日志'), true)
+  check('摄影页未保存配置时提示先选模型', photoHtml.includes('还没选择模型'), true)
   check('摄影页开始分析按钮初始禁用', /<button[^>]*disabled/.test(photoHtml), true)
   check('摄影页分析结果默认不渲染', photoHtml.includes('分析结果'), false)
 
   // 模型与提示词是产品定义，改名 / 删段都会让分析结构对不上
-  const { AI_CONFIG, ANALYSIS_PROMPT, isAIConfigured } = await import('../src/config/ai.js')
-  check('分析模型固定为 gemini-3.8-flash-high', AI_CONFIG.model, 'gemini-3.8-flash-high')
+  const { AI_CONFIG, ANALYSIS_PROMPT } = await import('../src/config/ai.js')
+  // 1500 会在「具体问题」之后耗尽预算，「优化建议」整段消失
+  check('max_tokens 留足余量', AI_CONFIG.maxTokens >= 2048, true)
   check(
     '提示词含四个小节',
     ['### 整体评价', '### 具体问题', '### 优化建议', '### 图像编辑提示词（英文）'].every((h) => ANALYSIS_PROMPT.includes(h)),
     true
   )
-  check('接口地址与 Key 留空即视为未配置', typeof isAIConfigured(), 'boolean')
+  // 接口地址 / Key / 模型名已经搬到页面上，源码里不能再残留默认 key
+  check('源码不再内置接口地址', 'baseUrl' in AI_CONFIG, false)
+  check('源码不再内置 API Key', 'apiKey' in AI_CONFIG, false)
 
   const { parseAnalysis } = await import('../src/utils/ai.js')
   const sample = [
@@ -920,6 +926,170 @@ if (existsSync(notFoundStatic)) {
   check('英文提示词单独抽出', parsed.promptText, 'Keep the subject centered, lift shadows, warm the highlights.')
   check('提示词小节被标记', parsed.sections[3].isPrompt, true)
   check('没有提示词小节时为空串', parseAnalysis('### 整体评价\n还行').promptText, '')
+
+  // 模型不写 ### 时，靠小节名兜底；但正文里的「优化建议：xxx」不能被当成标题
+  const loose = parseAnalysis('整体评价\n画面干净。\n**优化建议**\n- 机位压低')
+  check('缺 ### 的标题也能识别', loose.sections.map((s) => s.title), ['整体评价', '优化建议'])
+  check('列表被正确挂到兜底小节下', loose.sections[1].blocks[0].kind, 'list')
+  check(
+    '正文里的「建议：」不当标题',
+    parseAnalysis('### 具体问题\n- 优化建议：压低机位').sections.length,
+    1
+  )
+  check('缺段会被标出来', parseAnalysis('### 整体评价\n还行').missing, ['具体问题', '优化建议', '图像编辑提示词'])
+  check('四段齐全时 missing 为空', parsed.missing, [])
+
+  /* ---- 接口配置：页面上填写并保存后才可用 ---- */
+  {
+    const store = new Map()
+    globalThis.window = {
+      localStorage: {
+        getItem: (key) => (store.has(key) ? store.get(key) : null),
+        setItem: (key, value) => store.set(key, String(value)),
+        removeItem: (key) => store.delete(key),
+      },
+    }
+
+    const { useAISettings, validateSettings, AI_STORAGE_KEY } = await import(
+      '../src/composables/useAISettings.js'
+    )
+    const ai = useAISettings()
+    ai.clear()
+    check('初始状态未配置', ai.isReady.value, false)
+
+    check('缺 URL 校验不通过', validateSettings({ baseUrl: '', apiKey: 'k', model: 'm' }).length > 0, true)
+    check('非 http 地址被拒', validateSettings({ baseUrl: 'api.x.com', apiKey: 'k', model: 'm' }).includes('http'), true)
+    check(
+      '三项齐全才通过校验',
+      validateSettings({ baseUrl: 'https://a.com/v1/chat/completions', apiKey: 'k', model: 'm' }),
+      ''
+    )
+
+    check('只填两项保存会失败', ai.save({ baseUrl: 'https://a.com', apiKey: 'k', model: '' }).length > 0, true)
+    check('保存失败后仍不可用', ai.isReady.value, false)
+
+    check(
+      '三项齐全保存成功',
+      ai.save({ baseUrl: ' https://a.com/v1/chat/completions ', apiKey: ' sk-1 ', model: ' m ' }),
+      ''
+    )
+    check('保存后立即可用', ai.isReady.value, true)
+    check('保存时去掉首尾空格', ai.settings.value, {
+      baseUrl: 'https://a.com/v1/chat/completions',
+      apiKey: 'sk-1',
+      model: 'm',
+    })
+    check('写入了 localStorage', JSON.parse(store.get(AI_STORAGE_KEY)).model, 'm')
+
+    ai.clear()
+    check('清除后回到未配置', [ai.isReady.value, store.has(AI_STORAGE_KEY)], [false, false])
+
+    // 刷新页面：新的模块实例应当从 localStorage 读回上次保存的配置
+    store.set(AI_STORAGE_KEY, JSON.stringify({ baseUrl: 'https://b.com', apiKey: 'k2', model: 'm2' }))
+    const reloaded = await import('../src/composables/useAISettings.js?reload=1')
+    check('刷新后自动恢复配置', reloaded.useAISettings().settings.value.model, 'm2')
+
+    delete globalThis.window
+  }
+
+  /* ---- 请求日志：脱敏、图片摘要、条数上限、持久化 ---- */
+  {
+    const store = new Map()
+    globalThis.window = {
+      sessionStorage: {
+        getItem: (key) => (store.has(key) ? store.get(key) : null),
+        setItem: (key, value) => store.set(key, String(value)),
+        removeItem: (key) => store.delete(key),
+      },
+    }
+
+    const logs = await import('../src/utils/aiLog.js?logs=1')
+
+    // 完整 key 绝不能出现在日志里
+    const masked = logs.maskSecret('sk-034d4d561a25412da6a5b22c0c15393b')
+    check('长 Key 只留首尾', masked, 'sk-034…393b')
+    check('脱敏后不含原始 Key', masked.includes('4d561a25412da6a5b22c0c15393b'), false)
+    check('短 Key 全掩码', logs.maskSecret('abc'), '***')
+
+    // 图片 base64 有几 MB，日志里只留前缀与体积
+    const preview = logs.previewImageUrl('data:image/jpeg;base64,' + 'A'.repeat(4096))
+    check('图片摘要保留 mime 前缀', preview.startsWith('data:image/jpeg;base64,…'), true)
+    check('图片摘要标注体积', preview.includes('3.0 KB'), true)
+    check('图片摘要不含原始 base64', preview.includes('AAAA'), false)
+
+    check('超长响应被截断', logs.clipText('x'.repeat(300), 100).includes('原文共 300 字符'), true)
+    check('未超长的响应原样保留', logs.clipText('ok', 100), 'ok')
+    check(
+      'Headers 对象可序列化',
+      logs.headersToObject({ forEach: (fn) => fn('application/json', 'content-type') }),
+      { 'content-type': 'application/json' }
+    )
+
+    logs.clearLogs()
+    check('初始没有日志', logs.getLogs().length, 0)
+
+    logs.appendLog({ model: 'm1', durationMs: 900, request: { method: 'POST', url: 'https://a.com', headers: {}, body: '{}' } })
+    check('追加后有一条', logs.getLogs().length, 1)
+    check('最新的一条在最前', logs.getLogs()[0].model, 'm1')
+    check('写入 sessionStorage', store.has('er-guide:ai-logs'), true)
+
+    for (let index = 0; index < logs.MAX_LOGS + 5; index += 1) {
+      logs.appendLog({ model: `m${index}`, request: { method: 'POST', url: 'https://a.com', headers: {}, body: '{}' } })
+    }
+    check('超出上限后只留最近 30 条', logs.getLogs().length, logs.MAX_LOGS)
+    check('被挤掉的是最旧的', logs.getLogs().some((entry) => entry.model === 'm1'), false)
+
+    const entry = logs.appendLog({
+      model: 'm-final',
+      durationMs: 1234,
+      request: {
+        method: 'POST',
+        url: 'https://a.com/v1/chat/completions',
+        headers: { Authorization: `Bearer ${logs.maskSecret('sk-034d4d561a25412da6a5b22c0c15393b')}` },
+        body: '{"model":"m-final"}',
+      },
+      response: { status: 200, statusText: 'OK', headers: {}, body: '{"choices":[]}' },
+    })
+    const text = logs.formatLog(entry)
+    check('导出文本含请求行', text.includes('POST https://a.com/v1/chat/completions'), true)
+    check('导出文本含响应状态', text.includes('HTTP 200 OK'), true)
+    check('导出文本不含完整 Key', text.includes('4d561a25412da6a5b22c0c15393b'), false)
+
+    logs.clearLogs()
+    check('清空后回到 0 条', [logs.getLogs().length, store.has('er-guide:ai-logs')], [0, true])
+
+    // 弹窗真的能把日志渲染出来，而不是只有一个按钮。
+    // 注意必须用 vite 模块图里的 aiLog 实例：组件读的是它，不是上面原生 import 的那份。
+    const viteLogs = await vite.ssrLoadModule('/src/utils/aiLog.js')
+    viteLogs.clearLogs()
+    viteLogs.appendLog({
+      model: 'm-render',
+      durationMs: 1500,
+      request: {
+        method: 'POST',
+        url: 'https://a.com/v1/chat/completions',
+        headers: { Authorization: 'Bearer sk-034…393b' },
+        body: '{\n  "model": "m-render"\n}',
+      },
+      image: { mime: 'image/jpeg', bytes: 2048, width: 1600, height: 1067, shrunk: true },
+      response: { status: 200, statusText: 'OK', headers: {}, body: '{"choices":[]}' },
+    })
+    const { default: AILogsDialog } = await vite.ssrLoadModule('/src/components/AILogsDialog.vue')
+    const ctx = {}
+    await renderToString(createSSRApp(AILogsDialog, { open: true }), ctx)
+    const bodyHtml = ctx.teleports?.body || ''
+    check('弹窗渲染出标题', bodyHtml.includes('请求日志'), true)
+    check('弹窗渲染出选中条目的请求行', bodyHtml.includes('POST https://a.com/v1/chat/completions'), true)
+    check('弹窗显示图片摘要而不是 base64', bodyHtml.includes('发送前已压缩'), true)
+    check('弹窗显示响应状态', bodyHtml.includes('HTTP 200 OK'), true)
+
+    const closedHtml = await renderToString(createSSRApp(AILogsDialog, { open: false }), {})
+    check('未打开时不渲染内容', closedHtml.includes('请求日志'), false)
+
+    viteLogs.clearLogs()
+
+    delete globalThis.window
+  }
 }
 
 await vite.close()

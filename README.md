@@ -16,26 +16,36 @@
 
 ## 影像分析（摄影板块）
 
-`/photo` 的三步：拍照（`capture="environment"`，手机直接拉起相机）/ 上传图片 → 预览 → 开始分析。
+`/photo` 的步骤：拍照（`capture="environment"`，手机直接拉起相机）/ 上传图片 → 预览 → 选择模型 → 开始分析。
 
-分析走 OpenAI 兼容的对话接口（Gemini 官方也有同格式的 `/v1beta/openai/chat/completions`），请求体是 `messages` + `image_url`，模型固定为 `gemini-3.8-flash-high`。
+分析走 OpenAI 兼容的对话接口（Gemini 官方也有同格式的 `/v1beta/openai/chat/completions`），请求体是 `messages` + `image_url`。
 
-**接口地址与 API Key 需要自己填**，两种方式二选一：
-
-1. 改 `src/config/ai.js` 里的 `baseUrl`（形如 `https://your-endpoint/v1/chat/completions`）与 `apiKey`；
-2. 或复制 `.env.example` 为 `.env.local`，填 `VITE_AI_BASE_URL` / `VITE_AI_API_KEY`，重启 dev server。
-
-没填之前点「开始分析」只会提示去配置，不会发出请求。
+**接口地址 / API Key / 模型名都在页面上填**：点「选择模型」打开弹窗，填好三项并保存，`开始分析` 才会亮起。配置存在本机 `localStorage`（`er-guide:ai-settings`），刷新仍在，换浏览器需要重填；弹窗里可以「清除配置」。源码里不再内置任何 Key。
 
 实现要点：
 
+- 配置读写集中在 `src/composables/useAISettings.js`（单例 + 校验 + 持久化），弹窗是 `src/components/AISettingsDialog.vue`，`analyzeImage(file, settings)` 每次显式传入，不再有全局可变配置
 - 提示词在 `src/config/ai.js` 的 `ANALYSIS_PROMPT`，固定四段结构（整体评价 / 具体问题 / 优化建议 / 图像编辑提示词），改口径只改这一处
+- `maxTokens` 默认 4096（可用 `VITE_AI_MAX_TOKENS` 覆盖）：1500 会在「具体问题」之后耗尽预算，导致「优化建议」整段消失
 - 长边超过 1600px 或体积超过 2.5MB 的图片先在 canvas 里等比压缩并转 JPEG 再发，避免网关 413；实际发送尺寸显示在结果栏
-- 返回的 markdown 由 `parseAnalysis` 拆成「小节 → 段落 / 列表 / 代码块」逐块渲染，不用 `v-html`，模型输出里的标签只会当文本显示
+- 返回的 markdown 由 `parseAnalysis` 拆成「小节 → 段落 / 列表 / 代码块」逐块渲染，不用 `v-html`，模型输出里的标签只会当文本显示；模型漏写 `###` 时按小节名兜底识别
+- 检查 `finish_reason`：被 `max_tokens` 截断或缺少某一段时，结果栏顶部会给出提示与重试，不再静默丢段
 - 「图像编辑提示词」小节单独抽出，带一键复制按钮
 - 超时 90 秒（`AI_CONFIG.timeoutMs`），失败时给出接口状态码与原始报错，可重试
 
-> `VITE_` 前缀的变量会被打进前端产物，Key 对访客可见。正式上线请把请求挪到自己的服务端 / 代理，前端只调自己的接口。
+### 请求日志
+
+「选择模型」右边的「查看日志」会打开 `src/components/AILogsDialog.vue`，逐条列出最近 30 次请求：
+
+- 请求区：方法 + 完整 URL、请求头、模型名、`max_tokens` / `temperature`、完整提示词与消息结构
+- 响应区：状态码、响应头、模型原始返回（不做解析、不改写），失败时是错误类型与信息
+- 成功、HTTP 错误、跨域失败、超时都会留档，所以「点了没反应」可以直接看日志
+
+两处刻意做了裁剪：`Authorization` 只留首尾（`sk-034…393b`），图片 `data:` URL 只留前缀与体积——一次 1600px 的 base64 有两三 MB，原样存会撑爆配额也没法读。日志存在 `sessionStorage`（`er-guide:ai-logs`），刷新仍在、关标签页即清空，支持一键复制成纯文本。
+
+日志由 `src/utils/aiLog.js` 承担，零依赖（不 import vue），所以 Node 下的回归脚本可以直接检查脱敏与截断逻辑。
+
+> 配置以明文存在本机浏览器，公用电脑上用完请「清除配置」。对外上线若不想让访客自带 Key，把请求挪到自己的服务端 / 代理，前端只调自己的接口。
 
 ## 已上线模块
 

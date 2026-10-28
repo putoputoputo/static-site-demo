@@ -24,7 +24,22 @@
           <el-icon :size="16"><UploadFilled /></el-icon>
           上传图片
         </button>
-        <button class="act-btn primary" type="button" :disabled="!meta || analyzing" @click="analyze">
+        <button class="act-btn" type="button" @click="settingsOpen = true">
+          <el-icon :size="16"><Setting /></el-icon>
+          选择模型
+        </button>
+        <button class="act-btn" type="button" @click="logsOpen = true">
+          <el-icon :size="16"><Document /></el-icon>
+          查看日志
+          <span v-if="logs.length" class="log-badge">{{ logs.length }}</span>
+        </button>
+        <button
+          class="act-btn primary"
+          type="button"
+          :disabled="!meta || analyzing || !isReady"
+          :title="isReady ? '' : '先点「选择模型」保存接口配置'"
+          @click="analyze"
+        >
           <el-icon :size="16"><MagicStick /></el-icon>
           {{ analyzing ? '分析中…' : '开始分析' }}
         </button>
@@ -55,10 +70,12 @@
       </p>
       <p v-else class="tip">手机浏览器点「拍照」会直接打开相机；桌面端会退化成选择图片文件。</p>
 
-      <p v-if="!configured" class="config-warn">
-        模型接口尚未配置：在 <code>src/config/ai.js</code> 里填 <code>baseUrl</code> 与
-        <code>apiKey</code>（或用 <code>VITE_AI_BASE_URL</code> / <code>VITE_AI_API_KEY</code>
-        环境变量），填好后即可调用 {{ AI_CONFIG.model }}。
+      <p v-if="!isReady" class="config-warn">
+        还没选择模型。点上方「选择模型」填好接口地址、API Key 与模型名，保存后「开始分析」才会亮起。
+      </p>
+      <p v-else class="model-line">
+        当前模型：<strong>{{ settings.model }}</strong>
+        <button class="link-btn" type="button" @click="settingsOpen = true">修改</button>
       </p>
     </div>
 
@@ -75,7 +92,13 @@
       <div class="result-head">
         <span class="result-title">分析结果</span>
         <el-tag size="small" effect="plain" type="warning">{{ analysis.model }}</el-tag>
-        <span class="result-meta">{{ metaLine }} · 耗时 {{ elapsedLabel }}</span>
+        <span class="result-meta">{{ metaLine }} · 耗时 {{ elapsedLabel }}<template v-if="analysis.usage?.prompt || analysis.usage?.completion"> · 输入 {{ analysis.usage.prompt }} / 输出 {{ analysis.usage.completion }} tokens</template></span>
+      </div>
+
+      <div v-if="notice" class="notice">
+        <el-icon :size="15"><WarningFilled /></el-icon>
+        <span>{{ notice }}</span>
+        <button class="notice-btn" type="button" @click="analyze">重试</button>
       </div>
 
       <section v-for="(section, index) in analysis.sections" :key="index" class="sec">
@@ -100,14 +123,26 @@
         </template>
       </section>
     </div>
+
+    <AISettingsDialog v-model:open="settingsOpen" @saved="onSettingsSaved" />
+    <AILogsDialog v-model:open="logsOpen" />
   </div>
 </template>
 
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
-import { Camera, Picture, UploadFilled, MagicStick, WarningFilled } from '@element-plus/icons-vue'
-import { AI_CONFIG, isAIConfigured } from '../config/ai'
+import { Camera, Picture, UploadFilled, MagicStick, WarningFilled, Setting, Document } from '@element-plus/icons-vue'
+import { AI_CONFIG } from '../config/ai'
 import { analyzeImage, parseAnalysis } from '../utils/ai'
+import { useAISettings } from '../composables/useAISettings'
+import { useAILogs } from '../composables/useAILogs'
+import AISettingsDialog from '../components/AISettingsDialog.vue'
+import AILogsDialog from '../components/AILogsDialog.vue'
+
+const { settings, isReady } = useAISettings()
+const { logs } = useAILogs()
+const settingsOpen = ref(false)
+const logsOpen = ref(false)
 
 const cameraInput = ref(null)
 const uploadInput = ref(null)
@@ -121,7 +156,6 @@ const error = ref('')
 const failure = ref('')
 const copied = ref(false)
 
-const configured = isAIConfigured()
 const SOURCE_LABEL = { camera: '拍照', upload: '本地上传' }
 
 let copiedTimer = null
@@ -139,6 +173,20 @@ const elapsedLabel = computed(() => {
   if (!analysis.value) return ''
   const seconds = analysis.value.elapsed / 1000
   return seconds < 1 ? '<1s' : `${seconds.toFixed(1)}s`
+})
+
+// 截断和「模型没按格式写」都会导致某一段消失，必须说清是哪一种，
+// 否则看起来就像功能坏了
+const notice = computed(() => {
+  if (!analysis.value) return ''
+  if (analysis.value.truncated) {
+    return `模型输出在达到 ${AI_CONFIG.maxTokens} tokens 上限时被截断，后面的段落没写完。可以重试一次，或把 src/config/ai.js 的 maxTokens 调大。`
+  }
+  const missing = analysis.value.missing || []
+  if (missing.length) {
+    return `本次缺少「${missing.join('」「')}」。模型这次没按小节格式输出，可以重试一次。`
+  }
+  return ''
 })
 
 function openCamera() {
@@ -192,8 +240,10 @@ function onFileChange(event, source) {
 async function analyze() {
   if (!meta.value || analyzing.value) return
 
-  if (!configured) {
-    failure.value = '模型接口还没配置，先在 src/config/ai.js 填 baseUrl 与 apiKey 再点分析。'
+  // 没保存过配置就别发请求，直接把弹窗推给用户
+  if (!isReady.value) {
+    settingsOpen.value = true
+    failure.value = '还没选择模型：填好接口地址、API Key 与模型名，保存后再点分析。'
     return
   }
 
@@ -203,7 +253,7 @@ async function analyze() {
   stage.value = '正在读取图片…'
 
   try {
-    const response = await analyzeImage(meta.value.file, (next) => {
+    const response = await analyzeImage(meta.value.file, settings.value, (next) => {
       stage.value = next
     })
     const parsed = parseAnalysis(response.text)
@@ -214,6 +264,11 @@ async function analyze() {
     analyzing.value = false
     stage.value = ''
   }
+}
+
+function onSettingsSaved() {
+  // 配置变了，之前「还没选择模型」的失败提示就没意义了
+  if (isReady.value) failure.value = ''
 }
 
 async function copyPrompt() {
@@ -375,6 +430,19 @@ onBeforeUnmount(() => {
   color: #7a7565;
 }
 
+.log-badge {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  font-size: 10.5px;
+  line-height: 16px;
+  text-align: center;
+  color: #121212;
+  background: #d4af37;
+  border-radius: 999px;
+}
+
 .hidden-input {
   display: none;
 }
@@ -437,6 +505,37 @@ onBeforeUnmount(() => {
   border-radius: 3px;
 }
 
+.model-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: #6b6555;
+}
+
+.model-line strong {
+  font-weight: 600;
+  color: #b99a4e;
+}
+
+.link-btn {
+  padding: 0;
+  font-family: inherit;
+  font-size: 12px;
+  color: #8a8574;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed #4a4436;
+  cursor: pointer;
+  transition: color 0.18s, border-color 0.18s;
+}
+
+.link-btn:hover {
+  color: #d4af37;
+  border-bottom-color: #6b5c2e;
+}
+
 .failure-panel,
 .result-panel {
   max-width: 720px;
@@ -491,6 +590,43 @@ onBeforeUnmount(() => {
   margin-left: auto;
   font-size: 11.5px;
   color: #6b6555;
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #d9b25f;
+  background: rgba(212, 175, 55, 0.07);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 8px;
+}
+
+.notice span {
+  flex: 1;
+}
+
+.notice-btn {
+  flex: none;
+  padding: 3px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #d9b25f;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.notice-btn:hover {
+  color: #121212;
+  background: #d4af37;
+  border-color: #d4af37;
 }
 
 .sec {
