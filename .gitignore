@@ -22,5 +22,10 @@ Thumbs.db
 # 本地工具数据（Agent 记忆、缓存等）
 .workbuddy/
 
+# 模型接口的 Key：只保留模板，真实 .env 不入库
+.env
+.env.*
+!.env.example
+
 # 构建期生成，base 随 BASE_PATH 变化，不入库（见 scripts/gen-404.mjs）
 public/404.html

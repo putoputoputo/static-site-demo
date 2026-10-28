@@ -28,7 +28,7 @@
           <el-icon :size="16"><MagicStick /></el-icon>
           {{ analyzing ? '分析中…' : '开始分析' }}
         </button>
-        <button v-if="meta" class="act-btn ghost" type="button" @click="reset">清除</button>
+        <button v-if="meta" class="act-btn ghost" type="button" :disabled="analyzing" @click="reset">清除</button>
       </div>
 
       <!-- 两个隐藏输入：capture 让手机浏览器直接拉起相机，桌面端会退化成选文件 -->
@@ -48,38 +48,66 @@
         @change="onFileChange($event, 'upload')"
       />
 
-      <p class="tip">
-        <template v-if="error">{{ error }}</template>
-        <template v-else>手机浏览器点「拍照」会直接打开相机；桌面端会退化成选择图片文件。</template>
+      <p v-if="error" class="tip is-error">{{ error }}</p>
+      <p v-else-if="analyzing" class="tip is-loading">
+        <span class="pulse"></span>
+        {{ stage }}
+      </p>
+      <p v-else class="tip">手机浏览器点「拍照」会直接打开相机；桌面端会退化成选择图片文件。</p>
+
+      <p v-if="!configured" class="config-warn">
+        模型接口尚未配置：在 <code>src/config/ai.js</code> 里填 <code>baseUrl</code> 与
+        <code>apiKey</code>（或用 <code>VITE_AI_BASE_URL</code> / <code>VITE_AI_API_KEY</code>
+        环境变量），填好后即可调用 {{ AI_CONFIG.model }}。
       </p>
     </div>
 
-    <div v-if="result" class="result-panel">
+    <div v-if="failure" class="failure-panel">
+      <div class="failure-head">
+        <el-icon :size="16"><WarningFilled /></el-icon>
+        分析失败
+      </div>
+      <p class="failure-msg">{{ failure }}</p>
+      <button v-if="meta" class="act-btn" type="button" @click="analyze">重试</button>
+    </div>
+
+    <div v-if="analysis" class="result-panel">
       <div class="result-head">
         <span class="result-title">分析结果</span>
-        <el-tag type="warning" effect="plain" size="small">预留 · 未接入分析服务</el-tag>
+        <el-tag size="small" effect="plain" type="warning">{{ analysis.model }}</el-tag>
+        <span class="result-meta">{{ metaLine }} · 耗时 {{ elapsedLabel }}</span>
       </div>
 
-      <dl class="meta-list">
-        <div v-for="row in result.rows" :key="row.label" class="meta-row">
-          <dt>{{ row.label }}</dt>
-          <dd>{{ row.value }}</dd>
+      <section v-for="(section, index) in analysis.sections" :key="index" class="sec">
+        <div class="sec-head">
+          <h3 v-if="section.title" class="sec-title">{{ section.title }}</h3>
+          <button
+            v-if="section.isPrompt && analysis.promptText"
+            class="copy-btn"
+            type="button"
+            @click="copyPrompt"
+          >
+            {{ copied ? '已复制' : '复制提示词' }}
+          </button>
         </div>
-      </dl>
 
-      <div class="pending">
-        <p class="pending-title">后续这里会输出：</p>
-        <ul>
-          <li v-for="item in planned" :key="item">{{ item }}</li>
-        </ul>
-      </div>
+        <template v-for="(block, blockIndex) in section.blocks" :key="blockIndex">
+          <p v-if="block.kind === 'p'" class="sec-p">{{ block.text }}</p>
+          <ul v-else-if="block.kind === 'list'" class="sec-list">
+            <li v-for="(item, itemIndex) in block.items" :key="itemIndex">{{ item }}</li>
+          </ul>
+          <pre v-else class="sec-code">{{ block.text }}</pre>
+        </template>
+      </section>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onBeforeUnmount, ref } from 'vue'
-import { Camera, Picture, UploadFilled, MagicStick } from '@element-plus/icons-vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
+import { Camera, Picture, UploadFilled, MagicStick, WarningFilled } from '@element-plus/icons-vue'
+import { AI_CONFIG, isAIConfigured } from '../config/ai'
+import { analyzeImage, parseAnalysis } from '../utils/ai'
 
 const cameraInput = ref(null)
 const uploadInput = ref(null)
@@ -87,18 +115,31 @@ const uploadInput = ref(null)
 const preview = ref('')
 const meta = ref(null)
 const analyzing = ref(false)
-const result = ref(null)
+const stage = ref('')
+const analysis = ref(null)
 const error = ref('')
+const failure = ref('')
+const copied = ref(false)
 
-// 分析能力还没接入，先把将来要输出的内容列出来，避免前端留一块空白
-const planned = [
-  '画面主体识别：人物 / 场景 / 敌人，以及主体在画面中的位置',
-  '构图建议：三分法、地平线水平、留白是否合适',
-  '色调与氛围：整体亮度、色温、对比度，以及对应的时间与天气',
-  '可分享文案：一段可直接复制的配文与话题标签',
-]
-
+const configured = isAIConfigured()
 const SOURCE_LABEL = { camera: '拍照', upload: '本地上传' }
+
+let copiedTimer = null
+
+const metaLine = computed(() => {
+  if (!meta.value) return ''
+  const { file, source, width, height } = meta.value
+  const parts = [SOURCE_LABEL[source] || '未知']
+  if (width && height) parts.push(`${width} × ${height}`)
+  parts.push(formatSize(file.size))
+  return parts.join(' · ')
+})
+
+const elapsedLabel = computed(() => {
+  if (!analysis.value) return ''
+  const seconds = analysis.value.elapsed / 1000
+  return seconds < 1 ? '<1s' : `${seconds.toFixed(1)}s`
+})
 
 function openCamera() {
   error.value = ''
@@ -116,11 +157,6 @@ function formatSize(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`
 }
 
-function formatTime(timestamp) {
-  if (!timestamp) return '未知'
-  return new Date(timestamp).toLocaleString('zh-CN', { hour12: false })
-}
-
 function releasePreview() {
   if (preview.value) URL.revokeObjectURL(preview.value)
   preview.value = ''
@@ -133,7 +169,8 @@ function onFileChange(event, source) {
   if (!file) return
 
   error.value = ''
-  result.value = null
+  failure.value = ''
+  analysis.value = null
 
   if (!file.type.startsWith('image/')) {
     error.value = `「${file.name}」不是图片文件，换一张试试。`
@@ -142,12 +179,7 @@ function onFileChange(event, source) {
 
   releasePreview()
   preview.value = URL.createObjectURL(file)
-  meta.value = {
-    file,
-    source,
-    width: 0,
-    height: 0,
-  }
+  meta.value = { file, source, width: 0, height: 0 }
 
   const image = new Image()
   image.onload = () => {
@@ -159,35 +191,58 @@ function onFileChange(event, source) {
 
 async function analyze() {
   if (!meta.value || analyzing.value) return
-  analyzing.value = true
-  result.value = null
 
-  // 预留：这里以后换成真实的分析请求，先给一段可感知的等待
-  await new Promise((resolve) => setTimeout(resolve, 600))
-
-  const { file, source, width, height } = meta.value
-  result.value = {
-    rows: [
-      { label: '图片来源', value: SOURCE_LABEL[source] || '未知' },
-      { label: '文件名', value: file.name || '（相机拍摄未命名）' },
-      { label: '图片尺寸', value: width && height ? `${width} × ${height}` : '读取中' },
-      { label: '文件大小', value: formatSize(file.size) },
-      { label: '图片格式', value: (file.type || '').replace('image/', '').toUpperCase() || '未知' },
-      { label: '修改时间', value: formatTime(file.lastModified) },
-      { label: '分析状态', value: '待接入 —— 以上为本地读取的信息' },
-    ],
+  if (!configured) {
+    failure.value = '模型接口还没配置，先在 src/config/ai.js 填 baseUrl 与 apiKey 再点分析。'
+    return
   }
-  analyzing.value = false
+
+  failure.value = ''
+  analysis.value = null
+  analyzing.value = true
+  stage.value = '正在读取图片…'
+
+  try {
+    const response = await analyzeImage(meta.value.file, (next) => {
+      stage.value = next
+    })
+    const parsed = parseAnalysis(response.text)
+    analysis.value = { ...response, ...parsed }
+  } catch (err) {
+    failure.value = err?.message || '分析失败，请稍后重试'
+  } finally {
+    analyzing.value = false
+    stage.value = ''
+  }
+}
+
+async function copyPrompt() {
+  const text = analysis.value?.promptText
+  if (!text) return
+  try {
+    await navigator.clipboard.writeText(text)
+    copied.value = true
+    clearTimeout(copiedTimer)
+    copiedTimer = setTimeout(() => {
+      copied.value = false
+    }, 1600)
+  } catch {
+    failure.value = '当前浏览器不允许写剪贴板，手动选中提示词复制即可。'
+  }
 }
 
 function reset() {
   releasePreview()
   meta.value = null
-  result.value = null
+  analysis.value = null
   error.value = ''
+  failure.value = ''
 }
 
-onBeforeUnmount(releasePreview)
+onBeforeUnmount(() => {
+  releasePreview()
+  clearTimeout(copiedTimer)
+})
 </script>
 
 <style scoped>
@@ -329,20 +384,98 @@ onBeforeUnmount(releasePreview)
   font-size: 12px;
   line-height: 1.7;
   color: #6b6555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.tip.is-error {
+  color: #e08a8a;
+}
+
+.tip.is-loading {
+  color: #cfae5b;
+}
+
+.pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d4af37;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.config-warn {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #b99a4e;
+  background: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+}
+
+.config-warn code {
+  padding: 1px 4px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11.5px;
+  color: #d8bb6e;
+  background: #141414;
+  border-radius: 3px;
+}
+
+.failure-panel,
 .result-panel {
   max-width: 720px;
   margin: 18px auto 0;
   padding: 20px;
   background: #1a1a1a;
-  border: 1px solid #3a3324;
   border-radius: 14px;
+}
+
+.failure-panel {
+  border: 1px solid rgba(224, 122, 122, 0.35);
+  background: rgba(90, 30, 30, 0.18);
+}
+
+.failure-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #e08a8a;
+}
+
+.failure-msg {
+  margin: 10px 0 14px;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #b8a4a4;
+  word-break: break-word;
+}
+
+.result-panel {
+  border: 1px solid #3a3324;
 }
 
 .result-head {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   padding-bottom: 12px;
   border-bottom: 1px dashed #332d20;
@@ -354,56 +487,100 @@ onBeforeUnmount(releasePreview)
   color: #e5e3d8;
 }
 
-.meta-list {
-  margin: 14px 0 0;
-  display: grid;
-  gap: 8px;
-}
-
-.meta-row {
-  display: flex;
-  gap: 12px;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.meta-row dt {
-  flex: none;
-  width: 76px;
+.result-meta {
+  margin-left: auto;
+  font-size: 11.5px;
   color: #6b6555;
 }
 
-.meta-row dd {
-  margin: 0;
-  color: #c9c4b2;
-  word-break: break-all;
+.sec {
+  padding-top: 18px;
 }
 
-.pending {
+.sec + .sec {
   margin-top: 18px;
-  padding: 14px 16px;
-  background: #141414;
-  border: 1px solid #2e2a20;
-  border-radius: 10px;
+  border-top: 1px solid #262217;
 }
 
-.pending-title {
-  margin: 0 0 8px;
-  font-size: 12.5px;
-  color: #8a8574;
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.pending ul {
+.sec-title {
+  position: relative;
   margin: 0;
+  padding-left: 10px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #d4af37;
+  letter-spacing: 0.5px;
+}
+
+.sec-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 3px;
+  bottom: 3px;
+  width: 3px;
+  border-radius: 2px;
+  background: #d4af37;
+}
+
+.copy-btn {
+  margin-left: auto;
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #b99a4e;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.copy-btn:hover {
+  color: #121212;
+  background: #d4af37;
+  border-color: #d4af37;
+}
+
+.sec-p {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #c9c4b2;
+  white-space: pre-wrap;
+}
+
+.sec-list {
+  margin: 10px 0 0;
   padding-left: 18px;
   display: grid;
   gap: 6px;
 }
 
-.pending li {
+.sec-list li {
+  font-size: 13px;
+  line-height: 1.85;
+  color: #c9c4b2;
+}
+
+.sec-code {
+  margin: 12px 0 0;
+  padding: 14px;
+  font-family: ui-monospace, Consolas, monospace;
   font-size: 12.5px;
-  line-height: 1.7;
-  color: #6b6555;
+  line-height: 1.8;
+  color: #d8bb6e;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #141414;
+  border: 1px solid #332d20;
+  border-radius: 8px;
 }
 
 @media (max-width: 600px) {
@@ -423,6 +600,11 @@ onBeforeUnmount(releasePreview)
   .act-btn.ghost {
     flex: none;
     margin-left: 0;
+  }
+
+  .result-meta {
+    margin-left: 0;
+    width: 100%;
   }
 }
 </style>

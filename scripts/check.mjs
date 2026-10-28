@@ -881,6 +881,45 @@ if (existsSync(notFoundStatic)) {
   check('摄影页未选图时给空态', photoHtml.includes('还没有图片'), true)
   check('摄影页开始分析按钮初始禁用', /<button[^>]*disabled/.test(photoHtml), true)
   check('摄影页分析结果默认不渲染', photoHtml.includes('分析结果'), false)
+
+  // 模型与提示词是产品定义，改名 / 删段都会让分析结构对不上
+  const { AI_CONFIG, ANALYSIS_PROMPT, isAIConfigured } = await import('../src/config/ai.js')
+  check('分析模型固定为 gemini-3.8-flash-high', AI_CONFIG.model, 'gemini-3.8-flash-high')
+  check(
+    '提示词含四个小节',
+    ['### 整体评价', '### 具体问题', '### 优化建议', '### 图像编辑提示词（英文）'].every((h) => ANALYSIS_PROMPT.includes(h)),
+    true
+  )
+  check('接口地址与 Key 留空即视为未配置', typeof isAIConfigured(), 'boolean')
+
+  const { parseAnalysis } = await import('../src/utils/ai.js')
+  const sample = [
+    '### 整体评价',
+    '画面干净，但**缺少明确主体**。',
+    '### 具体问题',
+    '- 地平线略歪',
+    '- 前景偏空',
+    '### 优化建议',
+    '1. 降低机位',
+    '### 图像编辑提示词（英文）',
+    '```',
+    'Keep the subject centered, lift shadows, warm the highlights.',
+    '```',
+  ].join('\n')
+  const parsed = parseAnalysis(sample)
+  check('分析结果拆成四个小节', parsed.sections.map((s) => s.title), [
+    '整体评价',
+    '具体问题',
+    '优化建议',
+    '图像编辑提示词（英文）',
+  ])
+  check('连续要点合并成一个列表块', parsed.sections[1].blocks.map((b) => b.kind), ['list'])
+  check('列表项数', parsed.sections[1].blocks[0].items.length, 2)
+  check('数字序号也识别成列表', parsed.sections[2].blocks[0].kind, 'list')
+  check('行内加粗被清掉', parsed.sections[0].blocks[0].text, '画面干净，但缺少明确主体。')
+  check('英文提示词单独抽出', parsed.promptText, 'Keep the subject centered, lift shadows, warm the highlights.')
+  check('提示词小节被标记', parsed.sections[3].isPrompt, true)
+  check('没有提示词小节时为空串', parseAnalysis('### 整体评价\n还行').promptText, '')
 }
 
 await vite.close()

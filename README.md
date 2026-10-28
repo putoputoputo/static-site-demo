@@ -10,9 +10,32 @@
 | --- | --- | --- |
 | `/` | 门户页 | 两个板块入口（游戏 / 摄影） |
 | `/game` | 游戏板块 | 原攻略首页的 12 个模块卡片；导航在此展开「流程 / 图鉴 / 工具」分组与全站搜索 |
-| `/photo` | 摄影板块 | 拍照 / 上传图片 / 开始分析，分析输出暂为预留 |
+| `/photo` | 摄影板块 | 拍照 / 上传图片 / 开始分析，调用视觉模型输出摄影点评 |
 
 > 攻略子页面（`/weapons`、`/bosses` 等）仍是顶层路径，不挂在 `/game` 下，已有链接与分享地址都不会失效。
+
+## 影像分析（摄影板块）
+
+`/photo` 的三步：拍照（`capture="environment"`，手机直接拉起相机）/ 上传图片 → 预览 → 开始分析。
+
+分析走 OpenAI 兼容的对话接口（Gemini 官方也有同格式的 `/v1beta/openai/chat/completions`），请求体是 `messages` + `image_url`，模型固定为 `gemini-3.8-flash-high`。
+
+**接口地址与 API Key 需要自己填**，两种方式二选一：
+
+1. 改 `src/config/ai.js` 里的 `baseUrl`（形如 `https://your-endpoint/v1/chat/completions`）与 `apiKey`；
+2. 或复制 `.env.example` 为 `.env.local`，填 `VITE_AI_BASE_URL` / `VITE_AI_API_KEY`，重启 dev server。
+
+没填之前点「开始分析」只会提示去配置，不会发出请求。
+
+实现要点：
+
+- 提示词在 `src/config/ai.js` 的 `ANALYSIS_PROMPT`，固定四段结构（整体评价 / 具体问题 / 优化建议 / 图像编辑提示词），改口径只改这一处
+- 长边超过 1600px 或体积超过 2.5MB 的图片先在 canvas 里等比压缩并转 JPEG 再发，避免网关 413；实际发送尺寸显示在结果栏
+- 返回的 markdown 由 `parseAnalysis` 拆成「小节 → 段落 / 列表 / 代码块」逐块渲染，不用 `v-html`，模型输出里的标签只会当文本显示
+- 「图像编辑提示词」小节单独抽出，带一键复制按钮
+- 超时 90 秒（`AI_CONFIG.timeoutMs`），失败时给出接口状态码与原始报错，可重试
+
+> `VITE_` 前缀的变量会被打进前端产物，Key 对访客可见。正式上线请把请求挪到自己的服务端 / 代理，前端只调自己的接口。
 
 ## 已上线模块
 

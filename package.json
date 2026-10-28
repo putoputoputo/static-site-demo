@@ -10,7 +10,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "gen:404": "node scripts/gen-404.mjs",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "check:ai": "node scripts/ai-selftest.mjs"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
