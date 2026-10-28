@@ -26,7 +26,8 @@
         <RouterView />
       </main>
       <footer class="site-footer">
-        艾尔登法环攻略站 · 交界地褪色者们的指引 · 仅供学习交流
+        <span>艾尔登法环攻略站 · 交界地褪色者们的指引 · 仅供学习交流</span>
+        <BuildTag />
       </footer>
     </div>
   </el-config-provider>
@@ -39,6 +40,7 @@ import { Trophy } from '@element-plus/icons-vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import GlobalSearch from './components/GlobalSearch.vue'
 import NavGroup from './components/NavGroup.vue'
+import BuildTag from './components/BuildTag.vue'
 
 // 页面已经有 11 个，平铺会把头部撑爆（窄屏只能横向滚动找链接）。
 // 按「流程 / 图鉴 / 工具」分成三组下拉，头部只占四个位置。

@@ -208,6 +208,26 @@ MSYS_NO_PATHCONV=1 BASE_PATH=/static-site-demo/ npm run build
 
 `vite.config.js` 读取 `BASE_PATH` 作为 `base`，路由使用 `import.meta.env.BASE_URL`。
 
+### 版本号与部署确认
+
+页脚右侧显示当前构建的 `v0.1.0 · 65f03d1 · 2026-10-28 05:25 UTC`，悬停可看每个值的含义。
+
+| 值 | 来源 |
+| --- | --- |
+| 版本号 | `package.json` 的 `version` |
+| 提交号 | CI 用 `GITHUB_SHA`，本地退回 `git rev-parse --short HEAD`，取不到就留空 |
+| 构建时间 | 执行 `npm run build` 的时刻，统一 UTC（CI 构建机就是 UTC，避免和构建日志对不上） |
+
+发版前把 `package.json` 的 `version` 往上调（`npm version patch` 也可以）。
+
+部署完对一下线上页脚：
+
+- 显示 **开发版** → 拿到的是 `npm run dev` 的页面，不是部署产物
+- **提交号或时间没变** → 部署没生效或被缓存，先强制刷新，再核对 GitHub Actions 那次构建的 commit
+- 时间变了但**提交号为空** → 构建环境里没有 git 信息（例如在无 `.git` 的目录里打包）
+
+实现：`vite.config.js` 用 `define` 注入 `import.meta.env.APP_*`，`src/utils/version.js` 拼装，`src/components/BuildTag.vue` 渲染。注意必须走 `import.meta.env` 这条通道——Vite 在 dev 下只会把 `import.meta.env` 赋成对象，自定义的 `__APP_VERSION__` 之类标识符原样留着，运行时是 `undefined`。
+
 ### 深链接如何处理
 
 这是 history 路由部署到静态托管的经典问题：直接访问 `/weapons/moonveil` 时服务器上没有对应文件，会返回 404。

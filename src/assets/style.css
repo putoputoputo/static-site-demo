@@ -96,6 +96,11 @@ body {
 
 /* 页脚 */
 .site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 14px;
   border-top: 1px solid #3a3324;
   padding: 20px;
   text-align: center;

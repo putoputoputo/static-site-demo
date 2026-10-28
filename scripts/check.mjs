@@ -17,6 +17,7 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import { usePagination } from '../src/composables/usePagination.js'
 
 const root = resolve(import.meta.dirname, '..')
+const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf-8'))
 
 let failed = 0
 function check(label, actual, expected) {
@@ -1098,6 +1099,16 @@ if (existsSync(notFoundStatic)) {
     viteLogs.clearLogs()
 
     delete globalThis.window
+  }
+
+  /* ---- 页脚版本号：部署后靠它确认线上是哪一次构建 ---- */
+  {
+    const { default: BuildTag } = await vite.ssrLoadModule('/src/components/BuildTag.vue')
+    const tagHtml = await renderToString(createSSRApp(BuildTag))
+    // 版本号来自 package.json，跟着它走，不要在测试里写死
+    check('页脚显示当前版本号', tagHtml.includes(`v${pkg.version}`), true)
+    check('版本标签带悬停说明', tagHtml.includes('title="版本'), true)
+    check('开发环境标明「开发版」', tagHtml.includes('开发版'), true)
   }
 }
 
