@@ -80,4 +80,8 @@ const route = useRoute()
 // 除门户页与摄影板块（含 /photo/logs 这类子页）外，其余路径都属于游戏板块（含 404 兜底页）
 const inGame = computed(() => route.path !== '/' && !route.path.startsWith('/photo'))
 
+const a = 1;
+const b = 2;
+
+const sum = computed(() => a + b);
 </script>
