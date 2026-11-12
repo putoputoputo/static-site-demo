@@ -2,7 +2,7 @@
   <div class="portal">
     <div class="portal-head">
       <h1>艾尔登法环攻略站</h1>
-      <p>两个板块：一边查攻略，一边记录画面</p>
+      <p>三个板块：两款游戏的攻略，加上记录画面的摄影</p>
     </div>
 
     <div class="portal-grid">
@@ -19,6 +19,26 @@
           <li>{{ questStats.total }} 条支线</li>
           <li>{{ regionStats.bosses }} 个 BOSS</li>
           <li>{{ weaponCount }} 件武器</li>
+        </ul>
+        <span class="card-enter">
+          进入攻略
+          <el-icon :size="14"><ArrowRight /></el-icon>
+        </span>
+      </RouterLink>
+
+      <RouterLink to="/pbz" class="portal-card pbz">
+        <div class="card-icon">
+          <el-icon :size="34"><Aim /></el-icon>
+        </div>
+        <h2>影之刃零</h2>
+        <p class="card-desc">
+          主武器与影之武装图鉴、分区域的 BOSS 攻略，以及四个结局的条件与难度规则。数据逐条标注出处。
+        </p>
+        <ul class="card-facts">
+          <li>{{ pbzStats.weapons }} 把主武器</li>
+          <li>{{ pbzStats.phantomEdges }} 件影之武装</li>
+          <li>{{ pbzStats.bosses }} 个 BOSS</li>
+          <li>{{ pbzStats.endings }} 个结局</li>
         </ul>
         <span class="card-enter">
           进入攻略
@@ -50,10 +70,10 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Trophy, Camera, ArrowRight } from '@element-plus/icons-vue'
+import { Trophy, Camera, ArrowRight, Aim } from '@element-plus/icons-vue'
 // 只从构建期生成的 summary 取数字：门户页是首屏，不能为了四个统计
 // 把整份 BOSS / 武器数据（约 200KB）打进首个 chunk
-import { mainStats, questStats, weaponCount, regionStats } from '../data/summary'
+import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../data/summary'
 </script>
 
 <style scoped>
@@ -81,7 +101,7 @@ import { mainStats, questStats, weaponCount, regionStats } from '../data/summary
 
 .portal-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 22px;
 }
 
@@ -113,6 +133,10 @@ import { mainStats, questStats, weaponCount, regionStats } from '../data/summary
   background: radial-gradient(120% 100% at 20% 0%, rgba(212, 175, 55, 0.16), transparent 70%);
 }
 
+.portal-card.pbz::before {
+  background: radial-gradient(120% 100% at 20% 0%, rgba(216, 87, 74, 0.16), transparent 70%);
+}
+
 .portal-card.photo::before {
   background: radial-gradient(120% 100% at 20% 0%, rgba(110, 160, 190, 0.16), transparent 70%);
 }
@@ -125,6 +149,11 @@ import { mainStats, questStats, weaponCount, regionStats } from '../data/summary
 .portal-card.game:hover {
   border-color: #d4af37;
   box-shadow: 0 10px 28px rgba(212, 175, 55, 0.14);
+}
+
+.portal-card.pbz:hover {
+  border-color: #d8574a;
+  box-shadow: 0 10px 28px rgba(216, 87, 74, 0.14);
 }
 
 .portal-card.photo:hover {
@@ -146,6 +175,10 @@ import { mainStats, questStats, weaponCount, regionStats } from '../data/summary
 
 .portal-card.game .card-icon {
   color: #d4af37;
+}
+
+.portal-card.pbz .card-icon {
+  color: #d8574a;
 }
 
 .portal-card.photo .card-icon {
@@ -204,9 +237,25 @@ import { mainStats, questStats, weaponCount, regionStats } from '../data/summary
   gap: 10px;
 }
 
+.portal-card.pbz:hover .card-enter {
+  color: #d8574a;
+  gap: 10px;
+}
+
 .portal-card.photo:hover .card-enter {
   color: #6ea0be;
   gap: 10px;
+}
+
+/* 三张卡在中等宽度下每张不足 300px，文案会挤成很多行，先降成单列 */
+@media (max-width: 980px) {
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-card {
+    min-height: 0;
+  }
 }
 
 @media (max-width: 760px) {

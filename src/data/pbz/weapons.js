@@ -1,0 +1,399 @@
+// 《影之刃零》主武器图鉴数据
+//
+// 数据口径（2026-11 整理，游戏版本为发售后首批补丁）：
+// - 数值、连段、独有机制、铸魂效果、获取方式：Fextralife 英文 wiki 各武器页（见每条的 source）。
+//   面板数值在各页面标注的武器等级不同（Lv1 / Lv10 / Lv30），这里原样带上等级，不同等级之间不能直接比大小。
+// - 中文名：3DM《全流程 全收集图文攻略》目录页中出现的官方中文名。目录里没有出现的武器，
+//   nameZh 留 null，页面显示英文名并标「中文名待补」，不自行翻译。
+// - 招式 / 铸魂技能名暂用英文版名称，中文官方译名待补。
+// - Sha-Chi Essence 是释放 Power Surge 消耗的资源，沿用英文版名称。
+
+const WIKI = 'https://phantombladezero.wiki.fextralife.com/'
+
+// [id, 中文名, 英文名, 类别, 伤害, 破防, 异常积累, 面板等级, 简介, 获取, 标准连段段数, 杀气连段段数, 机制[], 铸魂, wiki 页面名]
+const rows = [
+  // ==================== 单手 ====================
+  [
+    'wooden-sanguine', null, 'Wooden Sanguine', '单手', 161, 188, null, 1,
+    '序章使用的木制武器，没有独有机制；升级技能包括招架削减更多杀气、完美闪避回复少量杀气。',
+    '序章自动获得；进入第一章后在角色菜单的武器栏里。',
+    5, 3,
+    [['Power Surge · Wooden Blade Flurry', '消耗 1 格 Sha-Chi Essence，打出一串快速斩击，无法被格挡。']],
+    '该武器页面未列出铸魂形态。',
+    'Wooden_Sanguine',
+  ],
+  [
+    'sanguine', '黑伤', 'Sanguine', '单手', 227, 119, null, 1,
+    '魂的初始佩刀，通体血红。外形是剑，每一击却带着重刀的分量。',
+    '第一章开始时的默认武器。',
+    5, 3,
+    [['Power Surge · Sweeping Blade', '消耗 1 格 Sha-Chi Essence，对敌人快速连斩，无法被格挡。']],
+    '铸魂后变为 Infernal Rogue（暗魔天堡的传家兵器）。',
+    'Sanguine',
+  ],
+  [
+    'jagged-steel', '残钢刃', 'Jagged Steel', '单手', 936, null, 482, 30,
+    '布满缺口与锈迹的残刃，斩击附带流血，流血槽攒满后触发失血。',
+    '悲泣溪谷：击败 BOSS「残钢」掉落。BOSS 在 Rushblade Pavilion 铃铛附近的红线屏障之后，需先在 Broken Puppet Valley 铃铛处击杀 Agonized Brute 才能解除屏障。',
+    5, 3,
+    [
+      ['异常 · 流血', '命中积累敌人的流血槽，攒满触发失血。对人偶等无血肉的敌人无效。'],
+      ['Power Surge · Jagged Steel Rampage', '消耗 1 格 Sha-Chi Essence，狂乱连斩，快速积累流血并触发失血，无法被格挡。'],
+    ],
+    '铸魂 Open Wounds：攻击被格挡时依然积累流血槽。',
+    'Jagged_Steel',
+  ],
+  [
+    'tianxuan-bronze-sword', '天玄青铜剑', 'Tianxuan Bronze Sword', '单手', 240, 106, null, 1,
+    '大巧不工的青铜剑：进攻破盾能力强，防守稳如磐石，代价是不能招架。',
+    '陆家村：击败主线 BOSS「毕远掌门残躯」掉落。',
+    4, 3,
+    [
+      ['独有 · Natural Order', '格挡时的杀气消耗降低，但无法招架。'],
+      ['Power Surge · Greatness Without Form', '消耗 1 格 Sha-Chi Essence，打出一串沉稳有力的重剑斩击，能击退中远距离的敌人，无法被格挡。'],
+    ],
+    '铸魂 Effortless Action：即使被破防，也能按住 L1 以少量生命为代价继续格挡。',
+    'Tianxuan_Bronze_Sword',
+  ],
+  [
+    'the-fanatics-broken-blade', '痴者残剑', "The Fanatic's Broken Blade", '单手', 228, 96, null, 1,
+    '一把断剑，饮酒后剑身可以离手飞出攻击远处的敌人，伤害随距离衰减。',
+    '血色森林（庞镇桥一带）：击败 BOSS「花千笑」掉落。',
+    5, 3,
+    [
+      ['独有 · Bottomless Drink', 'L1 + △ 饮酒，回复杀气并进入微醺状态，攻击变为飞剑（伤害随距离衰减），15 秒后清醒；长按可以回复更多杀气。'],
+      ['Power Surge · Drink Until Dawn', '清醒时按 L2 消耗 1 格 Sha-Chi Essence 打出 Flying Sword Flurry 并进入微醺；微醺时再按 L2 消耗 1 格进入持续 20 秒的醉酒状态。'],
+    ],
+    '铸魂后变为 The Fanatic\'s Drunken Sword（需要道具 Fanatic\'s Obsession），飞剑伤害不再随距离衰减。',
+    'The_Fanatic%27s_Broken_Blade',
+  ],
+  [
+    'the-fanatics-drunken-sword', null, "The Fanatic's Drunken Sword", '单手', 1014, 406, null, 30,
+    '痴者残剑修复后的完整形态。醉剑机制不变，飞剑伤害不再随距离衰减。',
+    '由「痴者残剑」铸魂获得，需要道具 Fanatic\'s Obsession。',
+    5, 3,
+    [
+      ['独有 · Bottomless Drink', 'L1 + △ 饮酒，回复杀气并进入微醺状态，攻击变为飞剑，15 秒后清醒；长按可以回复更多杀气。'],
+      ['Power Surge · Drink Until Dawn', '清醒时按 L2 消耗 1 格 Sha-Chi Essence 打出 Flying Sword Flurry 并进入微醺；微醺时再按 L2 消耗 1 格进入持续 20 秒的醉酒状态。'],
+    ],
+    '本身即铸魂形态。',
+    'The_Fanatic%27s_Drunken_Sword',
+  ],
+  [
+    'wild-oriole-sword', '乱莺剑', 'Wild Oriole Sword', '单手', 560, 198, null, 10,
+    '能进入 Oriole Song 状态的单手剑，状态期间每次杀气攻击都会放出剑气。',
+    '陆家村：击败沐小葵后，在前方码头上拾取。离开该区域前务必拿走。',
+    5, 3,
+    [
+      ['独有 · Oriole Song', 'L1 + △ 消耗杀气进入 Oriole Song 状态 10 秒，期间每次 △ 攻击都会放出一道剑气。'],
+      ['Power Surge · Oriole Song', '消耗 1 格 Sha-Chi Essence，施展乱莺剑法，对强敌打出连绵不断的剑击，无法被格挡。'],
+    ],
+    '铸魂后变为 Tianmiao Wild Oriole Sword：△ 连段中会同时挥动沐天邈的佩剑。',
+    'Wild_Oriole_Sword',
+  ],
+  [
+    'tianmiao-wild-oriole-sword', null, 'Tianmiao Wild Oriole Sword', '单手', 1095, 428, null, 30,
+    '乱莺剑的铸魂形态，与沐天邈的佩剑配合打出双剑攻击。',
+    '由「乱莺剑」铸魂获得。',
+    5, 3,
+    [
+      ['独有 · Oriole Song', 'L1 + △ 消耗杀气进入 Oriole Song 状态 10 秒，期间每次 △ 攻击都会放出一道剑气。'],
+      ['Power Surge · Oriole Song', '消耗 1 格 Sha-Chi Essence，对强敌打出连绵不断的剑击，无法被格挡。'],
+    ],
+    '铸魂 Tianmiao - Wild Oriole：△ 连段中双剑并用；Oriole Song 期间天邈剑放出更强的剑气。',
+    'Tianmiao_Wild_Oriole_Sword',
+  ],
+  [
+    'soft-snake-sword', '灵蛇软剑', 'Soft Snake Sword', '单手', 288, 118, null, 1,
+    '柔韧的软剑，可以把敌人的攻击拨回去；架势下闪避会变成滑步。',
+    '正道大营：击败 BOSS「乌冷霜」掉落。',
+    5, 3,
+    [
+      ['独有 · Serpentine Reversal', '在敌人攻击命中前一瞬按 L1 + △，以剑花拨开攻击并把力道弹回敌人。'],
+      ['独有 · Serpentine Flow', '防御架势不消耗杀气；架势中闪避变为滑步，完美闪避后可以连续闪避。'],
+      ['Power Surge · Wild Serpent Dance', '消耗 1 格 Sha-Chi Essence 施展剑舞；在敌人攻击命中前一瞬发动，威力更高。无法被格挡。'],
+    ],
+    '铸魂 Final Gambit：长按 △ 消耗全部杀气打出一串快剑，消耗的杀气越多威力越高。',
+    'Soft_Snake_Sword',
+  ],
+  [
+    'freezing-chaos', null, 'Freezing Chaos', '单手', 324, null, 144, 1,
+    '可在钢、混沌、霜三种形态之间切换的单手刀，三种形态效果各不相同。',
+    '戏梦山庄（Mirage Estate）：击败 BOSS Yucong No. 34 Twisted Puppet 掉落。',
+    5, 3,
+    [
+      ['独有 · Threefold Shift', 'L1 + △ 消耗杀气在三种形态间切换并打出强力攻击：Steel 攻击与破防最高；Chaos 附带混沌之焰，点燃敌人并持续削减生命与杀气；Frost 附带寒气，积累足够后冻结敌人。'],
+      ['Power Surge · Chaos Erosion', '消耗 1 格 Sha-Chi Essence，依次以三种形态连续攻击，无法被格挡。'],
+    ],
+    '铸魂效果在 wiki 上尚未记录（待补）。',
+    'Freezing_Chaos',
+  ],
+  [
+    'aureate', null, 'Aureate', '单手', 324, 120, null, 1,
+    '纯金铸成的长剑，可以模仿左殇的金色剑气，召唤飞剑攻击敌人。',
+    '断魂山（Mount Soulrend）：击败左殇获得。',
+    5, 3,
+    [
+      ['独有 · Golden Long Sword', '切换到这把武器，或招架敌人的蓝光攻击时，召唤一柄巨大的金色长剑攻击敌人。'],
+      ['独有 · Living Sword', '连段中的 △ 命中时召唤一柄 Living Sword，3 秒后自动攻击；未被格挡则插在敌人身上 20 秒，插满 5 柄触发 Sword Energy Burst。'],
+      ['Power Surge · Radiant Long Sword Formation', '消耗 1 格 Sha-Chi Essence，召唤大量 Living Sword 攻击敌人，无法被格挡。'],
+    ],
+    '铸魂 The Grand Design：触发 Sword Energy Burst 后获得强化，大幅增强下一次 Grand Design 技能召唤的幻影兵器。',
+    'Aureate',
+  ],
+
+  // ==================== 双持 ====================
+  [
+    'sanguine-twin', '黑伤双刃', 'Sanguine Twin', '双持', 200, 100, null, 1,
+    '锻造师 Forge 用与黑伤相同的材料打造的短柄双刃，出手如雨，速度无可匹敌。',
+    '悲泣溪谷：「First Meeting with Yu\'er」铃铛下方梯子旁的武器架上，初次与玉儿对话后必经。',
+    6, 4,
+    [['Power Surge · Dual-Blade Flurry', '消耗 1 格 Sha-Chi Essence，施展一套双刃乱舞，无法被格挡。']],
+    '铸魂后变为 Shadowless Edge。',
+    'Sanguine_Twin',
+  ],
+  [
+    'shadowless-edge', null, 'Shadowless Edge', '双持', 1264, 468, null, 30,
+    '黑伤双刃的铸魂形态，能显现一个幻影分身，打出难以预判的攻击。',
+    '由「黑伤双刃」铸魂获得。',
+    6, 4,
+    [['Power Surge · Dual-Blade Flurry', '消耗 1 格 Sha-Chi Essence，施展一套双刃乱舞，无法被格挡。']],
+    '本身即铸魂形态；Lv5 技能 Chi-Infused Blade：L1 + △ 给刀刃灌注气劲，20 秒内大幅提高伤害与削杀气能力。',
+    'Shadowless_Edge',
+  ],
+  [
+    'white-serpent-and-crimson-viper', '百蟒赤练', 'White Serpent & Crimson Viper', '双持', 260, 110, null, 1,
+    '一短一长的蛇形双刃，可以无限循环连段，伤害随连段不断上升。',
+    '血色森林：击败 BOSS「白赤练」掉落。',
+    3, 2,
+    [
+      ['独有 · Twin Serpent Dance', '交替输入 ▢△ 或 △▢ 进入可无限循环的连段，伤害持续提高；按 ○ 掷出短刃结束连段。'],
+      ['独有 · Crimson Viper Orbit', 'L1 + △ 让短刃绕身旋转，持续消耗杀气，杀气不足时自动收回，再按一次手动收回。'],
+      ['独有 · Ranged Execution', '远处的敌人生命值较低时，按 ○ 进行远程处决。'],
+      ['Power Surge · Twin Serpent Frenzy', '消耗 1 格 Sha-Chi Essence，双刃配合打出一套连携攻击。'],
+    ],
+    '铸魂 Hundred-Knot Serpents：收回短刃时召唤蛇群攻击，短刃离身越久召唤越多。',
+    'White_Serpent_and_Crimson_Viper',
+  ],
+  [
+    'parting-hooks', '别离残钩', 'Parting Hooks', '双持', 288, 118, null, 1,
+    '划出残月弧线的双钩，可摆出守势把防守转成进攻，破盾能力强。',
+    '庞镇：在 Dockside Warehouse 铃铛附近击败 BOSS「勾魂」掉落。',
+    5, 4,
+    [
+      ['独有 · Counter', 'L1 + △ 摆出守势，格挡并反击敌人的近战攻击，对方攻击越强反击越强；无法反击黑光（Black-Flash）攻击。'],
+      ['Power Surge · Peerless Hook', '消耗 1 格 Sha-Chi Essence 施展钩法绝技，无法被格挡。'],
+    ],
+    '铸魂 Foretelling Strike：用 L1 招架蓝光攻击时自动触发 Counter。',
+    'Parting_Hooks',
+  ],
+  [
+    'sundering-dual-axes', '天煞双钺', 'Sundering Dual Axes', '双持', 312, 118, null, 1,
+    '兵器越短越险。标准连段积累煞气，攒满后伤害与削杀气能力同时提高。',
+    '梅谷湖：击败 BOSS「断肠」掉落。',
+    6, 4,
+    [
+      ['独有 · Baleful Aura', '▢ 命中积累 Baleful Aura 槽，攒满后激活 20 秒：伤害与削杀气提高，△ 连段会掷出双钺钉在敌人身上持续切割。'],
+      ['Power Surge · Tiansha Reaving', '消耗 1 格 Sha-Chi Essence 打出一串凌厉斩击，无法被格挡。'],
+    ],
+    '铸魂 Tiansha Twin Calamities：Baleful Aura 槽变为两段，攒满第二段后进一步强化 △ 连段。',
+    'Sundering_Dual_Axes',
+  ],
+  [
+    'baishan-stormswords', '白山风雷剑', 'Baishan Stormswords', '双持', 312, null, 142, 1,
+    '白山派至宝，分别积累风与雷两条槽，两者同时激活时进入强化状态。',
+    '正道大营：击败 BOSS「玉璧」掉落（需要 Training Grounds Key 进入演武场）。',
+    4, 4,
+    [
+      ['标准连段 · Wind Sword', '▢ 命中积累风槽，攒满形成 Wind Sword，提高 ▢ 攻击的削杀气能力。'],
+      ['杀气连段 · Thunder Sword', '△ 命中积累雷槽，攒满形成 Thunder Sword，△ 攻击附带雷属性积累并造成麻痹。'],
+      ['独有 · Baishan\'s Blessing', '风剑与雷剑同时激活时进入该状态 20 秒，攻击力提高；状态结束时两把剑一起消失。'],
+      ['独有 · Lightning Storm', '状态期间按 L1 + △ 放出雷暴，并提前结束风剑与雷剑。'],
+    ],
+    '铸魂 Unending Storm：Lightning Storm 会把敌人吸过来，每命中一个敌人同时积累风槽与雷槽。',
+    'Baishan_Stormswords',
+  ],
+  [
+    'seamless-death', '玉双环', 'Seamless Death', '双持', 288, 114, null, 1,
+    '一对诡异的环刃，连段行云流水，还能掷出飞环追击敌人。',
+    '枷笼山：击败 BOSS「玉面郎君」掉落。',
+    6, 4,
+    [
+      ['杀气连段 · Flying Rings', '任何以 △ 结尾的连段都会向敌人掷出一轮飞环。'],
+      ['Power Surge · Reaping Rings', '消耗 1 格 Sha-Chi Essence，后撤拉开距离并放出追踪锁定目标的飞环风暴，无法被格挡。'],
+    ],
+    '铸魂 Ringstorm：所有招式掷出的飞环数量增加。',
+    'Seamless_Death',
+  ],
+  [
+    'the-ladys-fan', null, "The Lady's Fan", '双持', 340, 126, null, 1,
+    'Meng Hua 成为「圣母」之前使用的骨扇，能调动冰、火、雷与混沌之力。',
+    '断魂山（Mount Soulrend）：击败最终 BOSS「圣母」（Meng Hua）获得。',
+    5, 4,
+    [
+      ['独有 · Arcane Sigils', '△ 攻击会储存符印，最多 2 枚；不同的 ▢/△ 组合对应雷、火、冰三种符印。'],
+      ['独有 · Sigil Burst', 'L1 + △ 消耗全部符印，按组合放出不同效果：双火为环身火浪，双雷为落雷，双冰为持续发射冰锥的冰造物。'],
+    ],
+    '铸魂 Dark Sigil Burst：大幅强化所有 Sigil Burst 效果，持续型效果时间翻倍。',
+    'The_Lady%27s_Fan',
+  ],
+  [
+    'fiend-saws', '妖锯', 'Fiend Saws', '双持', 1179, 468, null, 30,
+    '原本由 Jade Dancer 用双腿挥舞的一对异形刃，命中积累妖气，攒满后持续侵蚀敌人生命。',
+    '陆家村：可错过。完成「少主」任务线，击败沐小葵及其护卫后获得。',
+    5, 4,
+    [
+      ['独有 · Fiend-Aura Erosion', '每次命中给敌人积累妖气（持续 20 秒），槽满后爆发并侵蚀其生命值。'],
+      ['Power Surge · Fiend Form', '消耗 1 格 Sha-Chi Essence 进入 Fiend Form 10 秒，期间所有攻击无法被格挡、对破防敌人增伤；期间再按 L2 打出一次不耗资源的追击并结束状态。'],
+    ],
+    '铸魂 Endless Fiend Form：妖气在敌人身上爆发后，3 秒内对其所有攻击都无法被格挡。',
+    'Fiend_Saws',
+  ],
+
+  // ==================== 双手 ====================
+  [
+    'sanguine-reach', '长形黑伤', 'Sanguine Reach', '双手', 200, 100, null, 1,
+    '锻造师 Forge 用与黑伤相同的材料打造的双手长刀，为大范围横扫而设计，适合对付成群的敌人。',
+    '悲泣溪谷：到达 Mandate Outpost 后，在铁匠铺后面的武器架上拾取。',
+    4, 3,
+    [['Power Surge · Longblade Chain Slash', '消耗 1 格 Sha-Chi Essence，打出一串兼具力量与速度的长刀连斩，无法被格挡。']],
+    '铸魂后变为 Blazing Edge。',
+    'Sanguine_Reach',
+  ],
+  [
+    'blazing-edge', null, 'Blazing Edge', '双手', 1217, 513, null, 30,
+    '长形黑伤的铸魂形态，把杀气转化为烈焰，破盾并灼烧敌人。',
+    '由「长形黑伤」铸魂获得。',
+    4, 3,
+    [['Power Surge · Longblade Chain Slash', '消耗 1 格 Sha-Chi Essence，打出一串长刀连斩，无法被格挡。']],
+    '本身即铸魂形态；Lv5 技能 Whirlwind Slash：L1 + △ 消耗大量杀气打出旋风斩。',
+    'Blazing_Edge',
+  ],
+  [
+    'scarlet-wraithblade', '红妆鬼斩', 'Scarlet Wraithblade', '双手', 936, 457, null, 30,
+    '刀柄上有一张狞笑的鬼脸。破盾能力强，能在地面铺开彼岸花，持续抽取敌人的杀气与生命。',
+    '悲泣溪谷：击败隐藏 BOSS「新娘阿花」掉落（Flesh Lily Fields 铃铛，Valley Sha-Chi Tower 西北）。',
+    5, 2,
+    [
+      ['独有 · Red Spider Lilies', '△ 连段在地面留下彼岸花，范围内的敌人移动变慢并持续流失杀气，3 秒后花丛爆炸造成持续伤害。'],
+      ['Power Surge · Rogue Bloomstorm', '消耗 1 格 Sha-Chi Essence 斩出一刀，让彼岸花在地面成片绽放，无法被格挡。'],
+    ],
+    '铸魂 Lingering Grudge：攻击花丛中的敌人会积累其 Red Flower 槽，攒满触发爆炸。',
+    'Scarlet_Wraithblade',
+  ],
+  [
+    'outlaw-warblade', '亡命斩马刀', 'Outlaw Warblade', '双手', 240, 106, null, 1,
+    '嗜血的斩马刀：标准连段吸血回复，杀气连段把自身生命转成可回复生命来换取更高伤害。',
+    '血色森林：击败 BOSS「荆野」掉落。',
+    4, 2,
+    [
+      ['标准连段 · 吸血', '每次命中吸取敌人生命回复自身；有可回复生命时回复量更高。对人偶等无血肉的敌人无效。'],
+      ['杀气连段 · 换血', '把生命值转成可回复生命并提高伤害。12 秒内没有回复或受到伤害，剩余的可回复生命全部损失。'],
+      ['独有 · Repeating Retreat', '任意 △ 之后接 ▢，打出一记回身斩并吸血。'],
+    ],
+    '该武器页面未列出铸魂效果；Lv15 技能 Survival Shield：可回复生命达到最大生命 30% 时获得一层应急护盾。',
+    'Outlaw_Warblade',
+  ],
+  [
+    'armybreaker', '破军', 'Armybreaker', '双手', 288, 114, null, 1,
+    '用来冲破敌阵的阔刃长柄兵器，破盾能力强，能带着冲锋切入敌群。',
+    '庞镇：击败 BOSS「斩骑」掉落。',
+    4, 2,
+    [
+      ['独有 · Thrust', '切换到这把武器，或招架敌人的蓝光攻击时，魂会向前突进一小段距离。'],
+      ['Power Surge · Formation Breaking Art', '消耗 1 格 Sha-Chi Essence，打出一套章法严整的斩击，大幅削减敌人杀气，无法被格挡。'],
+    ],
+    '铸魂 Relentless Rush：冲锋攻击更强且不会被打断，冲锋后的下一击也得到强化。',
+    'Armybreaker',
+  ],
+  [
+    'juggernaut', '荡寇凶刃', 'Juggernaut', '双手', 288, 114, null, 1,
+    '破盾能力强的凶刀，靠招架叠层，叠满后放出一记强力斩击。',
+    '枷笼山：击败 BOSS「毕峰」掉落。',
+    4, 2,
+    [
+      ['独有 · Crimson Wheel Slash', '每次招架获得 1 层 Red Edge，叠满后刀身变红，按 △ 消耗全部层数打出强力斩击。'],
+      ['Power Surge · Bandit-Slaying Rampage', '消耗 1 格 Sha-Chi Essence 打出带刀气的乱斩，并给敌人附加 1 层标记；被标记的敌人承受更高伤害与杀气削减。无法被格挡。'],
+    ],
+    '铸魂 Unfading Sunset：Crimson Wheel Slash 命中带标记的敌人时不再消耗 Red Edge。',
+    'Juggernaut',
+  ],
+  [
+    'whiteshadow', null, 'Whiteshadow', '双手', 308, null, 144, 1,
+    '寒光如雪的长刀，命中附带寒气并积累冻结槽，攒满后冻结敌人。',
+    '击败 BOSS Blizzard Blademaster 掉落。区域在 wiki 上有出入：武器页写枷笼山，BOSS 页写梅谷湖（Whiteshadow\'s Fall 铃铛），待核实。',
+    5, 3,
+    [
+      ['异常 · 冻结', '命中附带寒气并积累敌人的冻结槽，攒满后敌人被冻结。'],
+      ['Power Surge · White Shadow\'s Frosthowl', '消耗 1 格 Sha-Chi Essence 打出一串长刀连斩，结束时被命中的敌人必定冻结。'],
+    ],
+    '铸魂 Deepening Frost：攻击被格挡时依然积累冻结槽。',
+    'Whiteshadow',
+  ],
+  [
+    'crescent-blade', null, 'Crescent Blade', '双手', 288, 118, null, 1,
+    '刻有青龙纹的偃月刀，擅长大范围横扫与击退，蓄满后进入青龙形态。',
+    '戏梦山庄（Mirage Estate）：击败 BOSS Yuding, No. 12 Crescent Blade Puppet 掉落。',
+    4, 2,
+    [
+      ['独有 · Crescent Storm', '长按 L1 + △ 持续消耗杀气旋转刀身攻击并蓄力，蓄满获得 Qinglong Form 30 秒。'],
+      ['独有 · Qinglong Cleave', 'Qinglong Form 期间按 △ 打出青龙斩，直接击杀较弱的敌人，使用后形态结束。'],
+      ['Power Surge · Warm-Wine Qinglong Cleave', '消耗 1 格 Sha-Chi Essence 击退敌人后劈出一刀，直接击杀较弱的敌人，随后进入 Qinglong Form。'],
+    ],
+    '铸魂 Sundering Stroke：切换到这把武器，或招架蓝光攻击时直接获得 Qinglong Form。',
+    'Crescent_Blade',
+  ],
+  [
+    'bonesaw', null, 'Bonesaw', '双手', 312, null, 142, 1,
+    '锯齿粗砺的重兵器，破盾能力强，对 BOSS 尤其有效。',
+    '断魂山（Mount Soulrend）：击败 BOSS The Crusher and the Saw 掉落。',
+    4, 2,
+    [
+      ['独有 · The Best Offense', '普通格挡消耗更多杀气，但招架成功后的下一击削杀气能力提高。'],
+      ['Power Surge · Savage Finale', '消耗 1 格 Sha-Chi Essence 打出一套锯击，对破防的敌人增伤，无法被格挡。'],
+    ],
+    '铸魂 Prey on the Mighty：对抗 BOSS 级敌人时 Bloodsaw 槽积累更快，Bloodsaw 期间流血槽积累也更快。',
+    'Bonesaw',
+  ],
+]
+
+const comboText = (standard, shaChi) => `标准连段 ▢×${standard}，杀气连段 △×${shaChi}（标准连段任意一段后可接，杀气充足时强化）`
+
+const weapons = rows.map(
+  ([id, nameZh, nameEn, category, damage, guardBreak, statusBuildup, level, effect, location, standard, shaChi, moves, forge, slug]) => ({
+    id,
+    name: nameZh || nameEn,
+    nameEn,
+    zhPending: nameZh === null,
+    category,
+    damage,
+    guardBreak,
+    statusBuildup,
+    level,
+    effect,
+    location,
+    forge,
+    moves: [{ label: '连段', text: comboText(standard, shaChi) }, ...moves.map(([label, text]) => ({ label, text }))],
+    metrics: [
+      { label: `伤害（Lv${level}）`, value: String(damage) },
+      guardBreak === null
+        ? { label: `异常积累（Lv${level}）`, value: String(statusBuildup) }
+        : { label: `破防（Lv${level}）`, value: String(guardBreak) },
+    ],
+    source: `${WIKI}${slug}`,
+  })
+)
+
+export const weaponCategories = [
+  { id: '单手', label: '单手', desc: '单手刀剑，包含初始武器黑伤。标准连段多为 5 段、杀气连段 3 段。' },
+  { id: '双持', label: '双持', desc: '双持兵器，标准连段多为 5~6 段、杀气连段多为 4 段，是三类里段数最多的。' },
+  { id: '双手', label: '双手', desc: '双手兵器，标准连段多为 4 段、杀气连段 2~3 段，武器说明里多数标注了较高的破盾能力。' },
+]
+
+export const weaponStats = {
+  total: weapons.length,
+  categories: weaponCategories.length,
+  zhPending: weapons.filter((item) => item.zhPending).length,
+}
+
+export default weapons

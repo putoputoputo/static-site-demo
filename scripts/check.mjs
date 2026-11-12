@@ -100,6 +100,10 @@ async function renderView(component, path, props) {
       // 主线详情页靠 params.id 取章节
       { path: '/main-quest', component: Blank },
       { path: '/main-quest/:id', component: Blank },
+      // 影之刃零的图鉴 / BOSS 详情同样靠 params.id 取条目
+      { path: '/pbz/weapons/:id', component: Blank },
+      { path: '/pbz/phantom-edges/:id', component: Blank },
+      { path: '/pbz/bosses/:id', component: Blank },
       { path: '/:pathMatch(.*)*', component: Blank },
     ],
   })
@@ -865,8 +869,9 @@ if (existsSync(notFoundStatic)) {
   const { default: PhotoView } = await vite.ssrLoadModule('/src/views/PhotoView.vue')
 
   const portalHtml = await renderView(PortalView, '/')
-  check('门户页渲染两个板块卡片', (portalHtml.match(/class="[^"]*\bportal-card\b/g) || []).length, 2)
+  check('门户页渲染三个板块卡片', (portalHtml.match(/class="[^"]*\bportal-card\b/g) || []).length, 3)
   check('门户页能进游戏板块', portalHtml.includes('href="/game"'), true)
+  check('门户页能进影之刃零板块', portalHtml.includes('href="/pbz"'), true)
   check('门户页能进摄影板块', portalHtml.includes('href="/photo"'), true)
 
   // 原首页整体搬到 /game，卡片数量不变
@@ -1110,6 +1115,158 @@ if (existsSync(notFoundStatic)) {
     check('版本标签带悬停说明', tagHtml.includes('title="版本'), true)
     check('开发环境标明「开发版」', tagHtml.includes('开发版'), true)
   }
+}
+
+/* ---------- 影之刃零板块 ---------- */
+{
+  const { pbzModules } = await vite.ssrLoadModule('/src/data/pbz/codex.js')
+  const { default: pbzBosses, bossRegions: pbzRegions } = await vite.ssrLoadModule('/src/data/pbz/bosses.js')
+  const { endings: pbzEndings, difficulties: pbzDifficulties } = await vite.ssrLoadModule('/src/data/pbz/endings.js')
+  const { pbzStats } = await vite.ssrLoadModule('/src/data/summary.js')
+
+  // 数据完整性：id 唯一、分类合法、每条都有出处；数量与 summary 一致（summary 过期说明没跑 gen-summary）
+  for (const mod of Object.values(pbzModules)) {
+    const ids = mod.items.map((item) => item.id)
+    const categoryIds = mod.categories.map((category) => category.id)
+    check(`影之刃零·${mod.title} id 唯一`, new Set(ids).size, ids.length)
+    check(
+      `影之刃零·${mod.title} 分类都在注册表里`,
+      mod.items.filter((item) => !categoryIds.includes(item.category)).map((item) => item.id),
+      []
+    )
+    check(
+      `影之刃零·${mod.title} 每条都有出处与获取方式`,
+      mod.items.filter((item) => !item.source.startsWith('https://') || !item.location).map((item) => item.id),
+      []
+    )
+    check(`影之刃零·${mod.title} 每个分类都有说明`, categoryIds.filter((id) => !mod.notes[id]), [])
+  }
+  check('影之刃零·武器数量与 summary 一致', pbzModules.weapons.items.length, pbzStats.weapons)
+  check('影之刃零·影之武装数量与 summary 一致', pbzModules.phantomEdges.items.length, pbzStats.phantomEdges)
+
+  const bossIds = pbzBosses.map((boss) => boss.id)
+  const regionIds = pbzRegions.map((region) => region.id)
+  check('影之刃零·BOSS id 唯一', new Set(bossIds).size, bossIds.length)
+  check('影之刃零·BOSS 数量与 summary 一致', pbzBosses.length, pbzStats.bosses)
+  check('影之刃零·BOSS 区域都在区域表里', pbzBosses.filter((boss) => !regionIds.includes(boss.region)).map((boss) => boss.id), [])
+  check(
+    '影之刃零·BOSS 每条都有出处、位置与要点',
+    pbzBosses.filter((boss) => !boss.source.startsWith('https://') || !boss.place || !boss.tips).map((boss) => boss.id),
+    []
+  )
+  check('影之刃零·结局 4 个 / 难度 4 档', [pbzEndings.length, pbzDifficulties.length], [4, 4])
+
+  // SSR 实渲染：页面能出内容，详情页能按 params.id 取到条目
+  const { default: PbzHomeView } = await vite.ssrLoadModule('/src/views/pbz/PbzHomeView.vue')
+  const { default: PbzCodexView } = await vite.ssrLoadModule('/src/views/pbz/PbzCodexView.vue')
+  const { default: PbzCodexDetailView } = await vite.ssrLoadModule('/src/views/pbz/PbzCodexDetailView.vue')
+  const { default: PbzBossesView } = await vite.ssrLoadModule('/src/views/pbz/PbzBossesView.vue')
+  const { default: PbzBossDetailView } = await vite.ssrLoadModule('/src/views/pbz/PbzBossDetailView.vue')
+  const { default: PbzEndingsView } = await vite.ssrLoadModule('/src/views/pbz/PbzEndingsView.vue')
+
+  const pbzHomeHtml = await renderView(PbzHomeView, '/pbz')
+  check('影之刃零·板块首页 4 张卡片', (pbzHomeHtml.match(/class="board-card"/g) || []).length, 4)
+
+  const pbzWeaponsHtml = await renderView(PbzCodexView, '/pbz/weapons', { moduleKey: 'weapons' })
+  check('影之刃零·武器列表首屏 12 张卡片', (pbzWeaponsHtml.match(/class="item-card"/g) || []).length, 12)
+
+  const pbzEdgesHtml = await renderView(PbzCodexView, '/pbz/phantom-edges', { moduleKey: 'phantomEdges' })
+  check('影之刃零·影之武装列表首屏 12 张卡片', (pbzEdgesHtml.match(/class="item-card"/g) || []).length, 12)
+
+  const pbzWeaponHtml = await renderView(PbzCodexDetailView, '/pbz/weapons/scarlet-wraithblade', { moduleKey: 'weapons' })
+  check('影之刃零·武器详情渲染名称与出处', ['红妆鬼斩', 'Scarlet_Wraithblade', '铸魂'].every((text) => pbzWeaponHtml.includes(text)), true)
+
+  const pbzMissingHtml = await renderView(PbzCodexDetailView, '/pbz/weapons/not-exist', { moduleKey: 'weapons' })
+  check('影之刃零·武器详情 id 不存在时给空态', pbzMissingHtml.includes('没有找到这个条目'), true)
+
+  const pbzBossesHtml = await renderView(PbzBossesView, '/pbz/bosses')
+  check('影之刃零·BOSS 列表首屏 12 张卡片', (pbzBossesHtml.match(/class="item-card"/g) || []).length, 12)
+
+  const pbzBossHtml = await renderView(PbzBossDetailView, '/pbz/bosses/hua-deadly-betrothed')
+  check(
+    '影之刃零·BOSS 详情渲染名称、掉落跳转与出处',
+    ['新娘阿花', 'href="/pbz/weapons/scarlet-wraithblade"', 'Hua_Deadly_Betrothed'].every((text) => pbzBossHtml.includes(text)),
+    true
+  )
+
+  const pbzEndingsHtml = await renderView(PbzEndingsView, '/pbz/endings')
+  check('影之刃零·结局页渲染四档难度', ['入阵者', '破局者', '逆天者', '六十六天'].every((text) => pbzEndingsHtml.includes(text)), true)
+
+  // 收藏入口：列表有筛选 chip，卡片有星标，详情页有带文字的按钮
+  check('影之刃零·武器列表有收藏筛选', pbzWeaponsHtml.includes('只看收藏'), true)
+  check('影之刃零·武器卡片都带收藏按钮', (pbzWeaponsHtml.match(/class="fav-btn"/g) || []).length, 12)
+  check('影之刃零·BOSS 列表有收藏筛选', pbzBossesHtml.includes('只看收藏'), true)
+  check(
+    '影之刃零·武器详情有收藏按钮',
+    pbzWeaponHtml.includes('detail-fav') && pbzWeaponHtml.includes('收藏'),
+    true
+  )
+
+  /* ---- 收藏存储：三个模块共用一个 key，靠前缀区分 ---- */
+  {
+    const storage = new Map()
+    globalThis.window = {
+      localStorage: {
+        getItem: (key) => (storage.has(key) ? storage.get(key) : null),
+        setItem: (key, value) => storage.set(key, String(value)),
+        removeItem: (key) => storage.delete(key),
+      },
+    }
+    // ?fav=1 绕过模块缓存：上面的 SSR 渲染已经导入过一次，那时还没有 window
+    const { usePbzFavorites } = await vite.ssrLoadModule('/src/composables/usePbzFavorites.js?fav=1')
+    const fav = usePbzFavorites()
+
+    check('影之刃零·初始没有收藏', fav.favoriteCount.value, 0)
+
+    fav.toggleCodexFavorite('weapons', 'sanguine')
+    // 武器与影之武装都可能有同名 id，必须靠模块前缀区分
+    fav.toggleCodexFavorite('phantomEdges', 'sanguine')
+    fav.toggleBossFavorite('zuo-shang')
+    // createIdStore 用 watch 落盘，默认 flush: 'pre' 会推迟到微任务
+    await nextTick()
+
+    check('影之刃零·三个命名空间互不混淆', fav.favoriteCount.value, 3)
+    check('影之刃零·按模块取收藏', fav.favoritesOf('weapons'), ['sanguine'])
+    check('影之刃零·BOSS 收藏单独计数', fav.bossFavoriteCount.value, 1)
+    check('影之刃零·收藏写入 localStorage', storage.has('er-guide:pbz-favorites'), true)
+
+    fav.toggleCodexFavorite('weapons', 'sanguine')
+    check(
+      '影之刃零·再点一次取消收藏',
+      [fav.isCodexFavorite('weapons', 'sanguine'), fav.favoriteCount.value],
+      [false, 2]
+    )
+
+    fav.clearFavorites()
+    await nextTick()
+    check(
+      '影之刃零·清空收藏',
+      [fav.favoriteCount.value, JSON.parse(storage.get('er-guide:pbz-favorites'))],
+      [0, []]
+    )
+
+    delete globalThis.window
+  }
+
+  /* ---- 全站搜索：三个模块都要能搜到，且落到详情页 ---- */
+  const search = await vite.ssrLoadModule('/src/utils/search.js')
+  check(
+    '影之刃零·搜索分组已登记',
+    ['pbzWeapons', 'pbzEdges', 'pbzBosses'].every((key) => search.searchGroupOrder.includes(key)),
+    true
+  )
+
+  const firstHit = (keyword, group) => {
+    const bucket = search.searchAll(keyword).find((entry) => entry.group === group)
+    return bucket ? bucket.items[0].to : ''
+  }
+  check('影之刃零·搜中文名命中武器', firstHit('黑伤', 'pbzWeapons').startsWith('/pbz/weapons/'), true)
+  check('影之刃零·搜机制命中影之武装', firstHit('召唤', 'pbzEdges').startsWith('/pbz/phantom-edges/'), true)
+  check('影之刃零·搜 BOSS 名命中攻略页', firstHit('左殇', 'pbzBosses'), '/pbz/bosses/zuo-shang')
+
+  // 板块内如果没有搜索框，索引建了也点不到
+  const appSource = readFileSync(resolve(root, 'src/App.vue'), 'utf-8')
+  check('影之刃零·板块内展开全站搜索', /GlobalSearch\s+v-if="inGame \|\| inPbz"/.test(appSource), true)
 }
 
 await vite.close()

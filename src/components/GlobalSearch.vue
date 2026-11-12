@@ -22,7 +22,7 @@
           v-model="keyword"
           class="dialog-input"
           type="text"
-          placeholder="搜武器、护符、魔法、祷告、骨灰、支线、BOSS、区域、追忆…"
+          :placeholder="placeholderText"
           @keydown.enter.prevent="openFirst"
           @keydown.esc="visible = false"
         />
@@ -32,7 +32,7 @@
       <div class="dialog-body">
         <template v-if="keyword.trim()">
           <p v-if="!groups.length" class="empty-tip">
-            没有匹配「{{ keyword.trim() }}」的内容，试试更短的关键词，比如「月隐」「猩红」「拉塔恩」。
+            没有匹配「{{ keyword.trim() }}」的内容，{{ emptyHint }}
           </p>
           <section v-for="group in groups" :key="group.group" class="result-group">
             <div class="group-head">
@@ -68,7 +68,7 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 
 const visible = ref(false)
@@ -77,8 +77,25 @@ const groups = ref([])
 const indexSize = ref(0)
 const inputRef = ref(null)
 const router = useRouter()
+const route = useRoute()
 
-const suggestions = ['月隐', '猩红', '拉塔恩', '追忆', '出血', '神圣']
+// 两个板块的索引是同一份，但推荐词得分开给：
+// 在影之刃零页面点「月隐」只会得到空结果，体感像搜索坏了
+const inPbz = computed(() => route.path.startsWith('/pbz'))
+
+const placeholderText = computed(() =>
+  inPbz.value
+    ? '搜影之刃零的武器、影之武装、BOSS…'
+    : '搜武器、护符、魔法、祷告、骨灰、支线、BOSS、区域、追忆…'
+)
+
+const suggestions = computed(() =>
+  inPbz.value ? ['黑伤', '残钢', '召唤', '悲泣溪谷', '追命'] : ['月隐', '猩红', '拉塔恩', '追忆', '出血', '神圣']
+)
+
+const emptyHint = computed(() =>
+  inPbz.value ? '试试更短的关键词，比如「黑伤」「残钢」「召唤」，或直接搜区域名。' : '试试更短的关键词，比如「月隐」「猩红」「拉塔恩」。'
+)
 
 // 搜索索引要读全部数据（约 1150 条），改成首次打开时才 import，
 // 否则首页会连带下载 quests / weapons 两个大 chunk

@@ -1,4 +1,4 @@
-// 全站搜索：一次输入，跨 12 个模块查
+// 全站搜索：一次输入，跨两个游戏的 15 个模块查
 //
 // 索引是惰性构建的 —— 数据总量上千条，但只在用户第一次打开搜索框时才 import，
 // 这样不会把 quests（53 万字符）、weapons（480 条）全塞进首屏 chunk。
@@ -14,8 +14,31 @@ import { codexModules } from '../data/codex.js'
 import { remembranceList } from './remembrances.js'
 import { bossList, bossHref } from './bosses.js'
 import { archetypes } from '../data/archetypes.js'
+// 影之刃零：三个模块共 108 条。数据文件本身不大（三份合计约 1200 行），
+// 且整个索引是首次打开搜索框才 import 的，不会进首屏 chunk。
+import pbzWeapons from '../data/pbz/weapons.js'
+import pbzEdges from '../data/pbz/phantomEdges.js'
+import pbzBosses from '../data/pbz/bosses.js'
 
-export const searchGroupOrder = ['weapons', 'talismans', 'sorceries', 'incantations', 'spirits', 'quests', 'main', 'regions', 'bosses', 'remembrances', 'archetypes', 'tools']
+export const searchGroupOrder = [
+  'weapons',
+  'talismans',
+  'sorceries',
+  'incantations',
+  'spirits',
+  'quests',
+  'main',
+  'regions',
+  'bosses',
+  'remembrances',
+  'archetypes',
+  // 影之刃零排在法环之后、工具之前：两个游戏的结果不交叉，
+  // 保持「先看到的永远是当前主站内容」的顺序
+  'pbzWeapons',
+  'pbzEdges',
+  'pbzBosses',
+  'tools',
+]
 
 export const searchGroupLabels = {
   weapons: '武器',
@@ -29,6 +52,9 @@ export const searchGroupLabels = {
   bosses: 'BOSS',
   remembrances: '追忆兑换',
   archetypes: '流派',
+  pbzWeapons: '影之刃零 · 武器',
+  pbzEdges: '影之刃零 · 影之武装',
+  pbzBosses: '影之刃零 · BOSS',
   tools: '工具',
 }
 
@@ -156,6 +182,40 @@ export function buildIndex() {
         .filter(Boolean)
         .join(' '),
       to: `/archetypes/${item.id}`,
+    })
+  })
+
+  // 影之刃零：图鉴与 BOSS 都直接指向详情页。
+  // extra 里放英文名、机制、获取位置与招式全文，这样搜「残钢」「召唤」「铃铛」
+  // 都能落到条目，而不是只能靠名称前缀命中。
+  pbzWeapons.forEach((item) => {
+    push(map, 'pbzWeapons', {
+      name: item.name,
+      sub: `武器 · ${item.category}${item.zhPending ? ' · 中文名待补' : ''}`,
+      extra: [item.nameEn, item.effect, item.location, item.forge, ...(item.moves || []).map((move) => `${move.label} ${move.text}`)]
+        .filter(Boolean)
+        .join(' '),
+      to: `/pbz/weapons/${encodeURIComponent(item.id)}`,
+    })
+  })
+
+  pbzEdges.forEach((item) => {
+    push(map, 'pbzEdges', {
+      name: item.name,
+      sub: `影之武装 · ${item.category}${item.zhPending ? ' · 中文名待补' : ''}`,
+      extra: [item.nameEn, item.effect, item.useHint, item.location]
+        .filter(Boolean)
+        .join(' '),
+      to: `/pbz/phantom-edges/${encodeURIComponent(item.id)}`,
+    })
+  })
+
+  pbzBosses.forEach((boss) => {
+    push(map, 'pbzBosses', {
+      name: boss.name,
+      sub: `BOSS · ${boss.region}${boss.zhPending ? ' · 中文名待补' : ''}`,
+      extra: [boss.nameEn, boss.place, boss.drop, boss.tips].filter(Boolean).join(' '),
+      to: `/pbz/bosses/${encodeURIComponent(boss.id)}`,
     })
   })
 

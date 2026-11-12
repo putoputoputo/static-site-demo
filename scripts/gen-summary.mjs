@@ -13,6 +13,10 @@ import { sorcerySummary } from '../src/data/sorceries.js'
 import { incantationSummary } from '../src/data/incantations.js'
 import { spiritStats } from '../src/data/spiritAshes.js'
 import { archetypes } from '../src/data/archetypes.js'
+import { weaponStats as pbzWeaponStats } from '../src/data/pbz/weapons.js'
+import { phantomEdgeStats } from '../src/data/pbz/phantomEdges.js'
+import { bossStats as pbzBossStats } from '../src/data/pbz/bosses.js'
+import { endingStats } from '../src/data/pbz/endings.js'
 
 const weaponTypeCount = new Set(weapons.map((item) => item.type)).size
 
@@ -25,6 +29,16 @@ const archetypeStats = {
   phases: archetypes.reduce((sum, item) => sum + item.phases.length, 0),
 }
 const dlcCount = weapons.filter((item) => item.dlc).length
+
+// 影之刃零板块：门户页与板块首页只显示这几个数字
+const pbzStats = {
+  weapons: pbzWeaponStats.total,
+  phantomEdges: phantomEdgeStats.total,
+  bosses: pbzBossStats.total,
+  regions: pbzBossStats.regions,
+  endings: endingStats.total,
+  difficulties: endingStats.difficulties,
+}
 
 const out = `// 本文件由 scripts/gen-summary.mjs 自动生成，请勿手动修改。
 // 首页只从这里读取统计数字，避免把整份武器 / 支线 / 主线数据打进首屏。
@@ -39,6 +53,7 @@ export const sorceryStats = ${JSON.stringify(sorcerySummary, null, 2)}
 export const incantationStats = ${JSON.stringify(incantationSummary, null, 2)}
 export const spiritStats = ${JSON.stringify(spiritStats, null, 2)}
 export const archetypeStats = ${JSON.stringify(archetypeStats, null, 2)}
+export const pbzStats = ${JSON.stringify(pbzStats, null, 2)}
 `
 
 const target = resolve(dirname(fileURLToPath(import.meta.url)), '../src/data/summary.js')

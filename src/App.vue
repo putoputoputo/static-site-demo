@@ -15,10 +15,15 @@
                 <NavGroup v-for="group in navGroups" :key="group.label" :label="group.label" :items="group.items" />
               </template>
               <RouterLink v-else to="/game" class="nav-link" :class="{ active: route.path === '/game' }">游戏</RouterLink>
+              <!-- 影之刃零板块内部展开自己的分组；板块外只留一个入口 -->
+              <template v-if="inPbz">
+                <NavGroup v-for="group in pbzNavGroups" :key="group.label" :label="group.label" :items="group.items" />
+              </template>
+              <RouterLink v-else to="/pbz" class="nav-link">影之刃零</RouterLink>
               <RouterLink to="/photo" class="nav-link" :class="{ active: route.path.startsWith('/photo') }">摄影</RouterLink>
             </nav>
-            <!-- 全站搜索只索引游戏资料，摄影板块下没有可搜内容 -->
-            <GlobalSearch v-if="inGame" />
+            <!-- 全站搜索覆盖两个游戏的资料；摄影板块下没有可搜内容 -->
+            <GlobalSearch v-if="inGame || inPbz" />
           </div>
         </div>
       </header>
@@ -75,13 +80,28 @@ const navGroups = [
   },
 ]
 
+// 影之刃零板块的导航：页面少，分「图鉴 / 流程」两组
+const pbzNavGroups = [
+  {
+    label: '影之刃零 · 图鉴',
+    items: [
+      { path: '/pbz/weapons', label: '武器', desc: '单手 / 双持 / 双手' },
+      { path: '/pbz/phantom-edges', label: '影之武装', desc: '副武器与探索用途' },
+    ],
+  },
+  {
+    label: '影之刃零 · 流程',
+    items: [
+      { path: '/pbz/bosses', label: 'BOSS 攻略', desc: '位置 · 掉落 · 打法' },
+      { path: '/pbz/endings', label: '结局与难度', desc: '结局条件与核心机制' },
+    ],
+  },
+]
+
 const route = useRoute()
 
-// 除门户页与摄影板块（含 /photo/logs 这类子页）外，其余路径都属于游戏板块（含 404 兜底页）
-const inGame = computed(() => route.path !== '/' && !route.path.startsWith('/photo'))
+const inPbz = computed(() => route.path.startsWith('/pbz'))
 
-const a = 1;
-const b = 2;
-
-const sum = computed(() => a + b);
+// 除门户页、摄影板块（含 /photo/logs 这类子页）与影之刃零板块外，其余路径都属于艾尔登法环的游戏板块（含 404 兜底页）
+const inGame = computed(() => route.path !== '/' && !route.path.startsWith('/photo') && !inPbz.value)
 </script>

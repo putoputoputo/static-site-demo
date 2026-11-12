@@ -115,6 +115,40 @@ const routes = [
     component: () => import('../views/CodexDetailView.vue'),
     props: { moduleKey: 'spirits' },
   },
+  // 影之刃零板块：与艾尔登法环并列的第二款游戏，全部路径收在 /pbz 下，
+  // 不占用顶层路径，避免和 /weapons、/bosses 这些已有链接撞名。
+  { path: '/pbz', name: 'pbz-home', component: () => import('../views/pbz/PbzHomeView.vue') },
+  {
+    path: '/pbz/weapons',
+    name: 'pbz-weapons',
+    component: () => import('../views/pbz/PbzCodexView.vue'),
+    props: { moduleKey: 'weapons' },
+  },
+  {
+    path: '/pbz/weapons/:id',
+    name: 'pbz-weapon-detail',
+    component: () => import('../views/pbz/PbzCodexDetailView.vue'),
+    props: { moduleKey: 'weapons' },
+  },
+  {
+    path: '/pbz/phantom-edges',
+    name: 'pbz-phantom-edges',
+    component: () => import('../views/pbz/PbzCodexView.vue'),
+    props: { moduleKey: 'phantomEdges' },
+  },
+  {
+    path: '/pbz/phantom-edges/:id',
+    name: 'pbz-phantom-edge-detail',
+    component: () => import('../views/pbz/PbzCodexDetailView.vue'),
+    props: { moduleKey: 'phantomEdges' },
+  },
+  { path: '/pbz/bosses', name: 'pbz-bosses', component: () => import('../views/pbz/PbzBossesView.vue') },
+  {
+    path: '/pbz/bosses/:id',
+    name: 'pbz-boss-detail',
+    component: () => import('../views/pbz/PbzBossDetailView.vue'),
+  },
+  { path: '/pbz/endings', name: 'pbz-endings', component: () => import('../views/pbz/PbzEndingsView.vue') },
   // 必须放最后：未匹配的路径统一落到 404 页，而不是白屏
   {
     path: '/:pathMatch(.*)*',
