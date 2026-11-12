@@ -93,6 +93,7 @@ const pbzNavGroups = [
   {
     label: '影之刃零 · 流程',
     items: [
+      { path: '/pbz/walkthrough', label: '主线流程', desc: '章节顺序 · 铃铛 · 门槛' },
       { path: '/pbz/bosses', label: 'BOSS 攻略', desc: '位置 · 掉落 · 打法' },
       { path: '/pbz/endings', label: '结局与难度', desc: '结局条件与核心机制' },
     ],

@@ -32,6 +32,7 @@
       <h2 class="panel-title">关于这里的数据</h2>
       <ul class="note-list">
         <li>数值、机制、位置与掉落整理自 Fextralife 英文 wiki，每个条目的详情页都附了对应的出处链接。</li>
+        <li>主线流程的章节顺序与逐步流程同样整理自英文 wiki 的流程页，该页面目前只写到第三章，第四到第七章的步骤标为「待补」，没有用推测内容填空。</li>
         <li>武器、影之武装与 BOSS 的中文名按官方中英对照核对，已全部补齐，不自行翻译。</li>
         <li>招式名、铃铛名与道具名也已统一为中文：英文 wiki 只提供英文名，本站按字面意译，与官方中文版可能存在出入。</li>
         <li>武器面板数值在 wiki 各页面标注的等级不同（Lv1 / Lv10 / Lv30），数值旁都带了等级，跨等级不能直接比大小。</li>
@@ -43,12 +44,13 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { KnifeFork, Aim, MagicStick, Flag, Guide } from '@element-plus/icons-vue'
+import { KnifeFork, Aim, MagicStick, Flag, Guide, Compass } from '@element-plus/icons-vue'
 // 板块首页只需要几个数字，从构建期生成的 summary 取，不为此加载整份图鉴数据
 import { pbzStats } from '../../data/summary'
 import './pbz.css'
 
 const highlights = [
+  { value: pbzStats.chapters, label: '章节' },
   { value: pbzStats.weapons, label: '主武器' },
   { value: pbzStats.phantomEdges, label: '影之武装' },
   { value: pbzStats.archetypes, label: '流派' },
@@ -57,6 +59,12 @@ const highlights = [
 ]
 
 const boards = [
+  {
+    label: '主线流程',
+    desc: `序章到断魂山共 ${pbzStats.chapters} 个章节：每章的目标、铃铛、门槛与该章 BOSS 顺序`,
+    path: '/pbz/walkthrough',
+    icon: Compass,
+  },
   {
     label: '武器',
     desc: `${pbzStats.weapons} 把主武器，分单手、双持、双手三类：伤害、破防、连段、独有机制与铸魂效果`,

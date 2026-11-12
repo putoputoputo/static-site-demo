@@ -1078,3 +1078,184 @@
     flex-wrap: wrap;
   }
 }
+
+/* ---------- 主线流程 ---------- */
+/* 章节列表：左侧章号圆点 + 右侧目标与 BOSS 摘要 */
+.pbz .chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.pbz .chapter-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.pbz .chapter-card:hover {
+  border-color: var(--pbz-accent-line);
+  background: #1b1b1a;
+}
+
+.pbz .chapter-order {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pbz-accent);
+  background: var(--pbz-accent-soft);
+  border: 1px solid var(--pbz-accent-line);
+}
+
+.pbz .chapter-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pbz .chapter-main .entry-head {
+  margin-bottom: 6px;
+}
+
+.pbz .chapter-bosses {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #7a7565;
+}
+
+.pbz .chapter-bosses em {
+  margin-right: 6px;
+  font-style: normal;
+  color: #8d8878;
+}
+
+.pbz .walkthrough-note {
+  margin: 0;
+}
+
+/* 步骤时间线：序号圆点 + 正文，末项不画分隔线 */
+.pbz .step-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pbz .step-item {
+  display: flex;
+  gap: 12px;
+}
+
+.pbz .step-index {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pbz-accent);
+  background: var(--pbz-accent-soft);
+  border: 1px solid var(--pbz-accent-line);
+}
+
+.pbz .step-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #2a2519;
+}
+
+.pbz .step-item:last-child .step-body {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.pbz .step-title {
+  margin: 2px 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e3d8;
+}
+
+.pbz .step-place {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #7a7565;
+}
+
+.pbz .step-detail {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #a8a292;
+}
+
+.pbz .step-tip {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.75;
+  color: #c8a86a;
+  background: #1d1a12;
+  border-left: 2px solid #6b5a30;
+  border-radius: 0 4px 4px 0;
+}
+
+.pbz .step-tip::before {
+  content: '提示 · ';
+  color: #8d7742;
+}
+
+.pbz .step-boss-link {
+  color: #e5e3d8;
+  text-decoration: none;
+  border-bottom: 1px solid var(--pbz-accent-line);
+}
+
+.pbz .step-boss-link:hover {
+  color: var(--pbz-accent);
+}
+
+.pbz .step-list.compact {
+  gap: 10px;
+}
+
+.pbz .step-list.compact .step-body {
+  padding-bottom: 10px;
+}
+
+/* 步骤待补：冷色提示条，和「中文名待补」同一套配色 */
+.pbz .pending-note {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #9aa7b8;
+  background: #202429;
+  border: 1px solid #33404d;
+  border-radius: 6px;
+}
+
+@media (max-width: 720px) {
+  .pbz .chapter-card {
+    gap: 10px;
+  }
+
+  .pbz .chapter-order {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+}

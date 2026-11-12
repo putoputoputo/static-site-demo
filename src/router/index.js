@@ -142,6 +142,18 @@ const routes = [
     component: () => import('../views/pbz/PbzCodexDetailView.vue'),
     props: { moduleKey: 'phantomEdges' },
   },
+  // 主线流程：章节列表 + 单章详情。放在 BOSS 之前，让「流程」在导航上先于图鉴出现，
+  // 也和 /main-quest 在法环板块里的位置对应。
+  {
+    path: '/pbz/walkthrough',
+    name: 'pbz-walkthrough',
+    component: () => import('../views/pbz/PbzWalkthroughView.vue'),
+  },
+  {
+    path: '/pbz/walkthrough/:id',
+    name: 'pbz-walkthrough-chapter',
+    component: () => import('../views/pbz/PbzWalkthroughChapterView.vue'),
+  },
   { path: '/pbz/bosses', name: 'pbz-bosses', component: () => import('../views/pbz/PbzBossesView.vue') },
   {
     path: '/pbz/bosses/:id',

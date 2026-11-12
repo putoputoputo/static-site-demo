@@ -20,6 +20,7 @@ import pbzWeapons from '../data/pbz/weapons.js'
 import pbzEdges from '../data/pbz/phantomEdges.js'
 import pbzBosses from '../data/pbz/bosses.js'
 import { pbzArchetypes, pbzArchetypeStages } from '../data/pbz/archetypes.js'
+import { pbzOrderedChapters } from '../data/pbz/walkthrough.js'
 
 export const searchGroupOrder = [
   'weapons',
@@ -39,6 +40,7 @@ export const searchGroupOrder = [
   'pbzEdges',
   'pbzBosses',
   'pbzArchetypes',
+  'pbzChapters',
   'tools',
 ]
 
@@ -58,6 +60,7 @@ export const searchGroupLabels = {
   pbzEdges: '影之刃零 · 影之武装',
   pbzBosses: '影之刃零 · BOSS',
   pbzArchetypes: '影之刃零 · 流派',
+  pbzChapters: '影之刃零 · 流程',
   tools: '工具',
 }
 
@@ -244,6 +247,28 @@ export function buildIndex() {
         .filter(Boolean)
         .join(' '),
       to: `/pbz/archetypes/${encodeURIComponent(item.id)}`,
+    })
+  })
+
+  // 主线流程：搜「流程」「失心村」「廊桥」「锁链」这类词都应该能落到章节
+  pbzOrderedChapters.forEach((chapter) => {
+    push(map, 'pbzChapters', {
+      name: chapter.title,
+      sub: `流程 · ${chapter.chapter} · ${chapter.region}${chapter.pending ? ' · 步骤待补' : ''}`,
+      extra: [
+        chapter.title,
+        chapter.chapter,
+        chapter.region,
+        chapter.goal,
+        chapter.summary,
+        ...chapter.steps.flatMap((step) => [step.title, step.place, step.detail, step.tip]),
+        ...(chapter.keyItems || []).flatMap((item) => [item.name, item.note]),
+        ...(chapter.missable || []),
+        '主线 流程 攻略 章节 推进 铃铛 门槛',
+      ]
+        .filter(Boolean)
+        .join(' '),
+      to: `/pbz/walkthrough/${encodeURIComponent(chapter.id)}`,
     })
   })
 

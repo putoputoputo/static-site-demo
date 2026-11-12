@@ -105,6 +105,8 @@ async function renderView(component, path, props) {
       { path: '/pbz/phantom-edges/:id', component: Blank },
       { path: '/pbz/bosses/:id', component: Blank },
       { path: '/pbz/archetypes/:id', component: Blank },
+      // 主线流程的章节详情靠 params.id 取章节
+      { path: '/pbz/walkthrough/:id', component: Blank },
       { path: '/:pathMatch(.*)*', component: Blank },
     ],
   })
@@ -1190,6 +1192,43 @@ if (existsSync(notFoundStatic)) {
   )
   check('影之刃零·结局 4 个 / 难度 4 档', [pbzEndings.length, pbzDifficulties.length], [4, 4])
 
+  // 主线流程：章节 id / order 唯一递增，章节里的 bossIds 必须都能解析到 BOSS 条目
+  const { pbzOrderedChapters } = await vite.ssrLoadModule('/src/data/pbz/walkthrough.js')
+  check('影之刃零·章节 id 唯一', new Set(pbzOrderedChapters.map((item) => item.id)).size, pbzOrderedChapters.length)
+  check('影之刃零·章节 order 从 0 递增', pbzOrderedChapters.map((item) => item.order), pbzOrderedChapters.map((_, index) => index))
+  check(
+    '影之刃零·章节区域都在区域表里',
+    pbzOrderedChapters.filter((item) => !regionIds.includes(item.region)).map((item) => item.id),
+    []
+  )
+  check(
+    '影之刃零·章节里的 BOSS 都能解析',
+    pbzOrderedChapters.flatMap((item) => item.bossIds.filter((id) => !bossIds.includes(id)).map((id) => `${item.id}:${id}`)),
+    []
+  )
+  check('影之刃零·章节数量与 summary 一致', pbzOrderedChapters.length, pbzStats.chapters)
+  check(
+    '影之刃零·流程步骤数与 summary 一致',
+    pbzOrderedChapters.reduce((sum, item) => sum + item.steps.length, 0),
+    pbzStats.walkthroughSteps
+  )
+  // 有流程页的章节必须有步骤与出处；标了待补的章节不能反过来偷偷填步骤
+  check(
+    '影之刃零·未标待补的章节都有步骤与出处',
+    pbzOrderedChapters.filter((item) => !item.pending && (!item.steps.length || !item.source)).map((item) => item.id),
+    []
+  )
+  check(
+    '影之刃零·标了待补的章节步骤为空',
+    pbzOrderedChapters.filter((item) => item.pending && item.steps.length).map((item) => item.id),
+    []
+  )
+  check(
+    '影之刃零·每个章节都有目标、门槛与 BOSS',
+    pbzOrderedChapters.filter((item) => !item.goal || !item.gate || !item.bossIds.length).map((item) => item.id),
+    []
+  )
+
   /* ---- 流派库：数据完整性与装备引用必须能全部解析 ---- */
   {
     const ids = pbzArchetypes.map((item) => item.id)
@@ -1262,9 +1301,14 @@ if (existsSync(notFoundStatic)) {
   const { default: PbzEndingsView } = await vite.ssrLoadModule('/src/views/pbz/PbzEndingsView.vue')
   const { default: PbzArchetypesView } = await vite.ssrLoadModule('/src/views/pbz/PbzArchetypesView.vue')
   const { default: PbzArchetypeView } = await vite.ssrLoadModule('/src/views/pbz/PbzArchetypeView.vue')
+  const { default: PbzWalkthroughView } = await vite.ssrLoadModule('/src/views/pbz/PbzWalkthroughView.vue')
+  const { default: PbzWalkthroughChapterView } = await vite.ssrLoadModule(
+    '/src/views/pbz/PbzWalkthroughChapterView.vue'
+  )
 
   const pbzHomeHtml = await renderView(PbzHomeView, '/pbz')
-  check('影之刃零·板块首页 5 张卡片', (pbzHomeHtml.match(/class="board-card"/g) || []).length, 5)
+  check('影之刃零·板块首页 6 张卡片', (pbzHomeHtml.match(/class="board-card"/g) || []).length, 6)
+  check('影之刃零·板块首页有流程入口', pbzHomeHtml.includes('href="/pbz/walkthrough"'), true)
   check('影之刃零·板块首页有流派入口', pbzHomeHtml.includes('href="/pbz/archetypes"'), true)
 
   const pbzWeaponsHtml = await renderView(PbzCodexView, '/pbz/weapons', { moduleKey: 'weapons' })
@@ -1316,6 +1360,38 @@ if (existsSync(notFoundStatic)) {
   const pbzArchMissingHtml = await renderView(PbzArchetypeView, '/pbz/archetypes/not-exist')
   check('影之刃零·流派详情 id 不存在时给空态', pbzArchMissingHtml.includes('没有找到这套流派'), true)
 
+  /* ---- 主线流程：列表 + 章节详情 ---- */
+  const pbzWalkHtml = await renderView(PbzWalkthroughView, '/pbz/walkthrough')
+  check('影之刃零·流程列表 11 章', (pbzWalkHtml.match(/class="entry chapter-card"/g) || []).length, 11)
+  check(
+    '影之刃零·流程列表有章名、区域与待补标记',
+    ['序章 · 物是人非', '第一章 · 逆流直上', '最终章 · 断魂山', '章名待补', '步骤待补'].every((text) =>
+      pbzWalkHtml.includes(text)
+    ),
+    true
+  )
+  check('影之刃零·流程列表标出每章 BOSS', pbzWalkHtml.includes('斧老大彭猛') && pbzWalkHtml.includes('白赤练'), true)
+
+  const pbzWalkChapterHtml = await renderView(PbzWalkthroughChapterView, '/pbz/walkthrough/against-the-flow')
+  check(
+    '影之刃零·流程详情渲染步骤、道具与出处',
+    ['逆流直上', '敲响第一口铃铛', '巨凶斧', 'href="/pbz/bosses/peng-meng"', 'Against_the_Flow', '下一章'].every((text) =>
+      pbzWalkChapterHtml.includes(text)
+    ),
+    true
+  )
+  check('影之刃零·流程详情渲染全部步骤序号', (pbzWalkChapterHtml.match(/class="step-index"/g) || []).length >= 20, true)
+
+  const pbzWalkPendingHtml = await renderView(PbzWalkthroughChapterView, '/pbz/walkthrough/dead-town')
+  check(
+    '影之刃零·待补章节给出说明与 BOSS 顺序',
+    ['第四章', '死镇', '攻略页面还没写到这一章', '火流星', '骨婉约'].every((text) => pbzWalkPendingHtml.includes(text)),
+    true
+  )
+
+  const pbzWalkMissingHtml = await renderView(PbzWalkthroughChapterView, '/pbz/walkthrough/not-exist')
+  check('影之刃零·流程详情 id 不存在时给空态', pbzWalkMissingHtml.includes('没有找到这一章'), true)
+
   /* ---- 中文化：正文里除了平台名、站点名与 BOSS / Lv 这类通用词，不该再出现英文 ---- */
   {
     const asciiAllow = new Set([
@@ -1342,6 +1418,9 @@ if (existsSync(notFoundStatic)) {
         ['结局', pbzEndingsHtml],
         ['流派列表', pbzArchHtml],
         ['流派详情', pbzArchDetailHtml],
+        ['流程列表', pbzWalkHtml],
+        ['流程详情', pbzWalkChapterHtml],
+        ['流程详情（待补章）', pbzWalkPendingHtml],
       ].flatMap(([label, html]) => englishLeft(html).map((word) => `${label}: ${word}`)),
       []
     )

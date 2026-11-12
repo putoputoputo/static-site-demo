@@ -18,6 +18,7 @@ import { phantomEdgeStats } from '../src/data/pbz/phantomEdges.js'
 import { bossStats as pbzBossStats } from '../src/data/pbz/bosses.js'
 import { endingStats } from '../src/data/pbz/endings.js'
 import { pbzArchetypes } from '../src/data/pbz/archetypes.js'
+import { pbzWalkthroughStats } from '../src/data/pbz/walkthrough.js'
 
 const weaponTypeCount = new Set(weapons.map((item) => item.type)).size
 
@@ -40,6 +41,8 @@ const pbzStats = {
   regions: pbzBossStats.regions,
   endings: endingStats.total,
   difficulties: endingStats.difficulties,
+  chapters: pbzWalkthroughStats.chapters,
+  walkthroughSteps: pbzWalkthroughStats.steps,
 }
 
 const out = `// 本文件由 scripts/gen-summary.mjs 自动生成，请勿手动修改。
@@ -61,5 +64,5 @@ export const pbzStats = ${JSON.stringify(pbzStats, null, 2)}
 const target = resolve(dirname(fileURLToPath(import.meta.url)), '../src/data/summary.js')
 writeFileSync(target, out, 'utf-8')
 console.log(
-  `[gen-summary] 武器 ${weapons.length} 件 / ${weaponTypeCount} 类（DLC ${dlcCount}），支线 ${questStats.total} 条，主线 ${mainStats.total} 章 / ${mainStats.steps} 步，区域 ${regionStats.total} 个 / BOSS ${regionStats.bosses} 个，护符 ${talismanStats.total} 个，魔法 ${sorcerySummary.total} 个，祷告 ${incantationSummary.total} 个，骨灰 ${spiritStats.total} 个；影之刃零 ${pbzWeaponStats.total} 武器 / ${phantomEdgeStats.total} 影之武装 / ${pbzArchetypes.length} 流派`
+  `[gen-summary] 武器 ${weapons.length} 件 / ${weaponTypeCount} 类（DLC ${dlcCount}），支线 ${questStats.total} 条，主线 ${mainStats.total} 章 / ${mainStats.steps} 步，区域 ${regionStats.total} 个 / BOSS ${regionStats.bosses} 个，护符 ${talismanStats.total} 个，魔法 ${sorcerySummary.total} 个，祷告 ${incantationSummary.total} 个，骨灰 ${spiritStats.total} 个；影之刃零 ${pbzWeaponStats.total} 武器 / ${phantomEdgeStats.total} 影之武装 / ${pbzArchetypes.length} 流派 / ${pbzWalkthroughStats.chapters} 章节（已写 ${pbzWalkthroughStats.steps} 步）`
 )

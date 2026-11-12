@@ -68,5 +68,7 @@ export const pbzStats = {
   "bosses": 55,
   "regions": 9,
   "endings": 4,
-  "difficulties": 4
+  "difficulties": 4,
+  "chapters": 11,
+  "walkthroughSteps": 78
 }
