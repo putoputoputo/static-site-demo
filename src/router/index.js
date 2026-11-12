@@ -148,6 +148,18 @@ const routes = [
     name: 'pbz-boss-detail',
     component: () => import('../views/pbz/PbzBossDetailView.vue'),
   },
+  // 流派库：与图鉴分开，因为它的条目是「配装方案」而不是单件装备，
+  // id 是英文短名（bleed-rush 之类），一段路径足够。
+  {
+    path: '/pbz/archetypes',
+    name: 'pbz-archetypes',
+    component: () => import('../views/pbz/PbzArchetypesView.vue'),
+  },
+  {
+    path: '/pbz/archetypes/:id',
+    name: 'pbz-archetype',
+    component: () => import('../views/pbz/PbzArchetypeView.vue'),
+  },
   { path: '/pbz/endings', name: 'pbz-endings', component: () => import('../views/pbz/PbzEndingsView.vue') },
   // 必须放最后：未匹配的路径统一落到 404 页，而不是白屏
   {

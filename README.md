@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | `/` | 门户页 | 三个板块入口（艾尔登法环 / 影之刃零 / 摄影） |
 | `/game` | 游戏板块 | 原攻略首页的 12 个模块卡片；导航在此展开「流程 / 图鉴 / 工具」分组与全站搜索 |
-| `/pbz` | 影之刃零 | 武器 / 影之武装 / BOSS / 结局四个模块，导航展开「图鉴 / 流程」分组 |
+| `/pbz` | 影之刃零 | 武器 / 影之武装 / 流派 / BOSS / 结局五个模块，导航展开「图鉴 / 流程」分组 |
 | `/photo` | 摄影板块 | 拍照 / 上传图片 / 开始分析，调用视觉模型输出摄影点评 |
 | `/photo/logs` | 请求日志 | 逐条查看模型请求与响应原文（脱敏） |
 
@@ -20,9 +20,10 @@
 
 | 页面 | 入口 | 内容 |
 | --- | --- | --- |
-| 板块首页 | `/pbz` | 四张模块卡片 + 上线信息 + 数据口径说明 |
+| 板块首页 | `/pbz` | 五张模块卡片 + 上线信息 + 数据口径说明 |
 | 武器图鉴 | `/pbz/weapons` | 29 把主武器，单手 / 双持 / 双手三类：伤害、破防、连段、独有机制、铸魂 |
 | 影之武装 | `/pbz/phantom-edges` | 24 件副武器，五类：战斗技能与各自对应的地图机关 |
+| 流派库 | `/pbz/archetypes` | 12 套配装：双武器 + 双影之武装 + 饰品 / 秘药 / 能力，含战斗循环与成型路线 |
 | BOSS 攻略 | `/pbz/bosses` | 55 个 BOSS，按 9 个区域：位置、掉落、阶段与打法要点 |
 | 结局与难度 | `/pbz/endings` | 4 个结局的触发条件、4 档难度、核心机制与章节区域 |
 
@@ -32,15 +33,24 @@
 - 中文名只取 3DM 攻略目录里出现过的官方译名；目录里没有的条目 `nameZh` 留 `null`，页面显示英文名并标「中文名待补」，**不自行翻译**
 - 武器面板数值对应的等级不同（Lv1 / Lv10 / Lv30），数值旁都标了等级，跨等级不能直接比大小
 - wiki 页面还是空模板的条目标为「待补」，不用推测内容填空
+- 流派数据（`src/data/pbz/archetypes.js`）整理自游民星空《全流派配装推荐》13 套与《二周目推荐八套武器流派》，机制部分交叉参考 Fextralife / phantombladezero.wiki；饰品里没有可靠数值的卡面效果，统一在 `accessoryNote` 里说明，不编数字
 
 **收藏**：
 
-- 武器 / 影之武装 / BOSS 共用一个收藏夹，存在 `localStorage` 的 `er-guide:pbz-favorites`
-- 存储值带命名空间（`codex:weapons:<id>`、`codex:phantomEdges:<id>`、`boss:<id>`），因为三个模块的 id 可能重名
+- 武器 / 影之武装 / BOSS / 流派共用一个收藏夹，存在 `localStorage` 的 `er-guide:pbz-favorites`
+- 存储值带命名空间（`codex:weapons:<id>`、`codex:phantomEdges:<id>`、`boss:<id>`、`archetype:<id>`），因为几个模块的 id 可能重名
 - 列表页的「只看收藏」会同步进 URL（`fav=1`），刷新与分享都能还原；详情页有收藏按钮
 - 与艾尔登法环的 `er-guide:codex-favorites` 刻意分开：两个游戏的条目混在一起，导出文件会对不上版本
 
-**全站搜索**（`Ctrl / ⌘ + K`）在影之刃零板块内同样可用，索引新增 `pbzWeapons` / `pbzEdges` / `pbzBosses` 三组共 108 条，匹配英文名、机制、获取位置与招式原文；搜索框的占位文案与推荐词会随板块切换。
+**全站搜索**（`Ctrl / ⌘ + K`）在影之刃零板块内同样可用，索引 `pbzWeapons` / `pbzEdges` / `pbzBosses` / `pbzArchetypes` 四组共 120 条，匹配英文名、机制、获取位置、招式与打法关键词；搜索框的占位文案与推荐词会随板块切换。
+
+**新增一套流派**：
+
+1. 在 `src/data/pbz/archetypes.js` 追加一条：`core.weapons` / `core.edges` 只写图鉴里的 `name`（不是 id），名字写错会在导入时直接抛错
+2. 补齐 `accessories / medicines / abilities`（名称 + 效果 + 获取），效果不确定的写进 `accessoryNote`，不要留空
+3. `phases` 至少两段，`gear` 里同样用名称引用武器与影之武装；`utils/pbzArchetypes.js` 会自动解析成带链接的条目
+4. 如果新增 `role` 或 `stage`，同步 `pbzArchetypeRoles` / `pbzArchetypeStages`，列表页的筛选会自动多一项
+5. `npm run gen-summary` 更新 `pbzStats.archetypes`，再跑 `npm run check`
 
 **新增一个模块**（例如「铃铛 / 地图」）的完整步骤：
 

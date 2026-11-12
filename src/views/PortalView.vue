@@ -32,11 +32,12 @@
         </div>
         <h2>影之刃零</h2>
         <p class="card-desc">
-          主武器与影之武装图鉴、分区域的 BOSS 攻略，以及四个结局的条件与难度规则。数据逐条标注出处。
+          主武器与影之武装图鉴、按打法整理的流派配装、分区域的 BOSS 攻略，以及四个结局的条件与难度规则。数据逐条标注出处。
         </p>
         <ul class="card-facts">
           <li>{{ pbzStats.weapons }} 把主武器</li>
           <li>{{ pbzStats.phantomEdges }} 件影之武装</li>
+          <li>{{ pbzStats.archetypes }} 套流派</li>
           <li>{{ pbzStats.bosses }} 个 BOSS</li>
           <li>{{ pbzStats.endings }} 个结局</li>
         </ul>

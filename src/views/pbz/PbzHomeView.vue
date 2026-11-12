@@ -43,7 +43,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { KnifeFork, Aim, MagicStick, Flag } from '@element-plus/icons-vue'
+import { KnifeFork, Aim, MagicStick, Flag, Guide } from '@element-plus/icons-vue'
 // 板块首页只需要几个数字，从构建期生成的 summary 取，不为此加载整份图鉴数据
 import { pbzStats } from '../../data/summary'
 import './pbz.css'
@@ -51,6 +51,7 @@ import './pbz.css'
 const highlights = [
   { value: pbzStats.weapons, label: '主武器' },
   { value: pbzStats.phantomEdges, label: '影之武装' },
+  { value: pbzStats.archetypes, label: '流派' },
   { value: pbzStats.bosses, label: 'BOSS' },
   { value: pbzStats.endings, label: '结局' },
 ]
@@ -67,6 +68,12 @@ const boards = [
     desc: `${pbzStats.phantomEdges} 件副武器，分五类：战斗技能、消耗，以及每一件对应的地图机关`,
     path: '/pbz/phantom-edges',
     icon: MagicStick,
+  },
+  {
+    label: '流派库',
+    desc: `${pbzStats.archetypes} 套配装：两把主武器怎么搭、影之武装怎么选、杀气与暗源怎么转`,
+    path: '/pbz/archetypes',
+    icon: Guide,
   },
   {
     label: 'BOSS 攻略',

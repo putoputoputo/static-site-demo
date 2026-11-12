@@ -14,11 +14,12 @@ import { codexModules } from '../data/codex.js'
 import { remembranceList } from './remembrances.js'
 import { bossList, bossHref } from './bosses.js'
 import { archetypes } from '../data/archetypes.js'
-// 影之刃零：三个模块共 108 条。数据文件本身不大（三份合计约 1200 行），
+// 影之刃零：四个模块共 120 条。数据文件本身不大（合计约 1700 行），
 // 且整个索引是首次打开搜索框才 import 的，不会进首屏 chunk。
 import pbzWeapons from '../data/pbz/weapons.js'
 import pbzEdges from '../data/pbz/phantomEdges.js'
 import pbzBosses from '../data/pbz/bosses.js'
+import { pbzArchetypes, pbzArchetypeStages } from '../data/pbz/archetypes.js'
 
 export const searchGroupOrder = [
   'weapons',
@@ -37,6 +38,7 @@ export const searchGroupOrder = [
   'pbzWeapons',
   'pbzEdges',
   'pbzBosses',
+  'pbzArchetypes',
   'tools',
 ]
 
@@ -55,6 +57,7 @@ export const searchGroupLabels = {
   pbzWeapons: '影之刃零 · 武器',
   pbzEdges: '影之刃零 · 影之武装',
   pbzBosses: '影之刃零 · BOSS',
+  pbzArchetypes: '影之刃零 · 流派',
   tools: '工具',
 }
 
@@ -216,6 +219,31 @@ export function buildIndex() {
       sub: `BOSS · ${boss.region}${boss.zhPending ? ' · 中文名待补' : ''}`,
       extra: [boss.nameEn, boss.place, boss.drop, boss.tips].filter(Boolean).join(' '),
       to: `/pbz/bosses/${encodeURIComponent(boss.id)}`,
+    })
+  })
+
+  // 流派按「别名 + 机制 + 核心装备 + 饰品 / 秘药 / 能力」建索引：
+  // 玩家通常搜的是「流血」「招架」「黄金火铳」这种词，而不是流派名本身
+  pbzArchetypes.forEach((item) => {
+    const stage = pbzArchetypeStages.find((entry) => entry.key === item.stage)
+    push(map, 'pbzArchetypes', {
+      name: item.name,
+      sub: `流派 · ${item.role} · ${stage ? stage.label : item.stage}`,
+      extra: [
+        ...(item.alias || []),
+        item.summary,
+        ...(item.tags || []),
+        ...(item.hook || []),
+        ...(item.core.weapons || []),
+        ...(item.core.edges || []),
+        ...(item.core.accessories || []).map((entry) => `${entry.name} ${entry.effect}`),
+        ...(item.core.medicines || []).map((entry) => `${entry.name} ${entry.effect}`),
+        ...(item.core.abilities || []).map((entry) => `${entry.name} ${entry.effect}`),
+        ...(item.phases || []).flatMap((phase) => [phase.title, phase.goal, ...(phase.steps || [])]),
+      ]
+        .filter(Boolean)
+        .join(' '),
+      to: `/pbz/archetypes/${encodeURIComponent(item.id)}`,
     })
   })
 

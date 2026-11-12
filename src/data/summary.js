@@ -64,6 +64,7 @@ export const archetypeStats = {
 export const pbzStats = {
   "weapons": 29,
   "phantomEdges": 24,
+  "archetypes": 12,
   "bosses": 55,
   "regions": 9,
   "endings": 4,

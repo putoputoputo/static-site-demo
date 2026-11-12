@@ -52,6 +52,7 @@
 
 .pbz .hero-badges {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   flex-shrink: 0;
 }
@@ -647,7 +648,8 @@
 /* ---------- 板块首页 ---------- */
 .pbz .board-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* 5 张卡片：用 auto-fit 让窄屏自动落到 4 / 3 / 2 列，不用为每个断点写死 */
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 16px;
 }
 
@@ -741,11 +743,305 @@
   color: #7a7565;
 }
 
+/* ---------- 流派库 ---------- */
+.pbz .primer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.pbz .primer-item {
+  padding: 14px 16px;
+  border: 1px solid #2a2519;
+  border-radius: 8px;
+  background: #161616;
+}
+
+.pbz .primer-item strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  color: var(--pbz-accent);
+}
+
+.pbz .primer-item p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #9d977f;
+}
+
+/* 列表卡片底部的「核心装备」两行 */
+.pbz .core-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid #2a2519;
+  border-radius: 8px;
+  background: #161616;
+}
+
+.pbz .core-line {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.pbz .core-line em {
+  flex-shrink: 0;
+  font-style: normal;
+  color: #7a7565;
+}
+
+.pbz .core-line span {
+  color: #d8d3c4;
+}
+
+/* 核心配装卡片 */
+.pbz .loadout-group + .loadout-group {
+  margin-top: 20px;
+}
+
+.pbz .loadout-title {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #8a8574;
+}
+
+.pbz .loadout-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.pbz .loadout-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid #2a2519;
+  border-radius: 8px;
+  background: #161616;
+  text-decoration: none;
+  transition: border-color 0.18s, background-color 0.18s;
+}
+
+.pbz .loadout-card:hover {
+  border-color: var(--pbz-accent-line);
+  background: var(--pbz-accent-soft);
+}
+
+.pbz .loadout-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pbz .loadout-name {
+  font-size: 15px;
+  color: #e5e3d8;
+}
+
+.pbz .loadout-sub {
+  font-size: 11px;
+  color: #7a7565;
+}
+
+.pbz .loadout-effect {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #9d977f;
+}
+
+.pbz .loadout-note {
+  margin: 6px 0 0;
+  padding-left: 9px;
+  border-left: 2px solid var(--pbz-accent-line);
+  font-size: 12px;
+  line-height: 1.75;
+  color: #b8b2a0;
+}
+
+.pbz .loadout-location {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px dashed #332d20;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #6b6555;
+}
+
+/* 战斗循环 / 能力顺序 */
+.pbz .loop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.pbz .loop-step {
+  font-size: 13px;
+  line-height: 1.85;
+  color: #b8b2a0;
+}
+
+.pbz .loop-step strong {
+  color: #d8d3c4;
+}
+
+.pbz .loop-step p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #9d977f;
+}
+
+.pbz .ability-cost {
+  margin-left: 8px;
+  font-size: 11.5px;
+  color: var(--pbz-accent);
+}
+
+/* 成型路线 */
+.pbz .phase-block {
+  padding: 14px 16px;
+  border: 1px solid #2a2519;
+  border-radius: 8px;
+  background: #161616;
+}
+
+.pbz .phase-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pbz .phase-title {
+  margin: 0;
+  font-size: 14.5px;
+  color: #e5e3d8;
+}
+
+.pbz .phase-when {
+  font-size: 11.5px;
+  color: var(--pbz-accent);
+}
+
+.pbz .phase-goal {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #9d977f;
+}
+
+.pbz .gear-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.pbz .gear-chip {
+  padding: 3px 9px;
+  font-size: 11.5px;
+  color: #d8d3c4;
+  background: #202020;
+  border: 1px solid #383225;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.pbz .gear-chip:hover {
+  color: var(--pbz-accent);
+  border-color: var(--pbz-accent-line);
+}
+
+/* 饰品只有名字、没有图鉴页，用虚线区分可点与不可点 */
+.pbz .gear-chip.plain {
+  color: #8a8574;
+  border-style: dashed;
+}
+
+.pbz .phase-steps {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: #a8a292;
+}
+
+.pbz .pros-cons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.pbz .mistake-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #b8b2a0;
+}
+
+/* 替换方案 */
+.pbz .swap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pbz .swap-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1.1fr) minmax(0, 2fr);
+  gap: 12px;
+  align-items: start;
+  padding: 11px 13px;
+  border: 1px solid #2a2519;
+  border-radius: 8px;
+  background: #161616;
+}
+
+.pbz .swap-slot {
+  font-size: 11px;
+  color: var(--pbz-accent);
+}
+
+.pbz .swap-weapons {
+  font-size: 12.5px;
+  color: #d8d3c4;
+}
+
+.pbz .swap-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #8a8574;
+}
+
+.pbz .source-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.9;
+}
+
+.pbz .aside-facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+}
+
 @media (max-width: 1100px) {
   .pbz .card-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .pbz .board-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .pbz .page-hero {
@@ -774,6 +1070,15 @@
   .pbz .board-grid,
   .pbz .sibling-grid {
     grid-template-columns: 1fr;
+  }
+  .pbz .primer-grid,
+  .pbz .loadout-grid,
+  .pbz .pros-cons {
+    grid-template-columns: 1fr;
+  }
+  .pbz .swap-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
   .pbz .search-input,
   .pbz .sort-select {

@@ -104,6 +104,7 @@ async function renderView(component, path, props) {
       { path: '/pbz/weapons/:id', component: Blank },
       { path: '/pbz/phantom-edges/:id', component: Blank },
       { path: '/pbz/bosses/:id', component: Blank },
+      { path: '/pbz/archetypes/:id', component: Blank },
       { path: '/:pathMatch(.*)*', component: Blank },
     ],
   })
@@ -1123,6 +1124,10 @@ if (existsSync(notFoundStatic)) {
   const { default: pbzBosses, bossRegions: pbzRegions } = await vite.ssrLoadModule('/src/data/pbz/bosses.js')
   const { endings: pbzEndings, difficulties: pbzDifficulties } = await vite.ssrLoadModule('/src/data/pbz/endings.js')
   const { pbzStats } = await vite.ssrLoadModule('/src/data/summary.js')
+  const { pbzArchetypes, pbzArchetypeStages, pbzArchetypeRoles } = await vite.ssrLoadModule(
+    '/src/data/pbz/archetypes.js'
+  )
+  const pbzArchUtils = await vite.ssrLoadModule('/src/utils/pbzArchetypes.js')
 
   // 数据完整性：id 唯一、分类合法、每条都有出处；数量与 summary 一致（summary 过期说明没跑 gen-summary）
   for (const mod of Object.values(pbzModules)) {
@@ -1156,6 +1161,69 @@ if (existsSync(notFoundStatic)) {
   )
   check('影之刃零·结局 4 个 / 难度 4 档', [pbzEndings.length, pbzDifficulties.length], [4, 4])
 
+  /* ---- 流派库：数据完整性与装备引用必须能全部解析 ---- */
+  {
+    const ids = pbzArchetypes.map((item) => item.id)
+    const stageKeys = pbzArchetypeStages.map((stage) => stage.key)
+    check('影之刃零·流派 id 唯一', new Set(ids).size, ids.length)
+    check('影之刃零·流派数量与 summary 一致', pbzArchetypes.length, pbzStats.archetypes)
+    check(
+      '影之刃零·流派取向都在枚举里',
+      pbzArchetypes.filter((item) => !pbzArchetypeRoles.includes(item.role)).map((item) => item.id),
+      []
+    )
+    check(
+      '影之刃零·流派阶段都在枚举里',
+      pbzArchetypes.filter((item) => !stageKeys.includes(item.stage)).map((item) => item.id),
+      []
+    )
+    check(
+      '影之刃零·每套流派都有双武器、双影之武装与出处',
+      pbzArchetypes
+        .filter(
+          (item) =>
+            item.core.weapons.length !== 2 ||
+            item.core.edges.length !== 2 ||
+            !item.sources.length ||
+            !item.loop.length ||
+            !item.phases.length
+        )
+        .map((item) => item.id),
+      []
+    )
+    check(
+      '影之刃零·每套流派的饰品都有名称、效果与获取',
+      pbzArchetypes
+        .flatMap((item) => item.core.accessories)
+        .filter((entry) => !entry.name || !entry.effect || !entry.where).length,
+      0
+    )
+    // 解析会在名字写错时直接抛错；能走到这里说明 24 个武器 / 24 个影之武装引用全部命中图鉴
+    check(
+      '影之刃零·核心装备全部解析到图鉴',
+      pbzArchUtils.pbzArchetypeList.map((item) => item.items.weapons.length + item.items.edges.length).reduce((a, b) => a + b, 0),
+      pbzArchetypes.length * 4
+    )
+    // 成型路线里的 gear 是懒解析的（详情页才跑），这里主动跑一遍，避免某一段写错名字
+    check(
+      '影之刃零·每段成型路线的装备都能解析',
+      pbzArchetypes
+        .flatMap((item) =>
+          item.phases.map((phase) => {
+            try {
+              pbzArchUtils.resolvePbzGear(item, phase.gear)
+              return ''
+            } catch (error) {
+              return `${item.id} / ${phase.title}: ${error.message}`
+            }
+          })
+        )
+        .filter(Boolean),
+      []
+    )
+    check('影之刃零·流派统计与列表一致', pbzArchUtils.pbzArchetypeStats.total, pbzArchetypes.length)
+  }
+
   // SSR 实渲染：页面能出内容，详情页能按 params.id 取到条目
   const { default: PbzHomeView } = await vite.ssrLoadModule('/src/views/pbz/PbzHomeView.vue')
   const { default: PbzCodexView } = await vite.ssrLoadModule('/src/views/pbz/PbzCodexView.vue')
@@ -1163,9 +1231,12 @@ if (existsSync(notFoundStatic)) {
   const { default: PbzBossesView } = await vite.ssrLoadModule('/src/views/pbz/PbzBossesView.vue')
   const { default: PbzBossDetailView } = await vite.ssrLoadModule('/src/views/pbz/PbzBossDetailView.vue')
   const { default: PbzEndingsView } = await vite.ssrLoadModule('/src/views/pbz/PbzEndingsView.vue')
+  const { default: PbzArchetypesView } = await vite.ssrLoadModule('/src/views/pbz/PbzArchetypesView.vue')
+  const { default: PbzArchetypeView } = await vite.ssrLoadModule('/src/views/pbz/PbzArchetypeView.vue')
 
   const pbzHomeHtml = await renderView(PbzHomeView, '/pbz')
-  check('影之刃零·板块首页 4 张卡片', (pbzHomeHtml.match(/class="board-card"/g) || []).length, 4)
+  check('影之刃零·板块首页 5 张卡片', (pbzHomeHtml.match(/class="board-card"/g) || []).length, 5)
+  check('影之刃零·板块首页有流派入口', pbzHomeHtml.includes('href="/pbz/archetypes"'), true)
 
   const pbzWeaponsHtml = await renderView(PbzCodexView, '/pbz/weapons', { moduleKey: 'weapons' })
   check('影之刃零·武器列表首屏 12 张卡片', (pbzWeaponsHtml.match(/class="item-card"/g) || []).length, 12)
@@ -1191,6 +1262,30 @@ if (existsSync(notFoundStatic)) {
 
   const pbzEndingsHtml = await renderView(PbzEndingsView, '/pbz/endings')
   check('影之刃零·结局页渲染四档难度', ['入阵者', '破局者', '逆天者', '六十六天'].every((text) => pbzEndingsHtml.includes(text)), true)
+
+  /* ---- 流派列表 / 详情：SSR 实渲染 ---- */
+  const pbzArchHtml = await renderView(PbzArchetypesView, '/pbz/archetypes')
+  check('影之刃零·流派列表 12 张卡片', (pbzArchHtml.match(/class="item-card"/g) || []).length, 12)
+  check(
+    '影之刃零·流派列表有取向筛选与收藏',
+    ['进攻', '破防', '防守反击', '控场', '远程', '召唤', '只看收藏'].every((text) => pbzArchHtml.includes(text)),
+    true
+  )
+  check('影之刃零·流派卡片带核心武器与影之武装', pbzArchHtml.includes('残钢刃') && pbzArchHtml.includes('巨凶斧'), true)
+  check('影之刃零·流派列表先讲三套资源', ['杀气', '杀气精华', '暗源'].every((text) => pbzArchHtml.includes(text)), true)
+
+  const pbzArchDetailHtml = await renderView(PbzArchetypeView, '/pbz/archetypes/bleed-rush')
+  check(
+    '影之刃零·流派详情渲染配装、循环与出处',
+    ['残钢刃', 'href="/pbz/weapons/jagged-steel"', '战斗循环', '升级优先级', '成型路线', 'gamersky.com'].every((text) =>
+      pbzArchDetailHtml.includes(text)
+    ),
+    true
+  )
+  check('影之刃零·流派详情有收藏按钮', pbzArchDetailHtml.includes('detail-fav'), true)
+
+  const pbzArchMissingHtml = await renderView(PbzArchetypeView, '/pbz/archetypes/not-exist')
+  check('影之刃零·流派详情 id 不存在时给空态', pbzArchMissingHtml.includes('没有找到这套流派'), true)
 
   // 收藏入口：列表有筛选 chip，卡片有星标，详情页有带文字的按钮
   check('影之刃零·武器列表有收藏筛选', pbzWeaponsHtml.includes('只看收藏'), true)
@@ -1222,19 +1317,23 @@ if (existsSync(notFoundStatic)) {
     // 武器与影之武装都可能有同名 id，必须靠模块前缀区分
     fav.toggleCodexFavorite('phantomEdges', 'sanguine')
     fav.toggleBossFavorite('zuo-shang')
+    // 流派是第四种命名空间，id 与武器 id 不会重名但同样加前缀
+    fav.toggleArchetypeFavorite('bleed-rush')
     // createIdStore 用 watch 落盘，默认 flush: 'pre' 会推迟到微任务
     await nextTick()
 
-    check('影之刃零·三个命名空间互不混淆', fav.favoriteCount.value, 3)
+    check('影之刃零·四个命名空间互不混淆', fav.favoriteCount.value, 4)
     check('影之刃零·按模块取收藏', fav.favoritesOf('weapons'), ['sanguine'])
     check('影之刃零·BOSS 收藏单独计数', fav.bossFavoriteCount.value, 1)
+    check('影之刃零·流派收藏单独计数', fav.archetypeFavoriteCount.value, 1)
+    check('影之刃零·流派收藏不会混进图鉴', fav.favoritesOf('weapons'), ['sanguine'])
     check('影之刃零·收藏写入 localStorage', storage.has('er-guide:pbz-favorites'), true)
 
     fav.toggleCodexFavorite('weapons', 'sanguine')
     check(
       '影之刃零·再点一次取消收藏',
       [fav.isCodexFavorite('weapons', 'sanguine'), fav.favoriteCount.value],
-      [false, 2]
+      [false, 3]
     )
 
     fav.clearFavorites()
@@ -1252,7 +1351,7 @@ if (existsSync(notFoundStatic)) {
   const search = await vite.ssrLoadModule('/src/utils/search.js')
   check(
     '影之刃零·搜索分组已登记',
-    ['pbzWeapons', 'pbzEdges', 'pbzBosses'].every((key) => search.searchGroupOrder.includes(key)),
+    ['pbzWeapons', 'pbzEdges', 'pbzBosses', 'pbzArchetypes'].every((key) => search.searchGroupOrder.includes(key)),
     true
   )
 
@@ -1263,6 +1362,8 @@ if (existsSync(notFoundStatic)) {
   check('影之刃零·搜中文名命中武器', firstHit('黑伤', 'pbzWeapons').startsWith('/pbz/weapons/'), true)
   check('影之刃零·搜机制命中影之武装', firstHit('召唤', 'pbzEdges').startsWith('/pbz/phantom-edges/'), true)
   check('影之刃零·搜 BOSS 名命中攻略页', firstHit('左殇', 'pbzBosses'), '/pbz/bosses/zuo-shang')
+  check('影之刃零·搜打法命中流派', firstHit('流血', 'pbzArchetypes').startsWith('/pbz/archetypes/'), true)
+  check('影之刃零·搜防御关键词命中流派', firstHit('招架', 'pbzArchetypes').startsWith('/pbz/archetypes/'), true)
 
   // 板块内如果没有搜索框，索引建了也点不到
   const appSource = readFileSync(resolve(root, 'src/App.vue'), 'utf-8')

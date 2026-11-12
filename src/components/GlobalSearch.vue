@@ -85,16 +85,20 @@ const inPbz = computed(() => route.path.startsWith('/pbz'))
 
 const placeholderText = computed(() =>
   inPbz.value
-    ? '搜影之刃零的武器、影之武装、BOSS…'
+    ? '搜影之刃零的武器、影之武装、流派、BOSS…'
     : '搜武器、护符、魔法、祷告、骨灰、支线、BOSS、区域、追忆…'
 )
 
 const suggestions = computed(() =>
-  inPbz.value ? ['黑伤', '残钢', '召唤', '悲泣溪谷', '追命'] : ['月隐', '猩红', '拉塔恩', '追忆', '出血', '神圣']
+  inPbz.value
+    ? ['流血', '招架', '换刀', '黄金火铳', '悲泣溪谷']
+    : ['月隐', '猩红', '拉塔恩', '追忆', '出血', '神圣']
 )
 
 const emptyHint = computed(() =>
-  inPbz.value ? '试试更短的关键词，比如「黑伤」「残钢」「召唤」，或直接搜区域名。' : '试试更短的关键词，比如「月隐」「猩红」「拉塔恩」。'
+  inPbz.value
+    ? '试试更短的关键词，比如「残钢」「招架」「召唤」，或直接搜区域名。'
+    : '试试更短的关键词，比如「月隐」「猩红」「拉塔恩」。'
 )
 
 // 搜索索引要读全部数据（约 1150 条），改成首次打开时才 import，

@@ -87,6 +87,7 @@ const pbzNavGroups = [
     items: [
       { path: '/pbz/weapons', label: '武器', desc: '单手 / 双持 / 双手' },
       { path: '/pbz/phantom-edges', label: '影之武装', desc: '副武器与探索用途' },
+      { path: '/pbz/archetypes', label: '流派库', desc: '12 套配装与资源循环' },
     ],
   },
   {
