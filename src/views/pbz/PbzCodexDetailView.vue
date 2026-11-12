@@ -11,10 +11,6 @@
       <div class="hero-main">
         <div class="hero-eyebrow">{{ module.eyebrow }} · {{ item.category }}</div>
         <h1 class="detail-title">{{ item.name }}</h1>
-        <p class="detail-title-en">
-          <template v-if="item.zhPending">中文名待补，暂以英文版名称显示</template>
-          <template v-else>{{ item.nameEn }}</template>
-        </p>
         <p class="detail-effect">{{ item.effect }}</p>
         <div class="hero-tags">
           <span class="mini-tag">{{ item.category }}</span>

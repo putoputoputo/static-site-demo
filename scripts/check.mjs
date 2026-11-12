@@ -1149,6 +1149,19 @@ if (existsSync(notFoundStatic)) {
   check('影之刃零·武器数量与 summary 一致', pbzModules.weapons.items.length, pbzStats.weapons)
   check('影之刃零·影之武装数量与 summary 一致', pbzModules.phantomEdges.items.length, pbzStats.phantomEdges)
 
+  // 29 把主武器都已按官方中英对照补齐中文名；留 null 会让页面退回英文标题
+  check(
+    '影之刃零·武器名称全部为中文',
+    pbzModules.weapons.items.filter((item) => item.zhPending || !/[\u4e00-\u9fa5]/.test(item.name)).map((item) => item.id),
+    []
+  )
+  // 之前按「百蟒赤练」记录，官方与各站对照表均为「白蟒赤练」
+  check(
+    '影之刃零·双蛇双持名为白蟒赤练',
+    pbzModules.weapons.items.find((item) => item.nameEn === 'White Serpent & Crimson Viper')?.name ?? '未找到',
+    '白蟒赤练'
+  )
+
   const bossIds = pbzBosses.map((boss) => boss.id)
   const regionIds = pbzRegions.map((region) => region.id)
   check('影之刃零·BOSS id 唯一', new Set(bossIds).size, bossIds.length)
@@ -1158,6 +1171,22 @@ if (existsSync(notFoundStatic)) {
     '影之刃零·BOSS 每条都有出处、位置与要点',
     pbzBosses.filter((boss) => !boss.source.startsWith('https://') || !boss.place || !boss.tips).map((boss) => boss.id),
     []
+  )
+  check(
+    '影之刃零·BOSS 名称全部为中文',
+    pbzBosses.filter((boss) => boss.zhPending || !/[\u4e00-\u9fa5]/.test(boss.name)).map((boss) => boss.id),
+    []
+  )
+  check(
+    '影之刃零·影之武装名称全部为中文',
+    pbzModules.phantomEdges.items.filter((item) => item.zhPending || !/[\u4e00-\u9fa5]/.test(item.name)).map((item) => item.id),
+    []
+  )
+  // 追命分两场：第一场 The Hunt，二阶段 Sixfold Scythe 记作「六绝凶镰」，两者不能同名
+  check(
+    '影之刃零·追命两场不重名',
+    [pbzBosses.find((boss) => boss.id === 'the-hunt')?.name, pbzBosses.find((boss) => boss.id === 'the-hunt-sixfold-scythe')?.name],
+    ['追命', '六绝凶镰']
   )
   check('影之刃零·结局 4 个 / 难度 4 档', [pbzEndings.length, pbzDifficulties.length], [4, 4])
 
@@ -1286,6 +1315,37 @@ if (existsSync(notFoundStatic)) {
 
   const pbzArchMissingHtml = await renderView(PbzArchetypeView, '/pbz/archetypes/not-exist')
   check('影之刃零·流派详情 id 不存在时给空态', pbzArchMissingHtml.includes('没有找到这套流派'), true)
+
+  /* ---- 中文化：正文里除了平台名、站点名与 BOSS / Lv 这类通用词，不该再出现英文 ---- */
+  {
+    const asciiAllow = new Set([
+      'BOSS', 'Lv', 'DM', 'AI', 'NG', 'wiki', 'Wiki', 'Fextralife', 'MMOEXP', 'PlayStation', 'Windows',
+    ])
+    const plainText = (html) =>
+      html
+        .replace(/<script[\s\S]*?<\/script>/g, ' ')
+        .replace(/<style[\s\S]*?<\/style>/g, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/https?:\/\/\S+/g, ' ')
+        .replace(/&[a-z]+;/g, ' ')
+    const englishLeft = (html) =>
+      [...new Set(plainText(html).match(/[A-Za-z][A-Za-z'’.-]+/g) || [])].filter((word) => !asciiAllow.has(word))
+    check(
+      '影之刃零·页面正文没有残留英文',
+      [
+        ['首页', pbzHomeHtml],
+        ['武器列表', pbzWeaponsHtml],
+        ['影之武装列表', pbzEdgesHtml],
+        ['武器详情', pbzWeaponHtml],
+        ['BOSS 列表', pbzBossesHtml],
+        ['BOSS 详情', pbzBossHtml],
+        ['结局', pbzEndingsHtml],
+        ['流派列表', pbzArchHtml],
+        ['流派详情', pbzArchDetailHtml],
+      ].flatMap(([label, html]) => englishLeft(html).map((word) => `${label}: ${word}`)),
+      []
+    )
+  }
 
   // 收藏入口：列表有筛选 chip，卡片有星标，详情页有带文字的按钮
   check('影之刃零·武器列表有收藏筛选', pbzWeaponsHtml.includes('只看收藏'), true)

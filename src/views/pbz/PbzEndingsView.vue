@@ -26,7 +26,6 @@
         <article v-for="ending in endings" :key="ending.id" class="entry">
           <div class="entry-head">
             <h3 class="entry-name">{{ ending.name }}</h3>
-            <span v-if="!ending.zhPending" class="entry-en">{{ ending.nameEn }}</span>
             <span v-if="ending.zhPending" class="mini-tag pending">中文名待补</span>
           </div>
           <p class="entry-line"><em>条件</em>{{ ending.condition }}</p>
@@ -35,7 +34,7 @@
       </div>
       <p class="paragraph muted" style="margin-top: 14px">
         结局条件整理自
-        <a class="source-link" :href="endings[0].source" target="_blank" rel="noopener noreferrer">Fextralife wiki · Endings</a>
+        <a class="source-link" :href="endings[0].source" target="_blank" rel="noopener noreferrer">Fextralife 英文 wiki · 结局</a>
         与英文维基百科条目；具体需要完成哪些任务，wiki 尚未逐条列出。
       </p>
     </section>

@@ -2,7 +2,7 @@
   <div class="pbz">
     <header class="page-hero">
       <div class="hero-text">
-        <div class="hero-eyebrow">配装 · Builds</div>
+        <div class="hero-eyebrow">配装</div>
         <h1 class="hero-title">流派库</h1>
         <p class="hero-sub">
           影之刃零没有属性点，流派拼的是「两把主武器 + 两件影之武装 + 饰品 / 秘药 / 能力」的资源循环。
@@ -28,7 +28,7 @@
         </div>
         <div class="primer-item">
           <strong>杀气精华</strong>
-          <p>绝技（Power Surge）的消耗资源。用主武器攻击会积累特技槽，攒满后释放，每把武器的绝技效果都不同。</p>
+          <p>绝技的消耗资源。用主武器攻击会积累特技槽，攒满后释放，每把武器的绝技效果都不同。</p>
         </div>
         <div class="primer-item">
           <strong>暗源</strong>

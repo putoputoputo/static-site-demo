@@ -10,10 +10,7 @@
       <div class="hero-main">
         <div class="hero-eyebrow">BOSS · {{ boss.region }}</div>
         <h1 class="detail-title">{{ boss.name }}</h1>
-        <p class="detail-title-en">
-          <template v-if="boss.zhPending">中文名待补，暂以英文版名称显示</template>
-          <template v-else>{{ boss.nameEn }}</template>
-        </p>
+        <p class="detail-place">{{ boss.place }}</p>
         <div class="hero-tags">
           <span class="mini-tag">{{ boss.region }}</span>
           <span v-if="boss.phases" class="mini-tag pending">{{ boss.phases }} 阶段</span>
@@ -76,7 +73,7 @@
         <section class="panel">
           <h2 class="panel-title">数据出处</h2>
           <p class="paragraph muted">
-            位置、掉落与打法整理自 Fextralife 英文 wiki 对应页面，招式名沿用英文版名称；中文名来自 3DM 攻略目录。
+            位置、掉落与打法整理自 Fextralife 英文 wiki 对应页面，招式名按字面意译；中文名来自 3DM 攻略目录。
           </p>
           <p class="paragraph">
             <a class="source-link" :href="boss.source" target="_blank" rel="noopener noreferrer">{{ boss.source }}</a>

@@ -6,7 +6,7 @@
         <h1 class="hero-title">BOSS 攻略</h1>
         <p class="hero-sub">
           按地图整理全部 BOSS 的位置、掉落与打法要点。打法只转述 wiki 页面上写明的机制，页面还是空模板的条目标为「待补」；
-          中文名来自 3DM 攻略目录，攻略尚未写到的后期 BOSS 暂以英文版名称显示。
+          中文名来自 3DM 攻略目录，全部 BOSS 已补齐；招式名与铃铛名按字面意译，与官方中文版可能有出入。
         </p>
       </div>
       <div class="hero-badges">
@@ -68,7 +68,6 @@
         <div class="card-head">
           <div class="card-title">
             <h2 class="card-name">{{ boss.name }}</h2>
-            <p v-if="!boss.zhPending" class="card-name-en">{{ boss.nameEn }}</p>
           </div>
           <button
             class="fav-btn"
@@ -152,11 +151,12 @@ const pageSizeOptions = [
 
 const regionOptions = computed(() => groupCounts(bosses, bossRegions, 'region'))
 
+// 中文名补齐后这里是 0，不显示「0 中文名待补」；有缺名条目时会自动出现
 const highlights = [
   { value: bosses.length, label: 'BOSS' },
   { value: bossRegions.length, label: '区域' },
   { value: bosses.filter((boss) => boss.zhPending).length, label: '中文名待补' },
-]
+].filter((item) => item.value > 0)
 
 const filtered = computed(() => {
   const list = filterPbz(bosses, { keyword: keyword.value, groups: regions.value, groupKey: 'region' })

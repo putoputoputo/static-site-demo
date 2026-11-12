@@ -2,7 +2,7 @@
   <div class="pbz">
     <header class="page-hero">
       <div class="hero-text">
-        <div class="hero-eyebrow">Phantom Blade Zero</div>
+        <div class="hero-eyebrow">影之刃零 · 攻略</div>
         <h1 class="hero-title">影之刃零</h1>
         <p class="hero-sub">
           灵游坊开发的武侠动作角色扮演游戏，2026 年 10 月 29 日登陆 PlayStation 5 与 Windows。
@@ -32,8 +32,8 @@
       <h2 class="panel-title">关于这里的数据</h2>
       <ul class="note-list">
         <li>数值、机制、位置与掉落整理自 Fextralife 英文 wiki，每个条目的详情页都附了对应的出处链接。</li>
-        <li>中文名来自 3DM 攻略目录里出现的官方中文名。目录里没有出现的条目标为「中文名待补」，暂以英文版名称显示，不自行翻译。</li>
-        <li>招式名、铃铛名与部分道具名沿用英文版名称。</li>
+        <li>武器、影之武装与 BOSS 的中文名按官方中英对照核对，已全部补齐，不自行翻译。</li>
+        <li>招式名、铃铛名与道具名也已统一为中文：英文 wiki 只提供英文名，本站按字面意译，与官方中文版可能存在出入。</li>
         <li>武器面板数值在 wiki 各页面标注的等级不同（Lv1 / Lv10 / Lv30），数值旁都带了等级，跨等级不能直接比大小。</li>
         <li>wiki 页面还是空模板的条目写的是「待补」，没有用推测内容填充。</li>
       </ul>

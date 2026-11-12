@@ -10,7 +10,7 @@
       <div class="hero-main">
         <div class="hero-eyebrow">流派 · {{ archetype.role }}</div>
         <h1 class="detail-title">{{ archetype.name }}</h1>
-        <p class="detail-title-en">
+        <p class="detail-place">
           <template v-if="archetype.alias.length">别名：{{ archetype.alias.join(' / ') }}</template>
           <template v-else>配装方案</template>
         </p>
@@ -84,7 +84,6 @@
                   <span v-if="weapon.zhPending" class="mini-tag pending">中文名待补</span>
                 </div>
                 <strong class="loadout-name">{{ weapon.name }}</strong>
-                <span class="loadout-sub">{{ weapon.nameEn }}</span>
                 <p class="loadout-effect">{{ weapon.effect }}</p>
                 <p v-if="weapon.note" class="loadout-note">{{ weapon.note }}</p>
                 <span class="loadout-location">{{ weapon.location }}</span>
@@ -101,7 +100,6 @@
                   <span v-if="edge.zhPending" class="mini-tag pending">中文名待补</span>
                 </div>
                 <strong class="loadout-name">{{ edge.name }}</strong>
-                <span class="loadout-sub">{{ edge.nameEn }}</span>
                 <p class="loadout-effect">{{ edge.effect }}</p>
                 <p v-if="edge.note" class="loadout-note">{{ edge.note }}</p>
                 <span class="loadout-location">{{ edge.location }}</span>
@@ -242,7 +240,7 @@
           <h2 class="panel-title">数据出处</h2>
           <p class="paragraph muted">
             配装与打法整理自游民星空的《全流派配装推荐》与《二周目推荐八套武器流派》，机制部分交叉参考
-            Fextralife / Phantom Blade Zero Wiki。武器与影之武装的类别、机制、获取方式以本站图鉴条目为准；
+            Fextralife 与影之刃零 Wiki。武器与影之武装的类别、机制、获取方式以本站图鉴条目为准；
             饰品中有几件的卡面效果暂未找到可靠数值，已在对应位置注明。
           </p>
           <ul class="source-list">

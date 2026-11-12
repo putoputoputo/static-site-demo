@@ -73,7 +73,6 @@
         <div class="card-head">
           <div class="card-title">
             <h2 class="card-name">{{ item.name }}</h2>
-            <p v-if="!item.zhPending" class="card-name-en">{{ item.nameEn }}</p>
           </div>
           <button
             class="fav-btn"
@@ -168,11 +167,14 @@ const categoryOptions = computed(() => groupCounts(module.value.items, module.va
 // 收藏是三个模块共用一个 key，这里只统计当前模块
 const moduleFavoriteCount = computed(() => favoritesOf(module.value.key).length)
 
-const highlights = computed(() => [
-  { value: module.value.items.length, label: module.value.itemLabel },
-  { value: categoryOptions.value.length, label: module.value.categoryLabel },
-  { value: module.value.items.filter((item) => item.zhPending).length, label: '中文名待补' },
-])
+// 中文名全部补齐后这里会是 0，不再显示「0 中文名待补」这种噪音；任一条目缺名时会自动回来
+const highlights = computed(() =>
+  [
+    { value: module.value.items.length, label: module.value.itemLabel },
+    { value: categoryOptions.value.length, label: module.value.categoryLabel },
+    { value: module.value.items.filter((item) => item.zhPending).length, label: '中文名待补' },
+  ].filter((item) => item.value > 0)
+)
 
 const filtered = computed(() => {
   let list = filterPbz(module.value.items, {
