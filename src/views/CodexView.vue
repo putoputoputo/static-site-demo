@@ -333,7 +333,7 @@ function resetFilters() {
   padding: 26px 28px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), var(--surface);
 }
 
 .hero-text {
@@ -344,7 +344,7 @@ function resetFilters() {
   margin-bottom: 6px;
   font-size: 11.5px;
   letter-spacing: 3px;
-  color: #8a8574;
+  color: var(--fg-3);
   text-transform: uppercase;
 }
 
@@ -358,7 +358,7 @@ function resetFilters() {
 .hero-sub {
   margin: 0;
   max-width: 620px;
-  color: #9d977f;
+  color: var(--fg-3);
   font-size: 13px;
   line-height: 1.75;
 }
@@ -375,7 +375,7 @@ function resetFilters() {
   text-align: center;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
-  background: #151515;
+  background: var(--bg);
 }
 
 .badge-value {
@@ -389,7 +389,7 @@ function resetFilters() {
   display: block;
   margin-top: 2px;
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 /* 筛选 */
@@ -400,7 +400,7 @@ function resetFilters() {
   padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .filter-line {
@@ -422,7 +422,7 @@ function resetFilters() {
   width: 40px;
   flex-shrink: 0;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .chips {
@@ -445,8 +445,8 @@ function resetFilters() {
   gap: 5px;
   padding: 5px 12px;
   font-size: 13px;
-  color: #b8b2a0;
-  background: #202020;
+  color: var(--fg-2);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
@@ -461,7 +461,7 @@ function resetFilters() {
 
 .all-chip.active,
 .chip.active {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
@@ -478,7 +478,7 @@ function resetFilters() {
   align-items: center;
   gap: 12px;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .result-bar strong {
@@ -488,7 +488,7 @@ function resetFilters() {
 .result-hint {
   margin-left: 10px;
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 /* 卡片 */
@@ -505,7 +505,7 @@ function resetFilters() {
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
   text-decoration: none;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -530,7 +530,7 @@ function resetFilters() {
   margin: 0;
   font-size: 17px;
   line-height: 1.4;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .dlc-tag {
@@ -548,7 +548,7 @@ function resetFilters() {
   width: 24px;
   height: 24px;
   padding: 0;
-  color: #5d5849;
+  color: var(--fg-4);
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -576,7 +576,7 @@ function resetFilters() {
   font-weight: 700;
   border: 1px solid;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--veil);
 }
 
 .card-tags {
@@ -598,8 +598,8 @@ function resetFilters() {
 }
 
 .mini-tag.role {
-  color: #9aa7b8;
-  background: #202429;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
+  background: var(--surface-3);
   border: 1px solid #33404d;
 }
 
@@ -610,7 +610,7 @@ function resetFilters() {
   padding: 9px 11px;
   border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
-  background: #161616;
+  background: var(--surface);
 }
 
 .metric {
@@ -622,12 +622,12 @@ function resetFilters() {
 
 .metric em {
   font-style: normal;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .metric strong {
   font-weight: 600;
-  color: #e5e3d8;
+  color: var(--fg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -635,7 +635,7 @@ function resetFilters() {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.7;
-  color: #9d977f;
+  color: var(--fg-3);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -649,7 +649,7 @@ function resetFilters() {
   margin: 0;
   font-size: 11.5px;
   line-height: 1.6;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .card-location .el-icon {
@@ -680,7 +680,7 @@ function resetFilters() {
 
 .arrow {
   margin-left: auto;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 @media (max-width: 1100px) {

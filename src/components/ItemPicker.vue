@@ -147,7 +147,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   font-size: 13px;
   text-align: left;
   cursor: pointer;
-  background: #1a1a1a;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 7px;
   transition: border-color 0.18s, background 0.18s;
@@ -155,18 +155,18 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 
 .picker-trigger:hover {
   border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-  background: #1d1d1d;
+  background: var(--surface-2);
 }
 
 .picker-trigger.empty .trigger-label {
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .trigger-label {
   flex: 1;
   min-width: 0;
   overflow: hidden;
-  color: #d8d2c0;
+  color: var(--fg);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -174,13 +174,13 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 .trigger-meta {
   flex-shrink: 0;
   font-size: 11px;
-  color: #6f6a5c;
+  color: var(--fg-4);
   font-variant-numeric: tabular-nums;
 }
 
 .trigger-icon {
   flex-shrink: 0;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .picker-panel {
@@ -191,7 +191,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   width: 100%;
   min-width: 260px;
   padding: 8px;
-  background: #191919;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 9px;
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
@@ -202,7 +202,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   align-items: center;
   gap: 7px;
   padding: 6px 9px;
-  background: #141414;
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
 }
@@ -212,21 +212,21 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   min-width: 0;
   font-family: inherit;
   font-size: 12.5px;
-  color: #e2dcc8;
+  color: var(--fg);
   background: transparent;
   border: none;
   outline: none;
 }
 
 .panel-input::placeholder {
-  color: #565143;
+  color: var(--fg-4);
 }
 
 .panel-clear {
   padding: 0 4px;
   font-size: 14px;
   line-height: 1;
-  color: #6f6a5c;
+  color: var(--fg-4);
   cursor: pointer;
   background: transparent;
   border: none;
@@ -270,7 +270,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   flex: 1;
   min-width: 0;
   overflow: hidden;
-  color: #cfc9b8;
+  color: var(--fg-2);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -282,7 +282,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 .row-meta {
   flex-shrink: 0;
   font-size: 11px;
-  color: #6f6a5c;
+  color: var(--fg-4);
   font-variant-numeric: tabular-nums;
 }
 
@@ -300,7 +300,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   padding: 16px 9px;
   font-size: 12px;
   line-height: 1.7;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .panel-foot {
@@ -315,16 +315,16 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 
 .foot-count {
   font-size: 10.5px;
-  color: #565143;
+  color: var(--fg-4);
 }
 
 .foot-btn {
   padding: 2px 8px;
   font-family: inherit;
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
   cursor: pointer;
-  background: #232323;
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 4px;
 }

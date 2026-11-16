@@ -116,7 +116,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 .portal-head p {
   margin: 0;
   font-size: 14px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .portal-grid {
@@ -133,7 +133,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   padding: 34px 30px 28px;
   min-height: 260px;
   text-decoration: none;
-  background: #1a1a1a;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
   overflow: hidden;
@@ -172,12 +172,12 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 }
 
 .portal-card.pbz:hover {
-  border-color: #d8574a;
+  border-color: color-mix(in srgb, #d8574a var(--tone-mix), var(--fg));
   box-shadow: 0 10px 28px rgba(216, 87, 74, 0.14);
 }
 
 .portal-card.photo:hover {
-  border-color: #6ea0be;
+  border-color: color-mix(in srgb, #6ea0be var(--tone-mix), var(--fg));
   box-shadow: 0 10px 28px rgba(110, 160, 190, 0.14);
 }
 
@@ -190,7 +190,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   height: 62px;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
-  background: #141414;
+  background: var(--bg);
 }
 
 .portal-card.game .card-icon {
@@ -198,11 +198,11 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 }
 
 .portal-card.pbz .card-icon {
-  color: #d8574a;
+  color: color-mix(in srgb, #d8574a var(--tone-mix), var(--fg));
 }
 
 .portal-card.photo .card-icon {
-  color: #6ea0be;
+  color: color-mix(in srgb, #6ea0be var(--tone-mix), var(--fg));
 }
 
 .portal-card h2 {
@@ -210,7 +210,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   margin: 0;
   font-size: 22px;
   letter-spacing: 2px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .card-desc {
@@ -218,7 +218,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   margin: 0;
   font-size: 13.5px;
   line-height: 1.75;
-  color: #8a8574;
+  color: var(--fg-3);
   flex: 1;
 }
 
@@ -235,8 +235,8 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 .card-facts li {
   padding: 3px 10px;
   font-size: 12px;
-  color: #a09a86;
-  background: #141414;
+  color: var(--fg-3);
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
 }
@@ -248,7 +248,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: #b8b2a0;
+  color: var(--fg-2);
   transition: color 0.2s, gap 0.2s;
 }
 
@@ -258,12 +258,12 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 }
 
 .portal-card.pbz:hover .card-enter {
-  color: #d8574a;
+  color: color-mix(in srgb, #d8574a var(--tone-mix), var(--fg));
   gap: 10px;
 }
 
 .portal-card.photo:hover .card-enter {
-  color: #6ea0be;
+  color: color-mix(in srgb, #6ea0be var(--tone-mix), var(--fg));
   gap: 10px;
 }
 
@@ -299,16 +299,16 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 }
 
 .portal-card.travel:hover {
-  border-color: #6f9e7a;
+  border-color: color-mix(in srgb, #6f9e7a var(--tone-mix), var(--fg));
   box-shadow: 0 10px 28px rgba(111, 158, 122, 0.14);
 }
 
 .portal-card.travel .card-icon {
-  color: #6f9e7a;
+  color: color-mix(in srgb, #6f9e7a var(--tone-mix), var(--fg));
 }
 
 .portal-card.travel:hover .card-enter {
-  color: #6f9e7a;
+  color: color-mix(in srgb, #6f9e7a var(--tone-mix), var(--fg));
   gap: 10px;
 }
 </style>

@@ -338,7 +338,7 @@ onMounted(async () => {
   padding: 26px 28px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), var(--surface);
 }
 
 .hero-title {
@@ -351,13 +351,13 @@ onMounted(async () => {
 .hero-sub {
   margin: 0;
   max-width: 720px;
-  color: #9d977f;
+  color: var(--fg-3);
   font-size: 13px;
   line-height: 1.75;
 }
 
 .hero-sub strong {
-  color: #e5e3d8;
+  color: var(--fg);
   font-weight: 600;
 }
 
@@ -366,7 +366,7 @@ onMounted(async () => {
   gap: 16px;
   margin-top: 12px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .legend-item {
@@ -382,15 +382,15 @@ onMounted(async () => {
 }
 
 .dot.must {
-  background: #c16b4f;
+  background: color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
 }
 
 .dot.remembrance {
-  background: #b58cc0;
+  background: color-mix(in srgb, #b58cc0 var(--tone-mix), var(--fg));
 }
 
 .dot.optional {
-  background: #5d5849;
+  background: var(--fg-4);
 }
 
 .hero-badges {
@@ -405,7 +405,7 @@ onMounted(async () => {
   text-align: center;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
-  background: #151515;
+  background: var(--bg);
 }
 
 .badge-value {
@@ -419,7 +419,7 @@ onMounted(async () => {
   display: block;
   margin-top: 2px;
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 /* 筛选 */
@@ -431,7 +431,7 @@ onMounted(async () => {
   padding: 16px 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .search-input {
@@ -452,7 +452,7 @@ onMounted(async () => {
 
 .result-count {
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 /* 分组 */
@@ -479,7 +479,7 @@ onMounted(async () => {
 
 .layer-count {
   font-size: 12px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .layer-desc {
@@ -487,7 +487,7 @@ onMounted(async () => {
   margin: 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .region-grid {
@@ -503,13 +503,13 @@ onMounted(async () => {
   padding: 16px 18px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
   scroll-margin-top: 80px;
 }
 
 .region-card.dlc {
   border-color: color-mix(in srgb, var(--accent) 15%, transparent);
-  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 55%), #1a1a1a;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 55%), var(--surface);
 }
 
 .region-head {
@@ -522,13 +522,13 @@ onMounted(async () => {
 .region-name {
   margin: 0;
   font-size: 16px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .region-alias {
   margin: 3px 0 0;
   font-size: 11px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .path-tag {
@@ -537,11 +537,11 @@ onMounted(async () => {
   font-size: 10px;
   border-radius: 3px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .path-tag.must {
-  color: #d08a6a;
+  color: color-mix(in srgb, #d08a6a var(--tone-mix), var(--fg));
   border-color: rgba(193, 107, 79, 0.35);
   background: rgba(193, 107, 79, 0.08);
 }
@@ -562,8 +562,8 @@ onMounted(async () => {
   padding: 2px 7px;
   font-size: 11px;
   border-radius: 4px;
-  color: #8a8574;
-  background: #242424;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
@@ -574,7 +574,7 @@ onMounted(async () => {
 }
 
 .meta-item.remembrance {
-  color: #b58cc0;
+  color: color-mix(in srgb, #b58cc0 var(--tone-mix), var(--fg));
   background: rgba(181, 140, 192, 0.09);
   border-color: rgba(181, 140, 192, 0.24);
 }
@@ -583,7 +583,7 @@ onMounted(async () => {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.75;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .access-row,
@@ -599,12 +599,12 @@ onMounted(async () => {
 .sub-label,
 .chapter-label {
   flex-shrink: 0;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .access-text,
 .sub-text {
-  color: #9d977f;
+  color: var(--fg-3);
 }
 
 .boss-list {
@@ -623,7 +623,7 @@ onMounted(async () => {
 }
 
 .boss-row + .boss-row {
-  border-top: 1px solid #232323;
+  border-top: 1px solid var(--surface-3);
 }
 
 .boss-row.hit {
@@ -639,13 +639,13 @@ onMounted(async () => {
 
 .boss-name {
   font-size: 13px;
-  color: #ddd9cb;
+  color: var(--fg);
 }
 
 /* 区域页的 BOSS 名可点进「BOSS 攻略」详情 —— 这里必然有对应条目，
    但用 getBoss 兜一下，避免以后新增 BOSS 忘了写攻略时点出空白页 */
 .boss-name.link {
-  color: #ddd9cb;
+  color: var(--fg);
   text-decoration: none;
   border-bottom: 1px dashed transparent;
   transition: color 0.16s, border-color 0.16s;
@@ -665,16 +665,16 @@ onMounted(async () => {
   font-size: 10px;
   border-radius: 3px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .chip.must {
-  color: #d08a6a;
+  color: color-mix(in srgb, #d08a6a var(--tone-mix), var(--fg));
   border-color: rgba(193, 107, 79, 0.4);
 }
 
 .chip.remembrance {
-  color: #b58cc0;
+  color: color-mix(in srgb, #b58cc0 var(--tone-mix), var(--fg));
   border-color: rgba(181, 140, 192, 0.4);
 }
 
@@ -688,17 +688,17 @@ onMounted(async () => {
 
 .boss-place {
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .boss-note {
   font-size: 11px;
-  color: #7d7868;
+  color: var(--fg-4);
 }
 
 .boss-quest {
   font-size: 11px;
-  color: #8fa88a;
+  color: color-mix(in srgb, #8fa88a var(--tone-mix), var(--fg));
   text-decoration: none;
 }
 
@@ -711,7 +711,7 @@ onMounted(async () => {
   padding-top: 8px;
   border-top: 1px dashed color-mix(in srgb, var(--accent) 7%, transparent);
   font-size: 11.5px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .chapter-row {
@@ -728,7 +728,7 @@ onMounted(async () => {
 }
 
 .chapter-link:hover {
-  color: #e5c766;
+  color: color-mix(in srgb, #e5c766 var(--tone-mix), var(--fg));
 }
 
 /* 追忆总表 */
@@ -737,7 +737,7 @@ onMounted(async () => {
   padding: 22px 24px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #171717;
+  background: var(--surface);
 }
 
 .section-head {
@@ -756,7 +756,7 @@ onMounted(async () => {
   max-width: 820px;
   font-size: 12px;
   line-height: 1.75;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .remembrance-columns {
@@ -787,18 +787,18 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 10px;
   padding-bottom: 5px;
-  border-bottom: 1px solid #232323;
+  border-bottom: 1px solid var(--surface-3);
   font-size: 12.5px;
 }
 
 .rm-name {
-  color: #ddd9cb;
+  color: var(--fg);
 }
 
 .rm-region {
   flex-shrink: 0;
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
   text-decoration: none;
 }
 
@@ -810,7 +810,7 @@ onMounted(async () => {
   margin: 12px 0 0;
   font-size: 11.5px;
   line-height: 1.7;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .back-row {
@@ -822,7 +822,7 @@ onMounted(async () => {
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
   text-decoration: none;
 }
 

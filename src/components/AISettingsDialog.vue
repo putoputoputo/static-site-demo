@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
   overflow-y: auto;
   padding: 20px 22px 18px;
   box-sizing: border-box;
-  background: #1a1915;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.6);
@@ -181,7 +181,7 @@ onBeforeUnmount(() => {
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .ai-close {
@@ -190,7 +190,7 @@ onBeforeUnmount(() => {
   height: 26px;
   font-size: 18px;
   line-height: 1;
-  color: #7a7565;
+  color: var(--fg-4);
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
   margin: 10px 0 16px;
   font-size: 12.5px;
   line-height: 1.75;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .ai-field {
@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
   display: block;
   margin-bottom: 6px;
   font-size: 12.5px;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .ai-input {
@@ -229,8 +229,8 @@ onBeforeUnmount(() => {
   box-sizing: border-box;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 12.5px;
-  color: #e8e2cf;
-  background: #141414;
+  color: var(--fg);
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   outline: none;
@@ -242,7 +242,7 @@ onBeforeUnmount(() => {
 }
 
 .ai-input::placeholder {
-  color: #565040;
+  color: var(--fg-4);
 }
 
 .ai-secret {
@@ -262,8 +262,8 @@ onBeforeUnmount(() => {
   padding: 3px 8px;
   font-family: inherit;
   font-size: 11.5px;
-  color: #8a8574;
-  background: #232323;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 5px;
   cursor: pointer;
@@ -281,11 +281,11 @@ onBeforeUnmount(() => {
 }
 
 .ai-error {
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
 }
 
 .ai-hint {
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .ai-actions {
@@ -298,8 +298,8 @@ onBeforeUnmount(() => {
   padding: 8px 18px;
   font-family: inherit;
   font-size: 13px;
-  color: #d8d3c2;
-  background: #202020;
+  color: var(--fg);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   cursor: pointer;
@@ -312,7 +312,7 @@ onBeforeUnmount(() => {
 }
 
 .ai-btn.primary {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
@@ -324,13 +324,13 @@ onBeforeUnmount(() => {
 
 .ai-btn.ghost {
   margin-right: auto;
-  color: #7a7565;
+  color: var(--fg-4);
   background: transparent;
   border-color: transparent;
 }
 
 .ai-btn.ghost:hover {
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
   border-color: rgba(224, 138, 138, 0.3);
 }
 

@@ -318,14 +318,14 @@ onBeforeUnmount(() => {
 .photo-head p {
   margin: 0;
   font-size: 13.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .shoot-panel {
   max-width: 720px;
   margin: 0 auto;
   padding: 20px;
-  background: #1a1a1a;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
 }
@@ -339,7 +339,7 @@ onBeforeUnmount(() => {
   padding: 12px;
   border: 1px dashed color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 10px;
-  background: #141414;
+  background: var(--bg);
   overflow: hidden;
 }
 
@@ -356,20 +356,20 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  color: #4d4a3f;
+  color: var(--fg-4);
   text-align: center;
 }
 
 .stage-title {
   margin: 4px 0 0;
   font-size: 14px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .stage-sub {
   font-size: 12.5px;
   line-height: 1.7;
-  color: #565243;
+  color: var(--fg-4);
   max-width: 340px;
 }
 
@@ -387,9 +387,9 @@ onBeforeUnmount(() => {
   padding: 9px 18px;
   font-family: inherit;
   font-size: 13.5px;
-  color: #d8d3c2;
+  color: var(--fg);
   text-decoration: none;
-  background: #202020;
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   cursor: pointer;
@@ -403,21 +403,21 @@ onBeforeUnmount(() => {
 }
 
 .act-btn.primary {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
 }
 
 .act-btn.primary:hover:not(:disabled) {
-  color: #121212;
+  color: var(--bg);
   filter: brightness(1.08);
   background: var(--accent);
 }
 
 .act-btn:disabled {
-  color: #5c5749;
-  background: #1c1c1c;
+  color: var(--fg-4);
+  background: var(--surface);
   border-color: color-mix(in srgb, var(--accent) 7%, transparent);
   cursor: not-allowed;
 }
@@ -426,7 +426,7 @@ onBeforeUnmount(() => {
   margin-left: auto;
   background: transparent;
   border-color: transparent;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .log-badge {
@@ -437,7 +437,7 @@ onBeforeUnmount(() => {
   font-size: 10.5px;
   line-height: 16px;
   text-align: center;
-  color: #121212;
+  color: var(--bg);
   background: var(--accent);
   border-radius: 999px;
 }
@@ -450,18 +450,18 @@ onBeforeUnmount(() => {
   margin: 12px 0 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #6b6555;
+  color: var(--fg-4);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .tip.is-error {
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
 }
 
 .tip.is-loading {
-  color: #cfae5b;
+  color: color-mix(in srgb, #cfae5b var(--tone-mix), var(--fg));
 }
 
 .pulse {
@@ -489,7 +489,7 @@ onBeforeUnmount(() => {
   padding: 10px 12px;
   font-size: 12px;
   line-height: 1.8;
-  color: #b99a4e;
+  color: color-mix(in srgb, #b99a4e var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 6%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 8px;
@@ -499,8 +499,8 @@ onBeforeUnmount(() => {
   padding: 1px 4px;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 11.5px;
-  color: #d8bb6e;
-  background: #141414;
+  color: color-mix(in srgb, #d8bb6e var(--tone-mix), var(--fg));
+  background: var(--bg);
   border-radius: 3px;
 }
 
@@ -510,19 +510,19 @@ onBeforeUnmount(() => {
   gap: 8px;
   margin: 12px 0 0;
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .model-line strong {
   font-weight: 600;
-  color: #b99a4e;
+  color: color-mix(in srgb, #b99a4e var(--tone-mix), var(--fg));
 }
 
 .link-btn {
   padding: 0;
   font-family: inherit;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
   background: transparent;
   border: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--accent) 22%, transparent);
@@ -540,7 +540,7 @@ onBeforeUnmount(() => {
   max-width: 720px;
   margin: 18px auto 0;
   padding: 20px;
-  background: #1a1a1a;
+  background: var(--surface);
   border-radius: 14px;
 }
 
@@ -555,14 +555,14 @@ onBeforeUnmount(() => {
   gap: 6px;
   font-size: 13.5px;
   font-weight: 600;
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
 }
 
 .failure-msg {
   margin: 10px 0 14px;
   font-size: 12.5px;
   line-height: 1.8;
-  color: #b8a4a4;
+  color: color-mix(in srgb, #b8a4a4 var(--tone-mix), var(--fg));
   word-break: break-word;
 }
 
@@ -582,13 +582,13 @@ onBeforeUnmount(() => {
 .result-title {
   font-size: 15px;
   font-weight: 600;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .result-meta {
   margin-left: auto;
   font-size: 11.5px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .notice {
@@ -599,7 +599,7 @@ onBeforeUnmount(() => {
   padding: 10px 12px;
   font-size: 12.5px;
   line-height: 1.75;
-  color: #d9b25f;
+  color: color-mix(in srgb, #d9b25f var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 7%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
   border-radius: 8px;
@@ -614,7 +614,7 @@ onBeforeUnmount(() => {
   padding: 3px 12px;
   font-family: inherit;
   font-size: 12px;
-  color: #d9b25f;
+  color: color-mix(in srgb, #d9b25f var(--tone-mix), var(--fg));
   background: transparent;
   border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   border-radius: 999px;
@@ -623,7 +623,7 @@ onBeforeUnmount(() => {
 }
 
 .notice-btn:hover {
-  color: #121212;
+  color: var(--bg);
   background: var(--accent);
   border-color: var(--accent);
 }
@@ -669,7 +669,7 @@ onBeforeUnmount(() => {
   padding: 4px 12px;
   font-family: inherit;
   font-size: 12px;
-  color: #b99a4e;
+  color: color-mix(in srgb, #b99a4e var(--tone-mix), var(--fg));
   background: transparent;
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: 999px;
@@ -678,7 +678,7 @@ onBeforeUnmount(() => {
 }
 
 .copy-btn:hover {
-  color: #121212;
+  color: var(--bg);
   background: var(--accent);
   border-color: var(--accent);
 }
@@ -687,7 +687,7 @@ onBeforeUnmount(() => {
   margin: 10px 0 0;
   font-size: 13px;
   line-height: 1.9;
-  color: #c9c4b2;
+  color: var(--fg-2);
   white-space: pre-wrap;
 }
 
@@ -701,7 +701,7 @@ onBeforeUnmount(() => {
 .sec-list li {
   font-size: 13px;
   line-height: 1.85;
-  color: #c9c4b2;
+  color: var(--fg-2);
 }
 
 .sec-code {
@@ -710,10 +710,10 @@ onBeforeUnmount(() => {
   font-family: ui-monospace, Consolas, monospace;
   font-size: 12.5px;
   line-height: 1.8;
-  color: #d8bb6e;
+  color: color-mix(in srgb, #d8bb6e var(--tone-mix), var(--fg));
   white-space: pre-wrap;
   word-break: break-word;
-  background: #141414;
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
 }

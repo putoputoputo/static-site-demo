@@ -68,7 +68,7 @@ function goBack() {
   text-align: center;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(140deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%), #1a1a1a;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%), var(--surface);
 }
 
 .nf-code {
@@ -83,7 +83,7 @@ function goBack() {
 .nf-title {
   margin: 16px 0 10px;
   font-size: 20px;
-  color: #e5e3d8;
+  color: var(--fg);
   letter-spacing: 1px;
 }
 
@@ -92,15 +92,15 @@ function goBack() {
   max-width: 460px;
   font-size: 13px;
   line-height: 1.8;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .nf-path {
   padding: 1px 6px;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 12px;
-  color: #cfae5b;
-  background: #141414;
+  color: color-mix(in srgb, #cfae5b var(--tone-mix), var(--fg));
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   word-break: break-all;
@@ -120,8 +120,8 @@ function goBack() {
   gap: 6px;
   padding: 8px 16px;
   font-size: 13px;
-  color: #b8b2a0;
-  background: #202020;
+  color: var(--fg-2);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
@@ -135,14 +135,14 @@ function goBack() {
 }
 
 .nf-btn.primary {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
 }
 
 .nf-btn.primary:hover {
-  color: #121212;
+  color: var(--bg);
   filter: brightness(1.08);
 }
 
@@ -159,12 +159,12 @@ function goBack() {
 
 .nf-suggest-label {
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .nf-link {
   font-size: 12.5px;
-  color: #9d977f;
+  color: var(--fg-3);
   text-decoration: none;
   border-bottom: 1px dashed transparent;
   transition: color 0.18s, border-color 0.18s;

@@ -315,11 +315,11 @@ const gridLines = computed(() => {
 }
 
 .map-bg {
-  fill: #121314;
+  fill: var(--bg);
 }
 
 .map-grid line {
-  stroke: #23262a;
+  stroke: var(--surface-3);
   stroke-width: 1;
 }
 
@@ -331,7 +331,7 @@ const gridLines = computed(() => {
 
 .map-axis-label {
   font-size: 10px;
-  fill: #5d5748;
+  fill: var(--fg-4);
 }
 
 .map-area-label {
@@ -342,7 +342,7 @@ const gridLines = computed(() => {
 
 .map-path {
   fill: none;
-  stroke: #6f9e7a;
+  stroke: color-mix(in srgb, #6f9e7a var(--tone-mix), var(--fg));
   stroke-width: 2;
   stroke-linejoin: round;
   pointer-events: none;
@@ -351,7 +351,7 @@ const gridLines = computed(() => {
 /* 底下再垫一层暗色描边，路径穿过片区色块时也能看清 */
 .map-path-halo {
   fill: none;
-  stroke: #0d0f10;
+  stroke: var(--bg);
   stroke-width: 5;
   stroke-linejoin: round;
   opacity: 0.65;
@@ -376,32 +376,32 @@ const gridLines = computed(() => {
 
 .map-label {
   font-size: 10.5px;
-  fill: #a8a292;
+  fill: var(--fg-2);
   pointer-events: none;
 }
 
 .map-point:hover .map-label,
 .map-point.active .map-label {
-  fill: #e5e3d8;
+  fill: var(--fg);
 }
 
 .map-point.must .map-label {
-  fill: #d8c79a;
+  fill: color-mix(in srgb, #d8c79a var(--tone-mix), var(--fg));
 }
 
 /* 机场 / 火车站：方形点，和圆形景点区分 */
 .hub-box {
-  fill: #6f9e7a;
-  stroke: #0f1011;
+  fill: color-mix(in srgb, #6f9e7a var(--tone-mix), var(--fg));
+  stroke: var(--bg);
   stroke-width: 1.4;
 }
 
 .hub-label {
-  fill: #8fb79a;
+  fill: color-mix(in srgb, #8fb79a var(--tone-mix), var(--fg));
 }
 
 .exit-box {
-  fill: #191a1b;
+  fill: var(--surface);
   stroke: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
@@ -410,26 +410,26 @@ const gridLines = computed(() => {
 }
 
 .map-exit:hover .exit-box {
-  stroke: #b08a6a;
+  stroke: var(--fg-3);
 }
 
 .exit-name {
   font-size: 11.5px;
-  fill: #c8bda0;
+  fill: var(--fg-2);
 }
 
 .exit-meta {
   font-size: 10px;
-  fill: #7a7565;
+  fill: var(--fg-4);
 }
 
 .legend-arrow {
-  stroke: #5d5748;
+  stroke: var(--fg-4);
   stroke-width: 1.4;
 }
 
 .legend-arrow-head {
-  fill: #5d5748;
+  fill: var(--fg-4);
 }
 
 .legend-scale {
@@ -439,13 +439,13 @@ const gridLines = computed(() => {
 
 .legend-text {
   font-size: 9.5px;
-  fill: #6b6656;
+  fill: var(--fg-4);
 }
 
 .map-note {
   margin: 10px 0 0;
   font-size: 11.5px;
   line-height: 1.7;
-  color: #6b6656;
+  color: var(--fg-4);
 }
 </style>

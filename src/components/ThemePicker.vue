@@ -4,8 +4,8 @@
       type="button"
       class="theme-btn"
       :aria-expanded="open"
-      aria-label="更换主题色"
-      title="更换主题色"
+      aria-label="更换主题"
+      title="更换主题（底色与强调色）"
       @click="toggle"
     >
       <span class="theme-dot" :style="{ background: currentHex }"></span>
@@ -13,8 +13,23 @@
 
     <div v-if="open" class="theme-panel" role="dialog" aria-label="主题色">
       <div class="theme-panel-head">
-        <strong>主题色</strong>
+        <strong>主题</strong>
         <span class="theme-now">{{ currentHex }}</span>
+      </div>
+
+      <!-- 底色：深色 / 浅色。换的是背景与文字两级，强调色自动跟着调整 -->
+      <div class="mode-row">
+        <button
+          v-for="item in modes"
+          :key="item.id"
+          type="button"
+          class="mode-btn"
+          :class="{ on: item.id === mode }"
+          @click="pickMode(item.id)"
+        >
+          <span class="mode-swatch" :class="item.id"></span>
+          <span>{{ item.name }}</span>
+        </button>
       </div>
 
       <!-- 预设：常用配色，点一下立刻生效 -->
@@ -65,26 +80,32 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import {
   DEFAULT_ACCENT,
+  THEME_MODES,
   THEME_PRESETS,
   accentTokens,
   applyAccent,
+  applyMode,
   clearAccent,
   contrastHint,
   loadAccent,
+  loadMode,
   normalizeHex,
   saveAccent,
+  saveMode,
 } from '../utils/theme'
 
 const presets = THEME_PRESETS
+const modes = THEME_MODES
 const currentHex = ref(loadAccent())
+const mode = ref(loadMode())
 const hexInput = ref(currentHex.value)
 const hexError = ref('')
 const open = ref(false)
 const wrapRef = ref(null)
 
-const hint = computed(() => contrastHint(currentHex.value))
+const hint = computed(() => contrastHint(currentHex.value, mode.value))
 // ok / warn / bad 由主题模块按对比度判定，这里只负责给 CSS 挂类名
-const hintLevel = computed(() => accentTokens(currentHex.value).level)
+const hintLevel = computed(() => accentTokens(currentHex.value, mode.value).level)
 
 const apply = (hex) => {
   const norm = normalizeHex(hex)
@@ -98,6 +119,12 @@ const apply = (hex) => {
 }
 
 const pick = (hex) => apply(hex)
+
+// 换底色只改 <html data-theme>，CSS 里两套 token 自动切换，不用重算颜色
+const pickMode = (id) => {
+  mode.value = applyMode(id)
+  saveMode(mode.value)
+}
 
 const onColorInput = (event) => apply(event.target.value)
 
@@ -133,7 +160,13 @@ const onKeydown = (event) => {
 }
 // 另一个标签页改了色，这边跟着变
 const onStorage = (event) => {
-  if (event.key && event.key !== 'myplan.theme.accent') return
+  if (!event.key) return
+  if (event.key === 'myplan.theme.mode') {
+    mode.value = loadMode()
+    applyMode(mode.value)
+    return
+  }
+  if (event.key !== 'myplan.theme.accent') return
   currentHex.value = loadAccent()
   hexInput.value = currentHex.value
   applyAccent(currentHex.value)
@@ -168,7 +201,7 @@ onBeforeUnmount(() => {
   place-items: center;
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--veil);
   cursor: pointer;
 }
 
@@ -192,7 +225,7 @@ onBeforeUnmount(() => {
   padding: 14px;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  background: #1a1a1a;
+  background: var(--surface);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.6);
 }
 
@@ -205,13 +238,107 @@ onBeforeUnmount(() => {
 
 .theme-panel-head strong {
   font-size: 13px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .theme-now {
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
   font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.mode-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 6px;
+  font-size: 12px;
+  color: var(--fg-2);
+  background: var(--veil);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mode-btn:hover {
+  background: var(--veil-strong);
+}
+
+.mode-btn.on {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* 色块本身固定成对应底色的样子，不跟当前主题走，否则选了浅色后两块长得一样 */
+.mode-swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.mode-swatch.dark {
+  background: #121212;
+}
+
+.mode-swatch.light {
+  background: color-mix(in srgb, #f2efe7 var(--tone-mix), var(--fg));
+}
+
+.mode-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 6px;
+  font-size: 12px;
+  color: var(--fg-2);
+  background: var(--veil);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mode-btn:hover {
+  background: var(--veil-strong);
+}
+
+.mode-btn.on {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* 色块本身固定成对应底色的样子，不跟当前主题走，否则选了浅色后两块长得一样 */
+.mode-swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.mode-swatch.dark {
+  background: #121212;
+}
+
+.mode-swatch.light {
+  background: color-mix(in srgb, #f2efe7 var(--tone-mix), var(--fg));
 }
 
 .preset-grid {
@@ -229,12 +356,12 @@ onBeforeUnmount(() => {
   padding: 7px 4px;
   border-radius: 8px;
   border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--veil);
   cursor: pointer;
 }
 
 .preset:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--veil-strong);
 }
 
 .preset.on {
@@ -250,7 +377,7 @@ onBeforeUnmount(() => {
 
 .preset-name {
   font-size: 11px;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .custom-row {
@@ -265,7 +392,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .color-input {
@@ -284,8 +411,8 @@ onBeforeUnmount(() => {
   padding: 5px 7px;
   font-size: 12px;
   font-family: 'Consolas', 'Courier New', monospace;
-  color: #e5e3d8;
-  background: #121212;
+  color: var(--fg);
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 6px;
 }
@@ -309,21 +436,21 @@ onBeforeUnmount(() => {
   margin: 0 0 4px;
   font-size: 11px;
   line-height: 1.6;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .theme-hint.warn {
-  color: #d8b06a;
+  color: color-mix(in srgb, #d8b06a var(--tone-mix), var(--fg));
 }
 
 .theme-hint.bad {
-  color: #d8786a;
+  color: color-mix(in srgb, #d8786a var(--tone-mix), var(--fg));
 }
 
 .theme-error {
   margin: 0 0 4px;
   font-size: 11px;
-  color: #d8786a;
+  color: color-mix(in srgb, #d8786a var(--tone-mix), var(--fg));
 }
 
 .panel-foot {
@@ -337,7 +464,7 @@ onBeforeUnmount(() => {
 .foot-btn {
   padding: 0;
   font-size: 11px;
-  color: #a8a292;
+  color: var(--fg-2);
   background: none;
   border: none;
   cursor: pointer;
@@ -348,6 +475,6 @@ onBeforeUnmount(() => {
 }
 
 .foot-btn.ghost {
-  color: #7a7565;
+  color: var(--fg-4);
 }
 </style>

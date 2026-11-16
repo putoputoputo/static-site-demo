@@ -281,7 +281,7 @@ function goTo(id) {
   padding: 24px 26px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 65%), var(--surface);
 }
 
 .hero-main {
@@ -294,7 +294,7 @@ function goTo(id) {
   gap: 8px;
   margin-bottom: 6px;
   font-size: 11px;
-  color: #6f6a5a;
+  color: var(--fg-4);
   letter-spacing: 2px;
 }
 
@@ -304,7 +304,7 @@ function goTo(id) {
 }
 
 .optional-tag {
-  color: #8a8574;
+  color: var(--fg-3);
   letter-spacing: 0;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 3px;
@@ -338,7 +338,7 @@ function goTo(id) {
 .detail-sub {
   margin: 0 0 10px;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .hero-tags {
@@ -355,8 +355,8 @@ function goTo(id) {
   padding: 3px 9px;
   font-size: 11px;
   border-radius: 4px;
-  color: #9d977f;
-  background: #242424;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
@@ -367,13 +367,13 @@ function goTo(id) {
 }
 
 .tag.weapon {
-  color: #8fa88a;
+  color: color-mix(in srgb, #8fa88a var(--tone-mix), var(--fg));
   background: rgba(143, 168, 138, 0.08);
   border-color: rgba(143, 168, 138, 0.22);
 }
 
 .tag.rune {
-  color: #b58cc0;
+  color: color-mix(in srgb, #b58cc0 var(--tone-mix), var(--fg));
   background: rgba(181, 140, 192, 0.09);
   border-color: rgba(181, 140, 192, 0.24);
 }
@@ -383,7 +383,7 @@ function goTo(id) {
   max-width: 700px;
   font-size: 13px;
   line-height: 1.8;
-  color: #9d977f;
+  color: var(--fg-3);
 }
 
 .hero-actions {
@@ -410,7 +410,7 @@ function goTo(id) {
   padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .panel-title {
@@ -426,14 +426,14 @@ function goTo(id) {
 
 /* 进入条件 */
 .gate-panel {
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%), var(--surface);
 }
 
 .gate-text {
   margin: 0 0 10px;
   font-size: 13px;
   line-height: 1.75;
-  color: #c4bfae;
+  color: var(--fg-2);
 }
 
 .goal-text {
@@ -442,7 +442,7 @@ function goTo(id) {
   border-top: 1px dashed color-mix(in srgb, var(--accent) 7%, transparent);
   font-size: 13px;
   line-height: 1.75;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .goal-label {
@@ -450,7 +450,7 @@ function goTo(id) {
   margin-right: 8px;
   padding: 1px 6px;
   font-size: 10px;
-  color: #1a1a1a;
+  color: var(--surface);
   background: color-mix(in srgb, var(--accent) 93%, transparent);
   border-radius: 2px;
 }
@@ -464,7 +464,7 @@ function goTo(id) {
 .step-title {
   margin: 0 0 5px;
   font-size: 15px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .step-place {
@@ -473,14 +473,14 @@ function goTo(id) {
   gap: 4px;
   margin: 0 0 7px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .step-detail {
   margin: 0;
   font-size: 13px;
   line-height: 1.8;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .step-tip {
@@ -488,7 +488,7 @@ function goTo(id) {
   padding: 8px 10px;
   font-size: 12px;
   line-height: 1.7;
-  color: #cbb887;
+  color: var(--fg-2);
   background: color-mix(in srgb, var(--accent) 6%, transparent);
   border-left: 2px solid color-mix(in srgb, var(--accent) 57%, transparent);
   border-radius: 0 4px 4px 0;
@@ -499,7 +499,7 @@ function goTo(id) {
   margin-right: 6px;
   padding: 0 5px;
   font-size: 10px;
-  color: #1a1a1a;
+  color: var(--surface);
   background: color-mix(in srgb, var(--accent) 93%, transparent);
   border-radius: 2px;
 }
@@ -517,9 +517,9 @@ function goTo(id) {
   gap: 3px;
   padding: 9px 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 6%, transparent);
-  border-left: 2px solid #c16b4f;
+  border-left: 2px solid color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
   border-radius: 6px;
-  background: #1e1e1e;
+  background: var(--surface-2);
 }
 
 .boss-row.optional {
@@ -534,25 +534,25 @@ function goTo(id) {
 
 .boss-name {
   font-size: 13px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .boss-flag {
   font-size: 10px;
   padding: 1px 5px;
   border-radius: 3px;
-  color: #8a8574;
+  color: var(--fg-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .boss-flag.must {
-  color: #d08a6a;
+  color: color-mix(in srgb, #d08a6a var(--tone-mix), var(--fg));
   border-color: rgba(193, 107, 79, 0.35);
   background: rgba(193, 107, 79, 0.08);
 }
 
 .boss-flag.rem {
-  color: #b58cc0;
+  color: color-mix(in srgb, #b58cc0 var(--tone-mix), var(--fg));
   border-color: rgba(181, 140, 192, 0.35);
   background: rgba(181, 140, 192, 0.08);
 }
@@ -562,25 +562,25 @@ function goTo(id) {
   flex-wrap: wrap;
   gap: 8px;
   font-size: 11px;
-  color: #7c7767;
+  color: var(--fg-4);
 }
 
 .boss-place {
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .boss-note {
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 /* 易错过 */
 .warn-panel {
   border-color: rgba(193, 107, 79, 0.3);
-  background: linear-gradient(120deg, rgba(193, 107, 79, 0.07), transparent 70%), #1a1a1a;
+  background: linear-gradient(120deg, rgba(193, 107, 79, 0.07), transparent 70%), var(--surface);
 }
 
 .warn-panel .panel-title {
-  color: #d08a6a;
+  color: color-mix(in srgb, #d08a6a var(--tone-mix), var(--fg));
 }
 
 .warn-list {
@@ -597,7 +597,7 @@ function goTo(id) {
   gap: 8px;
   font-size: 12px;
   line-height: 1.7;
-  color: #c4bfae;
+  color: var(--fg-2);
 }
 
 .warn-dot {
@@ -606,12 +606,12 @@ function goTo(id) {
   height: 5px;
   margin-top: 8px;
   border-radius: 50%;
-  background: #c16b4f;
+  background: color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
 }
 
 .warn-link {
   margin-left: 4px;
-  color: #d08a6a;
+  color: color-mix(in srgb, #d08a6a var(--tone-mix), var(--fg));
   text-decoration: none;
   border-bottom: 1px dashed rgba(193, 107, 79, 0.4);
 }
@@ -638,12 +638,12 @@ function goTo(id) {
 .info-row dt {
   flex-shrink: 0;
   width: 60px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .info-row dd {
   margin: 0;
-  color: #c4bfae;
+  color: var(--fg-2);
 }
 
 .item-list {
@@ -669,7 +669,7 @@ function goTo(id) {
 .item-note {
   font-size: 11px;
   line-height: 1.6;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .related-list {
@@ -683,9 +683,9 @@ function goTo(id) {
   align-items: center;
   padding: 4px 9px;
   font-size: 12px;
-  color: #a49c86;
-  background: #212121;
-  border: 1px solid #34302a;
+  color: var(--fg-3);
+  background: var(--surface-2);
+  border: 1px solid var(--fg-4);
   border-radius: 16px;
   text-decoration: none;
   transition: all 0.16s ease;
@@ -700,7 +700,7 @@ function goTo(id) {
   margin: 10px 0 0;
   font-size: 11px;
   line-height: 1.6;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .next-panel {
@@ -711,7 +711,7 @@ function goTo(id) {
   margin: 0 0 10px;
   font-size: 12px;
   line-height: 1.7;
-  color: #9d977f;
+  color: var(--fg-3);
 }
 
 .next-btn {
@@ -748,7 +748,7 @@ function goTo(id) {
   min-width: 180px;
   padding: 10px 14px;
   text-align: left;
-  background: #1a1a1a;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 8px;
   cursor: pointer;
@@ -765,14 +765,14 @@ function goTo(id) {
 }
 
 .pager-btn.disabled {
-  color: #55503f;
+  color: var(--fg-4);
   cursor: default;
   border-style: dashed;
 }
 
 .pager-label {
   font-size: 11px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .pager-name {
@@ -781,7 +781,7 @@ function goTo(id) {
 }
 
 .pager-btn.disabled .pager-name {
-  color: #55503f;
+  color: var(--fg-4);
 }
 
 .not-found {

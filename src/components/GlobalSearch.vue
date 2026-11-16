@@ -174,9 +174,9 @@ onUnmounted(() => {
   gap: 7px;
   padding: 6px 10px;
   font-size: 12.5px;
-  color: #9c9686;
+  color: var(--fg-3);
   cursor: pointer;
-  background: #1b1b1b;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
   transition: color 0.2s, border-color 0.2s;
@@ -191,8 +191,8 @@ onUnmounted(() => {
   padding: 1px 5px;
   font-family: inherit;
   font-size: 10.5px;
-  color: #6f6a5c;
-  background: #232323;
+  color: var(--fg-4);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 3px;
 }
@@ -208,22 +208,22 @@ onUnmounted(() => {
 .dialog-input {
   flex: 1;
   font-size: 14.5px;
-  color: #e8d9a8;
+  color: color-mix(in srgb, #e8d9a8 var(--tone-mix), var(--fg));
   background: transparent;
   border: none;
   outline: none;
 }
 
 .dialog-input::placeholder {
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .clear-btn {
   padding: 2px 8px;
   font-size: 11.5px;
-  color: #8a8574;
+  color: var(--fg-3);
   cursor: pointer;
-  background: #242424;
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
 }
@@ -253,7 +253,7 @@ onUnmounted(() => {
 
 .group-total {
   font-size: 11px;
-  color: #6f6a5c;
+  color: var(--fg-4);
 }
 
 .result-row {
@@ -272,25 +272,25 @@ onUnmounted(() => {
 
 .result-name {
   font-size: 13.5px;
-  color: #cfc9b8;
+  color: var(--fg-2);
 }
 
 .result-sub {
   font-size: 11.5px;
-  color: #6f6a5c;
+  color: var(--fg-4);
 }
 
 .empty-tip {
   margin: 16px 0;
   font-size: 12.5px;
   line-height: 1.8;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .hint-label {
   margin: 4px 0 8px;
   font-size: 12px;
-  color: #6f6a5c;
+  color: var(--fg-4);
 }
 
 .hint-chips {
@@ -302,9 +302,9 @@ onUnmounted(() => {
 .hint-chip {
   padding: 4px 10px;
   font-size: 12px;
-  color: #9c9686;
+  color: var(--fg-3);
   cursor: pointer;
-  background: #1e1e1e;
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
 }
@@ -317,7 +317,7 @@ onUnmounted(() => {
 .hint-foot {
   margin: 16px 0 0;
   font-size: 11.5px;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 @media (max-width: 680px) {

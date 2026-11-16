@@ -815,7 +815,7 @@ function pruneQueryBuild() {
   max-width: 700px;
   font-size: 13.5px;
   line-height: 1.85;
-  color: #a9a496;
+  color: var(--fg-2);
 }
 
 .hero-actions {
@@ -831,7 +831,7 @@ function pruneQueryBuild() {
   padding: 7px 12px;
   font-family: inherit;
   font-size: 12.5px;
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
   cursor: pointer;
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 27%, transparent);
@@ -846,13 +846,13 @@ function pruneQueryBuild() {
 }
 
 .hero-btn.ghost {
-  color: #8a8574;
+  color: var(--fg-3);
   background: transparent;
   border-color: color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .hero-btn.ghost:hover {
-  color: #c9c4b4;
+  color: var(--fg-2);
   border-color: color-mix(in srgb, var(--accent) 21%, transparent);
 }
 
@@ -865,7 +865,7 @@ function pruneQueryBuild() {
 
 .preset-label {
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
   letter-spacing: 0.5px;
 }
 
@@ -876,9 +876,9 @@ function pruneQueryBuild() {
   padding: 5px 12px;
   font-family: inherit;
   font-size: 12.5px;
-  color: #b8b2a0;
+  color: var(--fg-2);
   cursor: pointer;
-  background: #1c1c1c;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   transition: all 0.18s;
@@ -887,7 +887,7 @@ function pruneQueryBuild() {
 .preset-chip em {
   font-size: 10px;
   font-style: normal;
-  color: #6f6a5c;
+  color: var(--fg-4);
 }
 
 .preset-chip:hover {
@@ -907,7 +907,7 @@ function pruneQueryBuild() {
   gap: 3px;
   margin-left: auto;
   font-size: 11.5px;
-  color: #7a745f;
+  color: var(--fg-4);
   text-decoration: none;
   transition: color 0.15s;
 }
@@ -924,7 +924,7 @@ function pruneQueryBuild() {
   padding-top: 10px;
   border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 11.5px;
-  color: #8a7c4a;
+  color: var(--fg-3);
   text-decoration: none;
   transition: color 0.15s;
 }
@@ -938,14 +938,14 @@ function pruneQueryBuild() {
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-left: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
   border-radius: 9px;
-  background: #1a1915;
+  background: var(--surface);
 }
 
 .preset-summary {
   margin: 0 0 8px;
   font-size: 12.5px;
   line-height: 1.75;
-  color: #a9a496;
+  color: var(--fg-2);
 }
 
 .preset-tips {
@@ -959,7 +959,7 @@ function pruneQueryBuild() {
 .preset-tips li {
   font-size: 12px;
   line-height: 1.7;
-  color: #817c6c;
+  color: var(--fg-3);
 }
 
 .build-layout {
@@ -988,7 +988,7 @@ function pruneQueryBuild() {
   padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
 }
 
 .panel-head {
@@ -1010,7 +1010,7 @@ function pruneQueryBuild() {
 
 .panel-meta {
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1018,7 +1018,7 @@ function pruneQueryBuild() {
   margin: 12px 0 0;
   font-size: 12px;
   line-height: 1.75;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 /* ---------- 属性 ---------- */
@@ -1032,7 +1032,7 @@ function pruneQueryBuild() {
   padding: 9px 10px;
   border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 8px;
-  background: #191919;
+  background: var(--surface);
 }
 
 .stat-top {
@@ -1045,13 +1045,13 @@ function pruneQueryBuild() {
 
 .stat-label {
   font-size: 12px;
-  color: #9c9686;
+  color: var(--fg-3);
 }
 
 .stat-req {
   padding: 0 4px;
   font-size: 10px;
-  color: #7e9a5c;
+  color: color-mix(in srgb, #7e9a5c var(--tone-mix), var(--fg));
   background: rgba(126, 154, 92, 0.1);
   border: 1px solid rgba(126, 154, 92, 0.3);
   border-radius: 3px;
@@ -1059,7 +1059,7 @@ function pruneQueryBuild() {
 }
 
 .stat-req.miss {
-  color: #d9534f;
+  color: color-mix(in srgb, #d9534f var(--tone-mix), var(--fg));
   background: rgba(217, 83, 79, 0.1);
   border-color: rgba(217, 83, 79, 0.35);
 }
@@ -1077,9 +1077,9 @@ function pruneQueryBuild() {
   font-family: inherit;
   font-size: 13px;
   line-height: 1;
-  color: #8a8574;
+  color: var(--fg-3);
   cursor: pointer;
-  background: #232323;
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   transition: all 0.15s;
@@ -1098,9 +1098,9 @@ function pruneQueryBuild() {
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: #e8d9a8;
+  color: color-mix(in srgb, #e8d9a8 var(--tone-mix), var(--fg));
   text-align: center;
-  background: #141414;
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   outline: none;
@@ -1147,7 +1147,7 @@ function pruneQueryBuild() {
 
 .slot-label {
   font-size: 11.5px;
-  color: #6b6555;
+  color: var(--fg-4);
   letter-spacing: 0.5px;
 }
 
@@ -1167,14 +1167,14 @@ function pruneQueryBuild() {
 
 .slot-type {
   font-size: 11px;
-  color: #6f6a5c;
+  color: var(--fg-4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .slot-type.muted {
-  color: #4e4a3f;
+  color: var(--fg-4);
 }
 
 .slot-tools {
@@ -1186,7 +1186,7 @@ function pruneQueryBuild() {
 
 .slot-link {
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
   text-decoration: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--accent) 14%, transparent);
 }
@@ -1200,16 +1200,16 @@ function pruneQueryBuild() {
   padding: 2px 7px;
   font-family: inherit;
   font-size: 10.5px;
-  color: #7a7565;
+  color: var(--fg-4);
   cursor: pointer;
-  background: #1e1e1e;
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   transition: all 0.15s;
 }
 
 .mini-toggle:hover {
-  color: #c9c4b4;
+  color: var(--fg-2);
   border-color: color-mix(in srgb, var(--accent) 21%, transparent);
 }
 
@@ -1225,7 +1225,7 @@ function pruneQueryBuild() {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .cap-input {
@@ -1235,9 +1235,9 @@ function pruneQueryBuild() {
   font-family: inherit;
   font-size: 12.5px;
   font-weight: 600;
-  color: #e8d9a8;
+  color: color-mix(in srgb, #e8d9a8 var(--tone-mix), var(--fg));
   text-align: center;
-  background: #141414;
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   outline: none;
@@ -1271,7 +1271,7 @@ function pruneQueryBuild() {
   padding: 7px 10px;
   border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 7px;
-  background: #191919;
+  background: var(--surface);
 }
 
 .spell-kind {
@@ -1289,7 +1289,7 @@ function pruneQueryBuild() {
   min-width: 0;
   overflow: hidden;
   font-size: 12.5px;
-  color: #cfc9b8;
+  color: var(--fg-2);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1297,7 +1297,7 @@ function pruneQueryBuild() {
 .spell-meta {
   flex-shrink: 0;
   font-size: 11px;
-  color: #6f6a5c;
+  color: var(--fg-4);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1308,7 +1308,7 @@ function pruneQueryBuild() {
   padding: 0;
   font-size: 13px;
   line-height: 1;
-  color: #6f6a5c;
+  color: var(--fg-4);
   cursor: pointer;
   background: transparent;
   border: 1px solid transparent;
@@ -1316,7 +1316,7 @@ function pruneQueryBuild() {
 }
 
 .spell-remove:hover {
-  color: #d9534f;
+  color: color-mix(in srgb, #d9534f var(--tone-mix), var(--fg));
   border-color: rgba(217, 83, 79, 0.35);
 }
 
@@ -1324,7 +1324,7 @@ function pruneQueryBuild() {
   margin: 12px 0 0;
   font-size: 12px;
   line-height: 1.75;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 /* ---------- 结果栏 ---------- */
@@ -1333,7 +1333,7 @@ function pruneQueryBuild() {
   font-size: 11.5px;
   border: 1px solid;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--veil);
 }
 
 .load-figure {
@@ -1347,13 +1347,13 @@ function pruneQueryBuild() {
   font-size: 30px;
   font-weight: 700;
   line-height: 1;
-  color: #e8d9a8;
+  color: color-mix(in srgb, #e8d9a8 var(--tone-mix), var(--fg));
   font-variant-numeric: tabular-nums;
 }
 
 .load-max {
   font-size: 13px;
-  color: #6f6a5c;
+  color: var(--fg-4);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1369,7 +1369,7 @@ function pruneQueryBuild() {
   height: 7px;
   overflow: hidden;
   border-radius: 999px;
-  background: #262626;
+  background: var(--surface-3);
 }
 
 .bar-fill {
@@ -1392,7 +1392,7 @@ function pruneQueryBuild() {
   height: 14px;
   margin-top: 4px;
   font-size: 10px;
-  color: #4e4a3f;
+  color: var(--fg-4);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1422,7 +1422,7 @@ function pruneQueryBuild() {
   margin: 10px 0 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .break-list {
@@ -1441,17 +1441,17 @@ function pruneQueryBuild() {
   justify-content: space-between;
   gap: 10px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .break-list b {
-  color: #c9c4b4;
+  color: var(--fg-2);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
 .break-list b.over {
-  color: #d9534f;
+  color: color-mix(in srgb, #d9534f var(--tone-mix), var(--fg));
 }
 
 .formula-box {
@@ -1459,19 +1459,19 @@ function pruneQueryBuild() {
   padding: 10px 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 7px;
-  background: #181818;
+  background: var(--surface);
 }
 
 .formula-line {
   margin: 0;
   font-size: 11.5px;
   line-height: 1.9;
-  color: #7a7565;
+  color: var(--fg-4);
   font-variant-numeric: tabular-nums;
 }
 
 .formula-line b {
-  color: #c9c4b4;
+  color: var(--fg-2);
   font-weight: 600;
 }
 
@@ -1481,7 +1481,7 @@ function pruneQueryBuild() {
 }
 
 .formula-src {
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .advice {
@@ -1489,14 +1489,14 @@ function pruneQueryBuild() {
   padding: 9px 11px;
   font-size: 12px;
   line-height: 1.7;
-  color: #9db884;
+  color: color-mix(in srgb, #9db884 var(--tone-mix), var(--fg));
   border: 1px solid #3a4a34;
   border-radius: 7px;
-  background: #1a1f18;
+  background: var(--surface-2);
 }
 
 .advice.warn {
-  color: #d9b06a;
+  color: color-mix(in srgb, #d9b06a var(--tone-mix), var(--fg));
   border-color: color-mix(in srgb, var(--accent) 27%, transparent);
   background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
@@ -1506,10 +1506,10 @@ function pruneQueryBuild() {
   padding: 9px 11px;
   font-size: 12px;
   line-height: 1.7;
-  color: #9db884;
+  color: color-mix(in srgb, #9db884 var(--tone-mix), var(--fg));
   border: 1px solid #3a4a34;
   border-radius: 7px;
-  background: #1a1f18;
+  background: var(--surface-2);
 }
 
 .gap-list {
@@ -1525,7 +1525,7 @@ function pruneQueryBuild() {
   padding: 8px 10px;
   border: 1px solid #3f2b28;
   border-radius: 7px;
-  background: #1e1917;
+  background: var(--surface);
 }
 
 .gap-main {
@@ -1538,25 +1538,25 @@ function pruneQueryBuild() {
 .gap-attr {
   font-size: 12.5px;
   font-weight: 600;
-  color: #d9534f;
+  color: color-mix(in srgb, #d9534f var(--tone-mix), var(--fg));
 }
 
 .gap-num {
   font-size: 12px;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .gap-diff {
   margin-left: auto;
   font-size: 11px;
-  color: #c9705f;
+  color: color-mix(in srgb, #c9705f var(--tone-mix), var(--fg));
 }
 
 .gap-item {
   display: block;
   margin-top: 3px;
   font-size: 11px;
-  color: #6f6a5c;
+  color: var(--fg-4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -404,7 +404,7 @@ function resetFavorites() {
   max-width: 720px;
   font-size: 13.5px;
   line-height: 1.85;
-  color: #a9a496;
+  color: var(--fg-2);
 }
 
 .hero-badges {
@@ -422,7 +422,7 @@ function resetFavorites() {
   padding: 12px 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 10px;
-  background: #1a1915;
+  background: var(--surface);
 }
 
 .badge-value {
@@ -433,7 +433,7 @@ function resetFavorites() {
 
 .badge-label {
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .storage-hint {
@@ -443,18 +443,18 @@ function resetFavorites() {
   margin: 0;
   padding: 10px 14px;
   font-size: 12.5px;
-  color: #8a8574;
+  color: var(--fg-3);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-left: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
   border-radius: 8px;
-  background: #1a1915;
+  background: var(--surface);
 }
 
 .panel {
   padding: 20px 22px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
 }
 
 .panel-head {
@@ -476,7 +476,7 @@ function resetFavorites() {
 
 .panel-meta {
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
   font-variant-numeric: tabular-nums;
 }
 
@@ -484,13 +484,13 @@ function resetFavorites() {
   margin: 10px 0 0;
   font-size: 12.5px;
   line-height: 1.7;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .bar {
   height: 6px;
   border-radius: 999px;
-  background: #262626;
+  background: var(--surface-3);
   overflow: hidden;
 }
 
@@ -503,7 +503,7 @@ function resetFavorites() {
 }
 
 .bar-fill.gold {
-  background: linear-gradient(90deg, #3f4a34, #8fae6a);
+  background: linear-gradient(90deg, #3f4a34, color-mix(in srgb, #8fae6a var(--tone-mix), var(--fg)));
 }
 
 .group {
@@ -519,13 +519,13 @@ function resetFavorites() {
 
 .group-label {
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
   letter-spacing: 1px;
 }
 
 .group-count {
   font-size: 11.5px;
-  color: #6b6555;
+  color: var(--fg-4);
   font-variant-numeric: tabular-nums;
 }
 
@@ -548,11 +548,11 @@ function resetFavorites() {
 }
 
 .check-row:hover {
-  background: #202020;
+  background: var(--surface-2);
 }
 
 .check-row.done .check-name {
-  color: #6b6555;
+  color: var(--fg-4);
   text-decoration: line-through;
 }
 
@@ -564,7 +564,7 @@ function resetFavorites() {
   height: 16px;
   padding: 0;
   flex-shrink: 0;
-  color: #121212;
+  color: var(--bg);
   background: transparent;
   border: 1px solid color-mix(in srgb, var(--accent) 21%, transparent);
   border-radius: 4px;
@@ -583,7 +583,7 @@ function resetFavorites() {
 
 .check-name {
   font-size: 13px;
-  color: #c9c4b4;
+  color: var(--fg-2);
   text-decoration: none;
 }
 
@@ -594,7 +594,7 @@ function resetFavorites() {
 .check-meta {
   margin-left: auto;
   font-size: 11px;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .region-breakdown {
@@ -607,14 +607,14 @@ function resetFavorites() {
 .region-chip {
   padding: 3px 9px;
   font-size: 11.5px;
-  color: #8a8574;
-  background: #1f1f1f;
+  color: var(--fg-3);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 999px;
 }
 
 .region-chip strong {
-  color: #c9c4b4;
+  color: var(--fg-2);
   font-weight: 600;
 }
 
@@ -629,7 +629,7 @@ function resetFavorites() {
   margin: 0 0 8px;
   font-size: 12px;
   font-weight: 600;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .plain-list {
@@ -644,11 +644,11 @@ function resetFavorites() {
 .plain-list li {
   font-size: 12.5px;
   line-height: 1.6;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .plain-list a {
-  color: #c9c4b4;
+  color: var(--fg-2);
   text-decoration: none;
   border-bottom: 1px dashed transparent;
 }
@@ -659,7 +659,7 @@ function resetFavorites() {
 }
 
 .muted {
-  color: #5d5849;
+  color: var(--fg-4);
   font-size: 11.5px;
 }
 
@@ -667,7 +667,7 @@ function resetFavorites() {
   margin: 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .two-col {
@@ -689,7 +689,7 @@ function resetFavorites() {
   padding: 11px 13px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 8px;
-  background: #1a1a1a;
+  background: var(--surface);
   text-decoration: none;
   transition: border-color 0.18s;
 }
@@ -700,7 +700,7 @@ function resetFavorites() {
 
 .codex-name {
   font-size: 12.5px;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .codex-count {
@@ -711,7 +711,7 @@ function resetFavorites() {
 
 .codex-total {
   font-size: 11px;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .manage-grid {
@@ -724,20 +724,20 @@ function resetFavorites() {
   padding: 14px 16px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 9px;
-  background: #191919;
+  background: var(--surface);
 }
 
 .manage-card h3 {
   margin: 0 0 8px;
   font-size: 13px;
-  color: #c9c4b4;
+  color: var(--fg-2);
 }
 
 .manage-card p {
   margin: 0 0 12px;
   font-size: 12px;
   line-height: 1.7;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .manage-actions {
@@ -752,14 +752,14 @@ function resetFavorites() {
   font-size: 12.5px;
   border-radius: 7px;
   border: 1px solid #3a4a34;
-  background: #1a1f18;
-  color: #9db884;
+  background: var(--surface-2);
+  color: color-mix(in srgb, #9db884 var(--tone-mix), var(--fg));
 }
 
 .feedback.warn {
   border-color: color-mix(in srgb, var(--accent) 27%, transparent);
   background: color-mix(in srgb, var(--accent) 7%, transparent);
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
 }
 
 .danger-zone {
@@ -777,11 +777,11 @@ function resetFavorites() {
   justify-content: space-between;
   gap: 12px;
   font-size: 12.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .inline-link {
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
   text-decoration: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
 }

@@ -369,11 +369,11 @@ async function copyLink() {
 
 .tag.stage {
   border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
-  color: #8f8877;
+  color: var(--fg-3);
 }
 
 .tag.diff {
-  color: #9a9280;
+  color: var(--fg-3);
 }
 
 .pip {
@@ -391,13 +391,13 @@ async function copyLink() {
   margin: 0 0 4px;
   font-size: 30px;
   letter-spacing: 1px;
-  color: #f0ead6;
+  color: color-mix(in srgb, #f0ead6 var(--tone-mix), var(--fg));
 }
 
 .hero-alias {
   margin: 0 0 10px;
   font-size: 12px;
-  color: #6f6959;
+  color: var(--fg-4);
 }
 
 .hero-summary {
@@ -405,7 +405,7 @@ async function copyLink() {
   max-width: 660px;
   font-size: 13.5px;
   line-height: 1.9;
-  color: #b3ab99;
+  color: var(--fg-2);
 }
 
 .hero-actions {
@@ -441,7 +441,7 @@ async function copyLink() {
   border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
   border-radius: 7px;
   background: transparent;
-  color: #a9a08c;
+  color: var(--fg-2);
   font-size: 12.5px;
   font-family: inherit;
   cursor: pointer;
@@ -450,7 +450,7 @@ async function copyLink() {
 
 .ghost-btn:hover {
   border-color: color-mix(in srgb, var(--accent) 31%, transparent);
-  color: #d9d2be;
+  color: var(--fg);
 }
 
 .hero-side {
@@ -473,12 +473,12 @@ async function copyLink() {
 
 .side-label {
   font-size: 10.5px;
-  color: #6d6759;
+  color: var(--fg-4);
 }
 
 .side-value {
   font-size: 19px;
-  color: #ddd5c0;
+  color: var(--fg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -488,7 +488,7 @@ async function copyLink() {
 
 .side-note {
   font-size: 10px;
-  color: #5f5a4d;
+  color: var(--fg-4);
 }
 
 /* 段落 */
@@ -505,7 +505,7 @@ async function copyLink() {
   margin: 0;
   font-size: 13px;
   line-height: 2;
-  color: #a9a294;
+  color: var(--fg-2);
 }
 
 /* 通用 section */
@@ -527,13 +527,13 @@ async function copyLink() {
 .section-title {
   margin: 0;
   font-size: 16px;
-  color: #e8e2cf;
+  color: var(--fg);
   letter-spacing: 0.5px;
 }
 
 .section-meta {
   font-size: 11.5px;
-  color: #6d6759;
+  color: var(--fg-4);
 }
 
 /* 装备 */
@@ -552,12 +552,12 @@ async function copyLink() {
 .group-title {
   margin: 0;
   font-size: 13px;
-  color: #c8bfa9;
+  color: var(--fg-2);
 }
 
 .group-note {
   font-size: 11px;
-  color: #6d6759;
+  color: var(--fg-4);
 }
 
 .gear-grid {
@@ -601,28 +601,28 @@ async function copyLink() {
 
 .gear-name {
   font-size: 13.5px;
-  color: #e2dac5;
+  color: var(--fg);
 }
 
 .gear-card:hover .gear-name {
-  color: #f0dda0;
+  color: color-mix(in srgb, #f0dda0 var(--tone-mix), var(--fg));
 }
 
 .gear-sub {
   flex-shrink: 0;
   font-size: 10.5px;
-  color: #6f6959;
+  color: var(--fg-4);
 }
 
 .gear-note {
   margin: 0;
   font-size: 11.5px;
   line-height: 1.75;
-  color: #98917f;
+  color: var(--fg-3);
 }
 
 .gear-note.muted {
-  color: #7c7668;
+  color: var(--fg-4);
 }
 
 .gear-loc {
@@ -632,7 +632,7 @@ async function copyLink() {
   margin: 0;
   font-size: 10.5px;
   line-height: 1.6;
-  color: #5f5a4d;
+  color: var(--fg-4);
 }
 
 .gear-loc :deep(svg) {
@@ -662,7 +662,7 @@ async function copyLink() {
 
 .attr-label {
   font-size: 11.5px;
-  color: #8a8374;
+  color: var(--fg-3);
 }
 
 .attr-label.major {
@@ -690,7 +690,7 @@ async function copyLink() {
 .attr-value {
   font-size: 12px;
   text-align: right;
-  color: #c5bda8;
+  color: var(--fg-2);
   font-variant-numeric: tabular-nums;
 }
 
@@ -727,7 +727,7 @@ async function copyLink() {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.85;
-  color: #a09a8b;
+  color: var(--fg-3);
 }
 
 /* 时间轴 */
@@ -785,18 +785,18 @@ async function copyLink() {
 .phase-title {
   margin: 0;
   font-size: 14px;
-  color: #e2dac5;
+  color: var(--fg);
 }
 
 .phase-level {
   font-size: 11px;
-  color: #8a7c4a;
+  color: var(--fg-3);
 }
 
 .phase-goal {
   margin: 5px 0 8px;
   font-size: 12.5px;
-  color: #a09a8b;
+  color: var(--fg-3);
 }
 
 .step-list {
@@ -810,11 +810,11 @@ async function copyLink() {
 .step-list li {
   font-size: 12.5px;
   line-height: 1.85;
-  color: #938c7d;
+  color: var(--fg-3);
 }
 
 .step-list li::marker {
-  color: #5c5340;
+  color: var(--fg-4);
 }
 
 .phase-gear {
@@ -827,7 +827,7 @@ async function copyLink() {
 
 .phase-gear-label {
   font-size: 10.5px;
-  color: #6d6759;
+  color: var(--fg-4);
 }
 
 .gear-chip {
@@ -835,7 +835,7 @@ async function copyLink() {
   border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 6%, transparent);
-  color: #a9a08c;
+  color: var(--fg-2);
   font-size: 11px;
   text-decoration: none;
 }
@@ -876,7 +876,7 @@ async function copyLink() {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.85;
-  color: #a9a294;
+  color: var(--fg-2);
 }
 
 /* 优缺点 */
@@ -894,17 +894,17 @@ async function copyLink() {
 }
 
 .pc-card.good {
-  border-left: 2px solid #6b8f5e;
+  border-left: 2px solid color-mix(in srgb, #6b8f5e var(--tone-mix), var(--fg));
 }
 
 .pc-card.bad {
-  border-left: 2px solid #a86a5c;
+  border-left: 2px solid color-mix(in srgb, #a86a5c var(--tone-mix), var(--fg));
 }
 
 .pc-title {
   margin: 0 0 10px;
   font-size: 13px;
-  color: #d0c8b3;
+  color: var(--fg-2);
 }
 
 .pc-list {
@@ -918,15 +918,15 @@ async function copyLink() {
 .pc-list li {
   font-size: 12.5px;
   line-height: 1.8;
-  color: #9d9686;
+  color: var(--fg-3);
 }
 
 .pc-card.good .pc-list li::marker {
-  color: #6b8f5e;
+  color: color-mix(in srgb, #6b8f5e var(--tone-mix), var(--fg));
 }
 
 .pc-card.bad .pc-list li::marker {
-  color: #a86a5c;
+  color: color-mix(in srgb, #a86a5c var(--tone-mix), var(--fg));
 }
 
 /* 误区 */
@@ -949,13 +949,13 @@ async function copyLink() {
   background: color-mix(in srgb, var(--accent) 5%, transparent);
   font-size: 12.5px;
   line-height: 1.85;
-  color: #a99f8d;
+  color: var(--fg-2);
 }
 
 .mistake-icon {
   flex-shrink: 0;
   margin-top: 3px;
-  color: #b98a4a;
+  color: color-mix(in srgb, #b98a4a var(--tone-mix), var(--fg));
 }
 
 /* 替换 */
@@ -981,27 +981,27 @@ async function copyLink() {
   padding: 1px 7px;
   border-radius: 3px;
   background: color-mix(in srgb, var(--accent) 10%, transparent);
-  color: #a89a63;
+  color: var(--fg-3);
   font-size: 10.5px;
 }
 
 .swap-from {
-  color: #8f887a;
+  color: var(--fg-3);
   text-decoration: line-through;
 }
 
 .swap-arrow {
-  color: #6d6759;
+  color: var(--fg-4);
 }
 
 .swap-to {
-  color: #ddd5c0;
+  color: var(--fg);
 }
 
 .swap-note {
   flex: 1;
   min-width: 180px;
-  color: #7c7668;
+  color: var(--fg-4);
   font-size: 11.5px;
   line-height: 1.7;
 }
@@ -1041,12 +1041,12 @@ async function copyLink() {
 
 .neighbor-label {
   font-size: 10.5px;
-  color: #6d6759;
+  color: var(--fg-4);
 }
 
 .neighbor-name {
   font-size: 13.5px;
-  color: #ddd5c0;
+  color: var(--fg);
 }
 
 /* 空态 */
@@ -1058,13 +1058,13 @@ async function copyLink() {
 .missing-title {
   margin: 0 0 8px;
   font-size: 22px;
-  color: #e8e2cf;
+  color: var(--fg);
 }
 
 .missing-sub {
   margin: 0 0 20px;
   font-size: 13px;
-  color: #857e6e;
+  color: var(--fg-3);
 }
 
 .missing-btn {

@@ -218,7 +218,7 @@ function typeClass(value) {
 .hero-title {
   margin: 0 0 10px;
   font-size: 26px;
-  color: #e8d9a8;
+  color: color-mix(in srgb, #e8d9a8 var(--tone-mix), var(--fg));
   letter-spacing: 1px;
 }
 
@@ -226,7 +226,7 @@ function typeClass(value) {
   margin: 0;
   font-size: 13.5px;
   line-height: 1.85;
-  color: #a8a293;
+  color: var(--fg-2);
 }
 
 .hero-sub strong {
@@ -238,7 +238,7 @@ function typeClass(value) {
   gap: 16px;
   margin-top: 14px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .legend-item {
@@ -254,11 +254,11 @@ function typeClass(value) {
 }
 
 .dot.base {
-  background: #7a7565;
+  background: var(--fg-4);
 }
 
 .dot.dlc {
-  background: #9b6bb5;
+  background: color-mix(in srgb, #9b6bb5 var(--tone-mix), var(--fg));
 }
 
 .dot.link {
@@ -280,7 +280,7 @@ function typeClass(value) {
   padding: 12px 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 8px;
-  background: #7a7565;
+  background: var(--fg-4);
 }
 
 .badge-value {
@@ -291,7 +291,7 @@ function typeClass(value) {
 
 .badge-label {
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .notice {
@@ -300,14 +300,14 @@ function typeClass(value) {
   padding: 12px 16px;
   border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
   border-radius: 0 8px 8px 0;
-  background: #161616;
+  background: var(--surface);
 }
 
 .notice p {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.8;
-  color: #9c9686;
+  color: var(--fg-3);
 }
 
 .filter-panel {
@@ -318,7 +318,7 @@ function typeClass(value) {
   padding: 14px 16px;
   border: 1px solid #2c2c2c;
   border-radius: 10px;
-  background: #191919;
+  background: var(--surface);
 }
 
 .search-input {
@@ -334,7 +334,7 @@ function typeClass(value) {
 
 .result-count {
   font-size: 12.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .type-row {
@@ -348,15 +348,15 @@ function typeClass(value) {
 .type-label {
   margin-right: 4px;
   font-size: 12.5px;
-  color: #6f6a5c;
+  color: var(--fg-4);
 }
 
 .type-chip {
   padding: 5px 12px;
   font-size: 12px;
-  color: #9c9686;
+  color: var(--fg-3);
   cursor: pointer;
-  background: #1e1e1e;
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
@@ -386,7 +386,7 @@ function typeClass(value) {
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
 }
 
 .remembrance-card.dlc {
@@ -421,12 +421,12 @@ function typeClass(value) {
 .boss-name {
   margin: 0;
   font-size: 16.5px;
-  color: #e8d9a8;
+  color: color-mix(in srgb, #e8d9a8 var(--tone-mix), var(--fg));
 }
 
 .remembrance-name {
   font-size: 12px;
-  color: #7d786a;
+  color: var(--fg-4);
 }
 
 .origin-chip {
@@ -437,13 +437,13 @@ function typeClass(value) {
 }
 
 .origin-chip.base {
-  color: #a8a293;
-  background: #262626;
+  color: var(--fg-2);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
 }
 
 .origin-chip.dlc {
-  color: #c9a7dd;
+  color: color-mix(in srgb, #c9a7dd var(--tone-mix), var(--fg));
   background: rgba(155, 107, 181, 0.12);
   border: 1px solid rgba(155, 107, 181, 0.4);
 }
@@ -453,7 +453,7 @@ function typeClass(value) {
   flex-wrap: wrap;
   gap: 10px;
   font-size: 12px;
-  color: #7d786a;
+  color: var(--fg-4);
 }
 
 .meta-item.place::before {
@@ -461,7 +461,7 @@ function typeClass(value) {
 }
 
 .meta-item.runes {
-  color: #b99a4a;
+  color: color-mix(in srgb, #b99a4a var(--tone-mix), var(--fg));
 }
 
 .item-list {
@@ -488,39 +488,39 @@ function typeClass(value) {
 }
 
 .type-0 {
-  color: #d8c48a;
+  color: color-mix(in srgb, #d8c48a var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .type-1 {
-  color: #8fb4d8;
+  color: color-mix(in srgb, #8fb4d8 var(--tone-mix), var(--fg));
   background: rgba(92, 141, 190, 0.14);
   border: 1px solid rgba(92, 141, 190, 0.4);
 }
 
 .type-2 {
-  color: #e0bb8a;
+  color: color-mix(in srgb, #e0bb8a var(--tone-mix), var(--fg));
   background: rgba(200, 150, 90, 0.12);
   border: 1px solid rgba(200, 150, 90, 0.38);
 }
 
 .type-3 {
-  color: #b7c48f;
+  color: var(--fg-2);
   background: rgba(150, 170, 110, 0.12);
   border: 1px solid rgba(150, 170, 110, 0.35);
 }
 
 .type-4,
 .type-5 {
-  color: #9a948a;
-  background: #242424;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border: 1px solid #383838;
 }
 
 .item-name {
   font-size: 13.5px;
-  color: #cfc9b8;
+  color: var(--fg-2);
 }
 
 .item-name.link {
@@ -536,13 +536,13 @@ function typeClass(value) {
 
 .item-hint {
   font-size: 11px;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .extra-note {
   margin: 0;
   font-size: 11.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 @media (max-width: 980px) {

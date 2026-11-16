@@ -229,7 +229,7 @@ watch(logs, (next) => {
   gap: 4px;
   margin-bottom: 14px;
   font-size: 12.5px;
-  color: #8a8574;
+  color: var(--fg-3);
   text-decoration: none;
   transition: color 0.18s;
 }
@@ -250,7 +250,7 @@ watch(logs, (next) => {
   max-width: 720px;
   font-size: 13px;
   line-height: 1.85;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .empty {
@@ -262,7 +262,7 @@ watch(logs, (next) => {
   min-height: 300px;
   padding: 32px;
   text-align: center;
-  background: #1a1a1a;
+  background: var(--surface);
   border: 1px dashed color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
 }
@@ -270,21 +270,21 @@ watch(logs, (next) => {
 .empty-title {
   margin: 0;
   font-size: 15px;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .empty span {
   max-width: 420px;
   font-size: 12.5px;
   line-height: 1.85;
-  color: #565243;
+  color: var(--fg-4);
 }
 
 .empty-btn {
   margin-top: 6px;
   padding: 8px 18px;
   font-size: 13px;
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   text-decoration: none;
   background: var(--accent);
@@ -305,21 +305,21 @@ watch(logs, (next) => {
 
 .toolbar-count {
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .toolbar-copied {
   margin-left: auto;
   font-size: 11.5px;
-  color: #7fbf8a;
+  color: color-mix(in srgb, #7fbf8a var(--tone-mix), var(--fg));
 }
 
 .tool-btn {
   padding: 7px 15px;
   font-family: inherit;
   font-size: 12.5px;
-  color: #d8d3c2;
-  background: #202020;
+  color: var(--fg);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   cursor: pointer;
@@ -332,30 +332,30 @@ watch(logs, (next) => {
 }
 
 .tool-btn:disabled {
-  color: #5c5749;
+  color: var(--fg-4);
   border-color: color-mix(in srgb, var(--accent) 7%, transparent);
   cursor: not-allowed;
 }
 
 .tool-btn.ghost {
-  color: #7a7565;
+  color: var(--fg-4);
   background: transparent;
   border-color: transparent;
 }
 
 .tool-btn.ghost:hover {
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
   border-color: rgba(224, 138, 138, 0.3);
 }
 
 .tool-btn.danger {
-  color: #b08a8a;
+  color: color-mix(in srgb, #b08a8a var(--tone-mix), var(--fg));
   background: transparent;
   border-color: rgba(224, 138, 138, 0.28);
 }
 
 .tool-btn.danger:hover:not(:disabled) {
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
   border-color: rgba(224, 138, 138, 0.55);
 }
 
@@ -363,8 +363,8 @@ watch(logs, (next) => {
 .tool-btn.is-confirming:hover:not(:disabled) {
   color: #16120f;
   font-weight: 600;
-  background: #e08a8a;
-  border-color: #e08a8a;
+  background: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
+  border-color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
 }
 
 .foot-note {
@@ -375,7 +375,7 @@ watch(logs, (next) => {
   padding-top: 14px;
   font-size: 12px;
   line-height: 1.85;
-  color: #6b6555;
+  color: var(--fg-4);
   border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
@@ -387,8 +387,8 @@ watch(logs, (next) => {
   padding: 1px 4px;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 11.5px;
-  color: #b99a4e;
-  background: #141414;
+  color: color-mix(in srgb, #b99a4e var(--tone-mix), var(--fg));
+  background: var(--bg);
   border-radius: 3px;
 }
 
@@ -420,7 +420,7 @@ watch(logs, (next) => {
   padding: 9px 11px;
   font-family: inherit;
   text-align: left;
-  background: #171717;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 9px;
   cursor: pointer;
@@ -437,7 +437,7 @@ watch(logs, (next) => {
   grid-area: time;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 11.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .log-state {
@@ -450,12 +450,12 @@ watch(logs, (next) => {
 }
 
 .log-state.is-ok {
-  color: #7fbf8a;
+  color: color-mix(in srgb, #7fbf8a var(--tone-mix), var(--fg));
   background: rgba(127, 191, 138, 0.12);
 }
 
 .log-state.is-bad {
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
   background: rgba(224, 138, 138, 0.12);
 }
 
@@ -463,7 +463,7 @@ watch(logs, (next) => {
   grid-area: model;
   overflow: hidden;
   font-size: 11.5px;
-  color: #cfcab8;
+  color: var(--fg-2);
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -473,7 +473,7 @@ watch(logs, (next) => {
   justify-self: end;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 11px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .log-detail {
@@ -483,7 +483,7 @@ watch(logs, (next) => {
   flex-direction: column;
   gap: 14px;
   padding: 16px;
-  background: #1a1a1a;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
 }
@@ -505,17 +505,17 @@ watch(logs, (next) => {
   overflow: hidden;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 11px;
-  color: #6b6555;
+  color: var(--fg-4);
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .log-block-meta.is-ok {
-  color: #7fbf8a;
+  color: color-mix(in srgb, #7fbf8a var(--tone-mix), var(--fg));
 }
 
 .log-block-meta.is-bad {
-  color: #e08a8a;
+  color: color-mix(in srgb, #e08a8a var(--tone-mix), var(--fg));
 }
 
 .log-pre {
@@ -526,10 +526,10 @@ watch(logs, (next) => {
   font-family: ui-monospace, Consolas, monospace;
   font-size: 11.5px;
   line-height: 1.7;
-  color: #cfcab8;
+  color: var(--fg-2);
   white-space: pre-wrap;
   word-break: break-word;
-  background: #121212;
+  background: var(--bg);
   border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 8px;
 }

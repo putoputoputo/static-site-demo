@@ -390,11 +390,11 @@ function resetFilters() {
   max-width: 760px;
   font-size: 13.5px;
   line-height: 1.85;
-  color: #a9a496;
+  color: var(--fg-2);
 }
 
 .hero-sub strong {
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
 }
 
 .hero-legend {
@@ -402,7 +402,7 @@ function resetFilters() {
   gap: 16px;
   margin-top: 14px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .legend-item {
@@ -418,15 +418,15 @@ function resetFilters() {
 }
 
 .dot.base {
-  background: #6b6555;
+  background: var(--fg-4);
 }
 
 .dot.dlc {
-  background: #8a6fb0;
+  background: color-mix(in srgb, #8a6fb0 var(--tone-mix), var(--fg));
 }
 
 .dot.required {
-  background: #d9534f;
+  background: color-mix(in srgb, #d9534f var(--tone-mix), var(--fg));
 }
 
 .dot.remembrance {
@@ -448,7 +448,7 @@ function resetFilters() {
   padding: 12px 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 10px;
-  background: #1a1915;
+  background: var(--surface);
 }
 
 .badge-value {
@@ -459,7 +459,7 @@ function resetFilters() {
 
 .badge-label {
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .notice {
@@ -470,14 +470,14 @@ function resetFilters() {
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-left: 3px solid var(--accent);
   border-radius: 8px;
-  background: #1a1915;
+  background: var(--surface);
 }
 
 .notice p {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.75;
-  color: #a9a496;
+  color: var(--fg-2);
 }
 
 .filter-panel {
@@ -488,7 +488,7 @@ function resetFilters() {
   padding: 14px 16px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
 }
 
 .search-input {
@@ -519,15 +519,15 @@ function resetFilters() {
 
 .chip-label {
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
   min-width: 34px;
 }
 
 .chip {
   padding: 5px 11px;
   font-size: 12px;
-  color: #b8b2a0;
-  background: #1c1c1c;
+  color: var(--fg-2);
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
@@ -540,7 +540,7 @@ function resetFilters() {
 }
 
 .chip.active {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
@@ -557,7 +557,7 @@ function resetFilters() {
   gap: 12px;
   flex-wrap: wrap;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .result-bar strong {
@@ -566,7 +566,7 @@ function resetFilters() {
 
 .result-hint {
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .boss-grid {
@@ -583,7 +583,7 @@ function resetFilters() {
   padding: 16px 18px 18px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
   text-decoration: none;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -595,11 +595,11 @@ function resetFilters() {
 }
 
 .boss-card.dlc {
-  background: linear-gradient(160deg, #1d1a22 0%, #1c1c1c 45%);
+  background: linear-gradient(160deg, var(--surface) 0%, var(--surface) 45%);
 }
 
 .boss-card.required {
-  border-left: 2px solid #d9534f;
+  border-left: 2px solid color-mix(in srgb, #d9534f var(--tone-mix), var(--fg));
 }
 
 .card-head {
@@ -612,7 +612,7 @@ function resetFilters() {
 .boss-name {
   margin: 0;
   font-size: 15.5px;
-  color: #e5e3d8;
+  color: var(--fg);
   line-height: 1.4;
 }
 
@@ -643,20 +643,20 @@ function resetFilters() {
 }
 
 .tag.base {
-  color: #8a8574;
-  background: #232323;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border-color: color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .tag.dlc {
-  color: #b49ad4;
-  background: #241f2e;
+  color: color-mix(in srgb, #b49ad4 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #241f2e 22%, var(--surface));
   border-color: #3f3453;
 }
 
 .tag.required {
-  color: #e08b88;
-  background: #2a1c1c;
+  color: color-mix(in srgb, #e08b88 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #2a1c1c 22%, var(--surface));
   border-color: #4a2a2a;
 }
 
@@ -667,23 +667,23 @@ function resetFilters() {
 }
 
 .tag.type {
-  color: #9aa88f;
-  background: #1f241d;
+  color: color-mix(in srgb, #9aa88f var(--tone-mix), var(--fg));
+  background: var(--surface-2);
   border-color: #333a2f;
 }
 
 .place-line {
   margin: 0;
   font-size: 12.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .region {
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .place {
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .stat-line {
@@ -691,13 +691,13 @@ function resetFilters() {
   flex-wrap: wrap;
   gap: 12px;
   font-size: 12px;
-  color: #c9c4b4;
+  color: var(--fg-2);
 }
 
 .stat i {
   font-style: normal;
   margin-right: 5px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .weak-line {
@@ -709,7 +709,7 @@ function resetFilters() {
 
 .weak-label {
   font-size: 11px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .weak-tag {
@@ -721,14 +721,14 @@ function resetFilters() {
 
 .weak-none {
   font-size: 11px;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .tip-preview {
   margin: 2px 0 0;
   font-size: 12px;
   line-height: 1.65;
-  color: #8a8574;
+  color: var(--fg-3);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

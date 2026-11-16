@@ -1,5 +1,5 @@
 /* 旅游板块共用样式
-   口径与影之刃零一致：深底 #1a1a1a 卡片、color-mix(in srgb, var(--accent) 14%, transparent) 描边、金色作强调；
+   口径与影之刃零一致：深底 var(--surface) 卡片、color-mix(in srgb, var(--accent) 14%, transparent) 描边、金色作强调；
    旅游板块自己的强调色换成绿色系，和游戏板块的暗金、影之刃零的赤红区分开。 */
 
 .travel {
@@ -7,12 +7,12 @@
   --tv-accent: var(--accent);
   --tv-accent-soft: var(--accent-soft);
   --tv-accent-line: var(--accent-line);
-  --tv-card: #1a1a1a;
+  --tv-card: var(--surface);
   --tv-line: color-mix(in srgb, var(--accent) 14%, transparent);
-  --tv-text: #e5e3d8;
-  --tv-text-2: #a8a292;
-  --tv-text-3: #7a7565;
-  --tv-gold: #c8a86a;
+  --tv-text: var(--fg);
+  --tv-text-2: var(--fg-2);
+  --tv-text-3: var(--fg-4);
+  --tv-gold: color-mix(in srgb, #c8a86a var(--tone-mix), var(--fg));
   padding: 24px 0 48px;
 }
 
@@ -54,7 +54,7 @@
 .travel .hero-meta span {
   padding: 3px 10px;
   font-size: 12px;
-  color: #9aa89c;
+  color: color-mix(in srgb, #9aa89c var(--tone-mix), var(--fg));
   background: var(--tv-accent-soft);
   border: 1px solid var(--tv-accent-line);
   border-radius: 999px;
@@ -124,7 +124,7 @@
 
 .travel .must-card:hover {
   border-color: var(--tv-accent-line);
-  background: #1b1b1a;
+  background: var(--surface);
 }
 
 .travel .must-kicker {
@@ -158,7 +158,7 @@
   display: block;
   padding: 14px 16px;
   text-decoration: none;
-  background: #151617;
+  background: var(--surface);
   border: 1px solid #2a2c2e;
   border-radius: 8px;
   transition: border-color 0.18s;
@@ -205,7 +205,7 @@
 
 .travel .notice {
   padding: 12px 14px;
-  background: #151617;
+  background: var(--surface);
   border-left: 2px solid var(--tv-accent-line);
   border-radius: 0 6px 6px 0;
 }
@@ -238,14 +238,14 @@
 }
 
 .travel .status.confirmed {
-  color: #7ba888;
-  background: #17241c;
+  color: color-mix(in srgb, #7ba888 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #17241c 22%, var(--surface));
   border: 1px solid #2d4a38;
 }
 
 .travel .status.pending {
-  color: #9aa7b8;
-  background: #202429;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
+  background: var(--surface-3);
   border: 1px solid #33404d;
 }
 
@@ -272,7 +272,7 @@
 }
 
 .travel .btn-link:hover {
-  background: #22332a;
+  background: color-mix(in srgb, #22332a 22%, var(--surface));
   border-color: var(--tv-accent);
 }
 
@@ -312,7 +312,7 @@
 }
 
 .travel .chip.on {
-  color: #b6d3bf;
+  color: color-mix(in srgb, #b6d3bf var(--tone-mix), var(--fg));
   background: var(--tv-accent-soft);
   border-color: var(--tv-accent-line);
 }
@@ -338,7 +338,7 @@
 
 .travel .spot-card:hover {
   border-color: var(--tv-accent-line);
-  background: #1b1b1a;
+  background: var(--surface);
 }
 
 .travel .spot-head {
@@ -380,32 +380,32 @@
 }
 
 .travel .tag.must {
-  color: #d8c79a;
+  color: color-mix(in srgb, #d8c79a var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .travel .tag.book {
-  color: #7ba888;
-  background: #17241c;
+  color: color-mix(in srgb, #7ba888 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #17241c 22%, var(--surface));
   border: 1px solid #2d4a38;
 }
 
 .travel .tag.free {
-  color: #8fb08a;
-  background: #16201a;
+  color: color-mix(in srgb, #8fb08a var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #16201a 22%, var(--surface));
   border: 1px solid #2a3a30;
 }
 
 .travel .tag.closed {
-  color: #9aa7b8;
-  background: #202429;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
+  background: var(--surface-3);
   border: 1px solid #33404d;
 }
 
 .travel .tag.pending {
-  color: #9aa7b8;
-  background: #202429;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
+  background: var(--surface-3);
   border: 1px solid #33404d;
 }
 
@@ -458,7 +458,7 @@
   grid-template-columns: 104px 1fr;
   gap: 12px;
   padding: 11px 0;
-  border-bottom: 1px solid #262420;
+  border-bottom: 1px solid var(--surface-3);
 }
 
 .travel .cond-row:last-child {
@@ -521,19 +521,19 @@
   font-size: 12px;
   line-height: 1.75;
   color: var(--tv-text-3);
-  background: #151617;
+  background: var(--surface);
   border: 1px dashed #2f3236;
   border-radius: 6px;
 }
 
 .travel .source-box a {
-  color: #8fb0c4;
+  color: color-mix(in srgb, #8fb0c4 var(--tone-mix), var(--fg));
   text-decoration: none;
   border-bottom: 1px solid #33424d;
 }
 
 .travel .source-box a:hover {
-  color: #b6d3e4;
+  color: color-mix(in srgb, #b6d3e4 var(--tone-mix), var(--fg));
 }
 
 .travel .pending-note {
@@ -541,8 +541,8 @@
   padding: 10px 12px;
   font-size: 12.5px;
   line-height: 1.75;
-  color: #9aa7b8;
-  background: #202429;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
+  background: var(--surface-3);
   border: 1px solid #33404d;
   border-radius: 6px;
 }
@@ -610,7 +610,7 @@
   font-size: 13px;
   font-family: inherit;
   color: var(--tv-text);
-  background: #151617;
+  background: var(--surface);
   border: 1px solid var(--tv-line);
   border-radius: 6px;
   outline: none;
@@ -624,7 +624,7 @@
 
 .travel .field-input option,
 .travel .field-input optgroup {
-  background: #1a1a1a;
+  background: var(--surface);
   color: var(--tv-text);
 }
 
@@ -647,7 +647,7 @@
   max-height: 320px;
   overflow-y: auto;
   padding: 6px;
-  background: #17181a;
+  background: var(--surface);
   border: 1px solid var(--tv-accent-line);
   border-radius: 8px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
@@ -882,11 +882,11 @@
 }
 
 .travel .amap-key-result.ok {
-  color: #7fb98a;
+  color: color-mix(in srgb, #7fb98a var(--tone-mix), var(--fg));
 }
 
 .travel .amap-key-result.bad {
-  color: #d08a7a;
+  color: color-mix(in srgb, #d08a7a var(--tone-mix), var(--fg));
 }
 
 .travel .amap-key-hint {
@@ -934,7 +934,7 @@
 
 .travel .pace-tab span {
   font-size: 12px;
-  color: #9aa89c;
+  color: color-mix(in srgb, #9aa89c var(--tone-mix), var(--fg));
 }
 
 .travel .pace-tab em {
@@ -955,8 +955,8 @@
   flex-direction: column;
   gap: 3px;
   padding: 12px 14px;
-  background: #151617;
-  border: 1px solid #26282a;
+  background: var(--surface);
+  border: 1px solid var(--surface-3);
   border-radius: 8px;
 }
 
@@ -981,8 +981,8 @@
   padding: 10px 12px;
   font-size: 12.5px;
   line-height: 1.75;
-  color: #a8c4ad;
-  background: #16201a;
+  color: color-mix(in srgb, #a8c4ad var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #16201a 22%, var(--surface));
   border: 1px solid #2a3a30;
   border-radius: 6px;
 }
@@ -1004,13 +1004,13 @@
 }
 
 .travel .route-warnings .info {
-  color: #9aa89c;
-  background: #16201a;
-  border-left: 2px solid #35513f;
+  color: color-mix(in srgb, #9aa89c var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #16201a 22%, var(--surface));
+  border-left: 2px solid color-mix(in srgb, #35513f var(--tone-mix), var(--fg));
 }
 
 .travel .route-warnings .warn {
-  color: #d8b97a;
+  color: color-mix(in srgb, #d8b97a var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 7%, transparent);
   border-left: 2px solid color-mix(in srgb, var(--accent) 39%, transparent);
 }
@@ -1059,7 +1059,7 @@
 }
 
 .travel .day-card.on {
-  background: #1b1c1b;
+  background: var(--surface);
   border-color: var(--tv-accent);
 }
 
@@ -1069,7 +1069,7 @@
 
 .travel .day-head {
   padding-bottom: 12px;
-  border-bottom: 1px solid #26282a;
+  border-bottom: 1px solid var(--surface-3);
 }
 
 .travel .day-title {
@@ -1097,13 +1097,13 @@
 }
 
 .travel .day-badge.wall {
-  color: #d8c79a;
+  color: color-mix(in srgb, #d8c79a var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .travel .day-badge.over {
-  color: #d8b97a;
+  color: color-mix(in srgb, #d8b97a var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 7%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 39%, transparent);
 }
@@ -1120,13 +1120,13 @@
 
 .travel .amap-link {
   margin-left: auto;
-  color: #8fb0c4;
+  color: color-mix(in srgb, #8fb0c4 var(--tone-mix), var(--fg));
   text-decoration: none;
   border-bottom: 1px solid #33424d;
 }
 
 .travel .amap-link:hover {
-  color: #b6d3e4;
+  color: color-mix(in srgb, #b6d3e4 var(--tone-mix), var(--fg));
 }
 
 .travel .wall-plan-note {
@@ -1134,8 +1134,8 @@
   padding: 10px 12px;
   font-size: 12px;
   line-height: 1.75;
-  color: #c8bda0;
-  background: #1d1c17;
+  color: var(--fg-2);
+  background: var(--surface);
   border-left: 2px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 0 4px 4px 0;
 }
@@ -1168,7 +1168,7 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: #1d1c17;
+  background: var(--surface);
 }
 
 .travel .stop::after {
@@ -1194,7 +1194,7 @@
   grid-column: 1;
   text-align: right;
   font-size: 11.5px;
-  color: #5d5748;
+  color: var(--fg-4);
 }
 
 .travel .leg-mode,
@@ -1205,7 +1205,7 @@
 
 .travel .leg-mode {
   font-size: 11.5px;
-  color: #6f8a76;
+  color: color-mix(in srgb, #6f8a76 var(--tone-mix), var(--fg));
 }
 
 .travel .leg-via {
@@ -1232,7 +1232,7 @@
   font-style: normal;
   font-size: 11px;
   font-weight: 400;
-  color: #5d5748;
+  color: var(--fg-4);
 }
 
 .travel .stop-body {
@@ -1269,14 +1269,14 @@
 }
 
 .travel .stop-ticket.free {
-  color: #7ba888;
+  color: color-mix(in srgb, #7ba888 var(--tone-mix), var(--fg));
 }
 
 .travel .stop-tip {
   margin: 5px 0 0;
   font-size: 11.5px;
   line-height: 1.7;
-  color: #6f6a5c;
+  color: var(--fg-4);
 }
 
 .travel .day-footnote {
@@ -1296,14 +1296,14 @@
 
 .travel .wall-card {
   padding: 14px 16px;
-  background: #151617;
-  border: 1px solid #26282a;
+  background: var(--surface);
+  border: 1px solid var(--surface-3);
   border-radius: 8px;
 }
 
 .travel .wall-card.on {
   border-color: var(--tv-accent-line);
-  background: #16201a;
+  background: color-mix(in srgb, #16201a 22%, var(--surface));
 }
 
 .travel .wall-head {
@@ -1353,7 +1353,7 @@
 .travel .wall-from {
   display: block;
   font-size: 11.5px;
-  color: #5d5748;
+  color: var(--fg-4);
 }
 
 .travel .wall-text {
@@ -1420,7 +1420,7 @@
 .travel .route-extra {
   margin-top: 18px;
   padding-top: 16px;
-  border-top: 1px solid #26282a;
+  border-top: 1px solid var(--surface-3);
 }
 
 .travel .route-extra h3 {

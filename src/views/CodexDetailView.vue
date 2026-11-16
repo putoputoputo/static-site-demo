@@ -184,8 +184,8 @@ function goTo(target) {
   padding: 5px 10px;
   font-size: 12px;
   font-family: inherit;
-  color: #8a8574;
-  background: #1f1f1f;
+  color: var(--fg-3);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
   cursor: pointer;
@@ -222,7 +222,7 @@ function goTo(target) {
   padding: 26px 28px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%), var(--surface);
 }
 
 .hero-main {
@@ -234,7 +234,7 @@ function goTo(target) {
   margin-bottom: 8px;
   font-size: 11.5px;
   letter-spacing: 2px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .dot {
@@ -269,7 +269,7 @@ function goTo(target) {
   font-weight: 600;
   border: 1px solid;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--veil);
 }
 
 .detail-effect {
@@ -277,7 +277,7 @@ function goTo(target) {
   max-width: 640px;
   font-size: 13.5px;
   line-height: 1.85;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .hero-tags {
@@ -301,13 +301,13 @@ function goTo(target) {
 }
 
 .tag.role {
-  color: #9aa7b8;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
   background: rgba(154, 167, 184, 0.1);
   border: 1px solid rgba(154, 167, 184, 0.28);
 }
 
 .tag.req {
-  color: #8fa88a;
+  color: color-mix(in srgb, #8fa88a var(--tone-mix), var(--fg));
   background: rgba(143, 168, 138, 0.1);
   border: 1px solid rgba(143, 168, 138, 0.28);
 }
@@ -325,13 +325,13 @@ function goTo(target) {
   padding: 10px 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
-  background: #151515;
+  background: var(--bg);
 }
 
 .fact-label {
   display: block;
   font-size: 11px;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .fact-value {
@@ -340,7 +340,7 @@ function goTo(target) {
   font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
-  color: #e5e3d8;
+  color: var(--fg);
   overflow-wrap: anywhere;
 }
 
@@ -363,7 +363,7 @@ function goTo(target) {
   padding: 20px 22px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .panel-title {
@@ -392,7 +392,7 @@ function goTo(target) {
   margin: 0;
   font-size: 13.5px;
   line-height: 1.9;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .paragraph + .paragraph {
@@ -401,7 +401,7 @@ function goTo(target) {
 
 .paragraph.muted {
   font-size: 12.5px;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .location-box {
@@ -410,14 +410,14 @@ function goTo(target) {
   padding: 14px 16px;
   border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
   border-radius: 0 8px 8px 0;
-  background: #161616;
+  background: var(--surface);
 }
 
 .location-box p {
   margin: 0;
   font-size: 13px;
   line-height: 1.8;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 /* 同类 */
@@ -434,7 +434,7 @@ function goTo(target) {
   padding: 11px 13px;
   border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
-  background: #161616;
+  background: var(--surface);
   text-decoration: none;
   transition: all 0.18s;
 }
@@ -454,7 +454,7 @@ function goTo(target) {
 .sibling-name {
   font-size: 13px;
   font-weight: 600;
-  color: #d8d3c4;
+  color: var(--fg);
 }
 
 .sibling-tier {
@@ -465,7 +465,7 @@ function goTo(target) {
 .sibling-effect {
   font-size: 11.5px;
   line-height: 1.6;
-  color: #7a7565;
+  color: var(--fg-4);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -482,7 +482,7 @@ function goTo(target) {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.85;
-  color: #9d977f;
+  color: var(--fg-3);
 }
 
 .pager {
@@ -501,7 +501,7 @@ function goTo(target) {
   gap: 4px;
   padding: 7px 8px;
   font-size: 12px;
-  color: #b8b2a0;
+  color: var(--fg-2);
   background: #222;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
@@ -523,7 +523,7 @@ function goTo(target) {
   margin: 8px 0 0;
   font-size: 11px;
   line-height: 1.6;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .back-link {
@@ -532,7 +532,7 @@ function goTo(target) {
   gap: 5px;
   margin-top: 16px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
   text-decoration: none;
 }
 

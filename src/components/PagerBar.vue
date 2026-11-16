@@ -60,7 +60,7 @@ const emit = defineEmits(['change-page', 'change-size'])
   padding: 12px 16px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .pager-main {
@@ -76,8 +76,8 @@ const emit = defineEmits(['change-page', 'change-size'])
   height: 32px;
   padding: 0 10px;
   font-size: 13px;
-  color: #b8b2a0;
-  background: #202020;
+  color: var(--fg-2);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
   cursor: pointer;
@@ -97,7 +97,7 @@ const emit = defineEmits(['change-page', 'change-size'])
 }
 
 .pager-num.active {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
@@ -116,15 +116,15 @@ const emit = defineEmits(['change-page', 'change-size'])
 
 .pager-label {
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .size-chip {
   min-width: 46px;
   padding: 4px 10px;
   font-size: 12px;
-  color: #b8b2a0;
-  background: #202020;
+  color: var(--fg-2);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
@@ -137,7 +137,7 @@ const emit = defineEmits(['change-page', 'change-size'])
 }
 
 .size-chip.active {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
@@ -145,7 +145,7 @@ const emit = defineEmits(['change-page', 'change-size'])
 
 .pager-all {
   font-size: 12.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 @media (max-width: 680px) {

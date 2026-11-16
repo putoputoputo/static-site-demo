@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
   padding: 7px 12px;
   font-size: 14px;
   font-family: inherit;
-  color: #b8b2a0;
+  color: var(--fg-2);
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -186,7 +186,7 @@ onBeforeUnmount(() => {
   padding: 6px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 10px;
-  background: #1a1915;
+  background: var(--surface);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
 }
 
@@ -214,12 +214,12 @@ onBeforeUnmount(() => {
 
 .panel-label {
   font-size: 13.5px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .panel-desc {
   font-size: 11.5px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 @media (max-width: 980px) {

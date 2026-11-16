@@ -221,7 +221,7 @@ function resetFilters() {
   margin: 0 0 8px;
   font-size: 28px;
   letter-spacing: 1px;
-  color: #f0ead6;
+  color: color-mix(in srgb, #f0ead6 var(--tone-mix), var(--fg));
 }
 
 .hero-sub {
@@ -229,7 +229,7 @@ function resetFilters() {
   max-width: 720px;
   font-size: 13px;
   line-height: 1.9;
-  color: #9d9788;
+  color: var(--fg-3);
 }
 
 .hero-stats {
@@ -253,7 +253,7 @@ function resetFilters() {
 
 .stat span {
   font-size: 11px;
-  color: #7c7668;
+  color: var(--fg-4);
 }
 
 /* 筛选 */
@@ -276,11 +276,11 @@ function resetFilters() {
   height: 40px;
   border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 8px;
-  background: #14130f;
+  background: color-mix(in srgb, #14130f 22%, var(--surface));
 }
 
 .search-icon {
-  color: #6d6759;
+  color: var(--fg-4);
   flex-shrink: 0;
 }
 
@@ -290,20 +290,20 @@ function resetFilters() {
   border: none;
   outline: none;
   background: transparent;
-  color: #e5e3d8;
+  color: var(--fg);
   font-size: 13px;
   font-family: inherit;
 }
 
 .search-input::placeholder {
-  color: #665f52;
+  color: var(--fg-4);
 }
 
 .clear-btn {
   padding: 2px 6px;
   border: none;
   background: transparent;
-  color: #8c8577;
+  color: var(--fg-3);
   font-size: 11px;
   cursor: pointer;
 }
@@ -323,7 +323,7 @@ function resetFilters() {
   width: 68px;
   flex-shrink: 0;
   font-size: 12px;
-  color: #7c7668;
+  color: var(--fg-4);
 }
 
 .chips {
@@ -340,7 +340,7 @@ function resetFilters() {
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 6%, transparent);
-  color: #b5ae9c;
+  color: var(--fg-2);
   font-size: 12px;
   font-family: inherit;
   cursor: pointer;
@@ -349,23 +349,23 @@ function resetFilters() {
 
 .chip:hover {
   border-color: color-mix(in srgb, var(--accent) 27%, transparent);
-  color: #ddd6c2;
+  color: var(--fg);
 }
 
 .chip.on {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 13%, transparent);
-  color: #f0dda0;
+  color: color-mix(in srgb, #f0dda0 var(--tone-mix), var(--fg));
 }
 
 .chip em {
   font-style: normal;
   font-size: 10px;
-  color: #6f6959;
+  color: var(--fg-4);
 }
 
 .chip.on em {
-  color: #b99b47;
+  color: color-mix(in srgb, #b99b47 var(--tone-mix), var(--fg));
 }
 
 .dot {
@@ -377,11 +377,11 @@ function resetFilters() {
 .result-line {
   margin: -4px 0 0;
   font-size: 12px;
-  color: #7c7668;
+  color: var(--fg-4);
 }
 
 .result-hint {
-  color: #5f5a4d;
+  color: var(--fg-4);
 }
 
 /* 卡片 */
@@ -443,7 +443,7 @@ function resetFilters() {
   padding: 2px 8px;
   border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 4px;
-  color: #8f8877;
+  color: var(--fg-3);
   font-size: 11px;
 }
 
@@ -466,20 +466,20 @@ function resetFilters() {
 .card-title {
   margin: 2px 0 0;
   font-size: 19px;
-  color: #f0ead6;
+  color: color-mix(in srgb, #f0ead6 var(--tone-mix), var(--fg));
 }
 
 .card-alias {
   margin: -4px 0 0;
   font-size: 11px;
-  color: #6f6959;
+  color: var(--fg-4);
 }
 
 .card-summary {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.85;
-  color: #a09a8b;
+  color: var(--fg-3);
 }
 
 .card-tags {
@@ -493,7 +493,7 @@ function resetFilters() {
   padding: 2px 7px;
   border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 3px;
-  color: #8a8474;
+  color: var(--fg-3);
   font-size: 10.5px;
 }
 
@@ -515,12 +515,12 @@ function resetFilters() {
 
 .meta-label {
   font-size: 10.5px;
-  color: #6d6759;
+  color: var(--fg-4);
 }
 
 .meta-value {
   font-size: 12.5px;
-  color: #cfc7b2;
+  color: var(--fg-2);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -533,7 +533,7 @@ function resetFilters() {
   gap: 4px;
   margin-top: 4px;
   font-size: 11.5px;
-  color: #8a7c4a;
+  color: var(--fg-3);
   transition: gap 0.16s, color 0.16s;
 }
 
@@ -553,13 +553,13 @@ function resetFilters() {
 .empty-title {
   margin: 0 0 6px;
   font-size: 15px;
-  color: #cfc7b2;
+  color: var(--fg-2);
 }
 
 .empty-sub {
   margin: 0 0 16px;
   font-size: 12.5px;
-  color: #7c7668;
+  color: var(--fg-4);
 }
 
 .empty-btn {
@@ -580,7 +580,7 @@ function resetFilters() {
   background: color-mix(in srgb, var(--accent) 5%, transparent);
   font-size: 12px;
   line-height: 1.9;
-  color: #857e6e;
+  color: var(--fg-3);
 }
 
 @media (max-width: 900px) {

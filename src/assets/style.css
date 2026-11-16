@@ -1,33 +1,108 @@
-/* ---------- 主题色 ----------
-   全站强调色只有一个来源：--accent。JS 按用户选择把它写到 <html> 的行内样式
-   （见 src/utils/theme.js），各档深浅全部由 color-mix 从它派生，
-   所以任意一个颜色都能带动全站，不用为每个色相再备一套色板。
-   这里给的是默认值：即使脚本没跑，站点也是原来的鎏金色。 */
+/* ---------- 主题：强调色 + 明暗底色 ----------
+   主题有两个维度，都只在这里定义一次：
+
+   1. 强调色 --accent —— JS 按用户选择写到 <html> 的行内样式，其余档位由 color-mix 派生，
+      所以任意一个颜色都能带动全站，不用为每个色相备一套色板。
+   2. 明暗底 —— <html data-theme="dark|light"> 切换，两套值都在下面。
+
+   底色分四档（页面底 → 卡片 → 次级块 → 高亮块），文字也分四档。
+   token 名固定不变，换主题只换这一组值，页面样式一行都不用改。
+   即使 JS 没跑（或 SSR 阶段），:root 里的默认值就是原来的深色鎏金站，不会掉色。 */
 :root {
-  --accent: #d4af37;
+  color-scheme: dark;
+
+  /* 强调色：--accent-raw 是用户选的原色（JS 只改这一个），
+     --accent 是「当前主题下实际用的值」——深色直接用原色，浅色会压暗，
+     这样同一套页面样式在两种底色上都读得清。 */
+  --accent-raw: #d4af37;
+  --accent: var(--accent-raw);
   --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
   --accent-line: color-mix(in srgb, var(--accent) 38%, transparent);
   --accent-ink: #141414;
 
+  /* 背景四档 */
+  --bg: #121212;
+  --surface: #1a1a1a;
+  --surface-2: #202020;
+  --surface-3: #262626;
+
+  /* 文字四档：主 → 次 → 弱 → 更弱 */
+  --fg: #e5e3d8;
+  --fg-2: #b8b2a0;
+  --fg-3: #8a8574;
+  --fg-4: #6b6555;
+
+  /* 半透明层：分隔线、微弱叠加、阴影。这些在浅底上要反过来用，所以也做成变量 */
+  --line: rgba(229, 227, 216, 0.13);
+  --veil: rgba(255, 255, 255, 0.03);
+  --veil-strong: rgba(255, 255, 255, 0.06);
+  --shadow: rgba(0, 0, 0, 0.45);
+  --header-bg: color-mix(in srgb, var(--bg) 92%, transparent);
+
+  /* 语义色（红/绿/蓝/紫这些有含义的颜色）不换色相，但要跟着底色调深浅：
+     写法是 color-mix(in srgb, 原色 var(--tone-mix), var(--fg))。
+     深色下 100% 就是原色本身（零偏差），浅色下压到 55% 混进深色前景，
+     否则亮红、亮绿落在米白底上根本读不清。 */
+  --tone-mix: 100%;
+
   /* Element Plus 跟着走：主色 + 悬停/禁用用的深浅档 */
   --el-color-primary: var(--accent);
-  --el-color-primary-light-3: color-mix(in srgb, var(--accent) 72%, #121212);
-  --el-color-primary-light-5: color-mix(in srgb, var(--accent) 52%, #121212);
-  --el-color-primary-light-7: color-mix(in srgb, var(--accent) 32%, #121212);
-  --el-color-primary-light-8: color-mix(in srgb, var(--accent) 22%, #121212);
-  --el-color-primary-light-9: color-mix(in srgb, var(--accent) 12%, #121212);
+  --el-color-primary-light-3: color-mix(in srgb, var(--accent) 72%, var(--bg));
+  --el-color-primary-light-5: color-mix(in srgb, var(--accent) 52%, var(--bg));
+  --el-color-primary-light-7: color-mix(in srgb, var(--accent) 32%, var(--bg));
+  --el-color-primary-light-8: color-mix(in srgb, var(--accent) 22%, var(--bg));
+  --el-color-primary-light-9: color-mix(in srgb, var(--accent) 12%, var(--bg));
   --el-color-primary-dark-2: color-mix(in srgb, var(--accent) 78%, #ffffff);
 }
 
+/* 浅色：把四档背景与四档文字整体翻过来，阶梯方向保持一致
+   （越"浮起来"的元素在深色下更亮、在浅色下更暗，语义不变）。 */
+html[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f2efe7;
+  --surface: #fbf9f3;
+  --surface-2: #eeeade;
+  --surface-3: #e4dfd0;
+
+  --fg: #1e1c16;
+  --fg-2: #3f3b30;
+  --fg-3: #5c5749;
+  --fg-4: #6f6957;
+
+  /* 鎏金原色在 #f2efe7 上只有 2.1:1，压暗到 52% 才能当小字用；
+     用户换成别的色也按这个比例压，等于是「同一色相、更深的版本」 */
+  --accent: color-mix(in srgb, var(--accent-raw) 52%, #1c1a14);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 34%, transparent);
+  --accent-ink: #fbf9f3;
+
+  --line: rgba(30, 28, 22, 0.14);
+  --veil: rgba(0, 0, 0, 0.04);
+  --veil-strong: rgba(0, 0, 0, 0.07);
+  --shadow: rgba(72, 66, 48, 0.16);
+  /* 40% 是量出来的：混得太少（55%）对比度只有 2.7:1，混得太多就没色彩倾向了 */
+  --tone-mix: 40%;
+
+  /* 浅底上「加深」要混黑，混白会越混越白 */
+  --el-color-primary-light-3: color-mix(in srgb, var(--accent) 72%, #ffffff);
+  --el-color-primary-light-5: color-mix(in srgb, var(--accent) 52%, #ffffff);
+  --el-color-primary-light-7: color-mix(in srgb, var(--accent) 32%, #ffffff);
+  --el-color-primary-light-8: color-mix(in srgb, var(--accent) 22%, #ffffff);
+  --el-color-primary-light-9: color-mix(in srgb, var(--accent) 12%, #ffffff);
+  --el-color-primary-dark-2: color-mix(in srgb, var(--accent) 80%, #000000);
+}
+
 html {
-  background-color: #121212;
+  background-color: var(--bg);
 }
 
 body {
   margin: 0;
   font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-  background-color: #121212;
-  color: #e5e3d8;
+  background-color: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.2s, color 0.2s;
 }
 
 #app {
@@ -47,7 +122,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(18, 18, 18, 0.92);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
 }
@@ -88,7 +163,7 @@ body {
 .nav-link {
   padding: 8px 14px;
   border-radius: 6px;
-  color: #b8b2a0;
+  color: var(--fg-2);
   text-decoration: none;
   font-size: 15px;
   transition: color 0.2s, background-color 0.2s;
@@ -125,7 +200,7 @@ body {
   border-top: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   padding: 20px;
   text-align: center;
-  color: #7a7565;
+  color: var(--fg-4);
   font-size: 13px;
 }
 
@@ -151,7 +226,7 @@ body {
 
 /* DLC 标签 */
 .dlc-tag {
-  color: #f56c6c;
+  color: color-mix(in srgb, #f56c6c var(--tone-mix), var(--fg));
   font-size: 12px;
   font-weight: normal;
 }

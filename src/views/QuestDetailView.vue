@@ -242,7 +242,7 @@ function goTo(id) {
   padding: 24px 26px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 65%), var(--surface);
 }
 
 .hero-main {
@@ -279,25 +279,25 @@ function goTo(id) {
   padding: 3px 9px;
   font-size: 11px;
   border-radius: 4px;
-  color: #9d977f;
-  background: #242424;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .tag.missable {
-  color: #c16b4f;
+  color: color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
   background: rgba(193, 107, 79, 0.1);
   border-color: rgba(193, 107, 79, 0.3);
 }
 
 .tag.steps {
-  color: #8fa88a;
+  color: color-mix(in srgb, #8fa88a var(--tone-mix), var(--fg));
   background: rgba(143, 168, 138, 0.1);
   border-color: rgba(143, 168, 138, 0.25);
 }
 
 .tag.pending {
-  color: #6f6a5a;
+  color: var(--fg-4);
   border-style: dashed;
   border-color: color-mix(in srgb, var(--accent) 11%, transparent);
   background: transparent;
@@ -308,7 +308,7 @@ function goTo(id) {
   max-width: 640px;
   font-size: 13px;
   line-height: 1.75;
-  color: #9d977f;
+  color: var(--fg-3);
 }
 
 .hero-actions {
@@ -335,7 +335,7 @@ function goTo(id) {
   padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .panel-title {
@@ -358,7 +358,7 @@ function goTo(id) {
 .step-title {
   margin: 0 0 5px;
   font-size: 15px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .step-place {
@@ -367,14 +367,14 @@ function goTo(id) {
   gap: 4px;
   margin: 0 0 7px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .step-detail {
   margin: 0;
   font-size: 13px;
   line-height: 1.8;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .step-tip {
@@ -382,7 +382,7 @@ function goTo(id) {
   padding: 8px 10px;
   font-size: 12px;
   line-height: 1.7;
-  color: #cbb887;
+  color: var(--fg-2);
   background: color-mix(in srgb, var(--accent) 6%, transparent);
   border-left: 2px solid color-mix(in srgb, var(--accent) 57%, transparent);
   border-radius: 0 4px 4px 0;
@@ -393,7 +393,7 @@ function goTo(id) {
   margin-right: 6px;
   padding: 0 5px;
   font-size: 10px;
-  color: #1a1a1a;
+  color: var(--surface);
   background: color-mix(in srgb, var(--accent) 93%, transparent);
   border-radius: 2px;
 }
@@ -424,7 +424,7 @@ function goTo(id) {
 }
 
 .branch-effect {
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 /* 整理中 */
@@ -437,7 +437,7 @@ function goTo(id) {
 .pending-note {
   margin: 0 0 6px;
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
   text-align: center;
   line-height: 1.7;
 }
@@ -460,16 +460,16 @@ function goTo(id) {
 .info-row dt {
   flex-shrink: 0;
   width: 60px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .info-row dd {
   margin: 0;
-  color: #c4bfae;
+  color: var(--fg-2);
 }
 
 .info-row dd.danger {
-  color: #c16b4f;
+  color: color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
 }
 
 .plain-list,
@@ -481,7 +481,7 @@ function goTo(id) {
   gap: 7px;
   font-size: 12px;
   line-height: 1.65;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .reward-list {
@@ -500,7 +500,7 @@ function goTo(id) {
 }
 
 .reward-note {
-  color: #6f6a5a;
+  color: var(--fg-4);
   font-size: 11px;
 }
 
@@ -516,9 +516,9 @@ function goTo(id) {
   gap: 5px;
   padding: 4px 9px;
   font-size: 12px;
-  color: #a49c86;
-  background: #212121;
-  border: 1px solid #34302a;
+  color: var(--fg-3);
+  background: var(--surface-2);
+  border: 1px solid var(--fg-4);
   border-radius: 16px;
   text-decoration: none;
   transition: all 0.16s ease;
@@ -531,7 +531,7 @@ function goTo(id) {
 
 .small-dim {
   font-size: 10px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 /* 翻页 */
@@ -549,7 +549,7 @@ function goTo(id) {
   min-width: 180px;
   padding: 10px 14px;
   text-align: left;
-  background: #1a1a1a;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 8px;
   cursor: pointer;
@@ -566,14 +566,14 @@ function goTo(id) {
 }
 
 .pager-btn.disabled {
-  color: #55503f;
+  color: var(--fg-4);
   cursor: default;
   border-style: dashed;
 }
 
 .pager-label {
   font-size: 11px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .pager-name {
@@ -582,7 +582,7 @@ function goTo(id) {
 }
 
 .pager-btn.disabled .pager-name {
-  color: #55503f;
+  color: var(--fg-4);
 }
 
 .not-found {

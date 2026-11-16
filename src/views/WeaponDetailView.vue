@@ -326,7 +326,7 @@ function goTo(target) {
   padding: 26px 28px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%), var(--surface);
 }
 
 .hero-main {
@@ -355,7 +355,7 @@ function goTo(target) {
   gap: 5px;
   padding: 5px 12px;
   font-size: 12px;
-  color: #b8b2a0;
+  color: var(--fg-2);
   background: #222;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
@@ -369,7 +369,7 @@ function goTo(target) {
 }
 
 .fav-btn.active {
-  color: #121212;
+  color: var(--bg);
   background: var(--accent);
   border-color: var(--accent);
 }
@@ -397,19 +397,19 @@ function goTo(target) {
 }
 
 .tag.region {
-  color: #b8b2a0;
-  background: #242424;
+  color: var(--fg-2);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .tag.attrs {
-  color: #8fa88a;
+  color: color-mix(in srgb, #8fa88a var(--tone-mix), var(--fg));
   background: rgba(143, 168, 138, 0.1);
   border: 1px solid rgba(143, 168, 138, 0.28);
 }
 
 .tag.attack {
-  color: #9aa7b8;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
   background: rgba(154, 167, 184, 0.1);
   border: 1px solid rgba(154, 167, 184, 0.28);
 }
@@ -424,7 +424,7 @@ function goTo(target) {
   max-width: 620px;
   font-size: 13.5px;
   line-height: 1.85;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .hero-facts {
@@ -439,13 +439,13 @@ function goTo(target) {
   padding: 10px 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
-  background: #151515;
+  background: var(--bg);
 }
 
 .fact-label {
   display: block;
   font-size: 11px;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .fact-value {
@@ -453,7 +453,7 @@ function goTo(target) {
   margin-top: 3px;
   font-size: 17px;
   font-weight: 600;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 /* 布局 */
@@ -475,7 +475,7 @@ function goTo(target) {
   padding: 20px 22px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .panel-title {
@@ -504,7 +504,7 @@ function goTo(target) {
   margin: 18px 0 10px;
   font-size: 13px;
   font-weight: 500;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .sub-title:first-of-type {
@@ -527,13 +527,13 @@ function goTo(target) {
 
 .damage-label {
   font-size: 12.5px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .damage-bar {
   height: 8px;
   border-radius: 4px;
-  background: #262626;
+  background: var(--surface-3);
   overflow: hidden;
 }
 
@@ -558,7 +558,7 @@ function goTo(target) {
   padding-top: 13px;
   border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .damage-total strong {
@@ -580,7 +580,7 @@ function goTo(target) {
   padding: 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
-  background: #161616;
+  background: var(--surface);
 }
 
 .scaling-head {
@@ -591,7 +591,7 @@ function goTo(target) {
 
 .scaling-attr {
   font-size: 12.5px;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .scaling-letter {
@@ -605,7 +605,7 @@ function goTo(target) {
 .scaling-bar {
   height: 4px;
   border-radius: 2px;
-  background: #262626;
+  background: var(--surface-3);
   overflow: hidden;
 }
 
@@ -617,7 +617,7 @@ function goTo(target) {
 
 .scaling-req {
   font-size: 11px;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 /* 战技 */
@@ -638,14 +638,14 @@ function goTo(target) {
 .skill-name {
   font-size: 15px;
   font-weight: 600;
-  color: #e0bf68;
+  color: color-mix(in srgb, #e0bf68 var(--tone-mix), var(--fg));
 }
 
 .skill-desc {
   margin: 0;
   font-size: 13px;
   line-height: 1.8;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 /* 玩法要点 */
@@ -663,7 +663,7 @@ function goTo(target) {
   gap: 10px;
   font-size: 13px;
   line-height: 1.8;
-  color: #a8a292;
+  color: var(--fg-2);
 }
 
 .tip-index {
@@ -694,17 +694,17 @@ function goTo(target) {
   padding: 8px 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 6px;
-  background: #161616;
+  background: var(--surface);
   font-size: 12.5px;
 }
 
 .build-label {
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .build-value {
   font-weight: 600;
-  color: #e5e3d8;
+  color: var(--fg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -717,8 +717,8 @@ function goTo(target) {
 .item-tag {
   padding: 4px 10px;
   font-size: 12px;
-  color: #c9c4b4;
-  background: #232323;
+  color: var(--fg-2);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
 }
@@ -740,7 +740,7 @@ function goTo(target) {
   padding: 0 4px;
   font-size: 10px;
   font-style: normal;
-  color: #8a8574;
+  color: var(--fg-3);
   border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 3px;
 }
@@ -752,14 +752,14 @@ function goTo(target) {
   padding: 14px 16px;
   border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
   border-radius: 0 8px 8px 0;
-  background: #161616;
+  background: var(--surface);
 }
 
 .location-box p {
   margin: 0;
   font-size: 13px;
   line-height: 1.8;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 /* 侧栏 */
@@ -793,12 +793,12 @@ function goTo(target) {
 
 .sibling-name {
   font-size: 12.5px;
-  color: #c9c4b4;
+  color: var(--fg-2);
 }
 
 .sibling-stat {
   font-size: 11px;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .pager {
@@ -817,7 +817,7 @@ function goTo(target) {
   gap: 4px;
   padding: 7px 8px;
   font-size: 12px;
-  color: #b8b2a0;
+  color: var(--fg-2);
   background: #222;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
@@ -839,13 +839,13 @@ function goTo(target) {
   margin: 8px 0 0;
   font-size: 11px;
   line-height: 1.6;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .muted {
   margin: 0;
   font-size: 12.5px;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 @media (max-width: 1000px) {

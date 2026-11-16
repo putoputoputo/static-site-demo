@@ -150,7 +150,7 @@ const boards = [
 
 .banner p {
   margin: 0;
-  color: #b8b2a0;
+  color: var(--fg-2);
   font-size: 15px;
 }
 
@@ -178,7 +178,7 @@ const boards = [
   align-items: flex-start;
   gap: 10px;
   padding: 24px;
-  background: #1c1c1c;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
   text-decoration: none;
@@ -194,12 +194,12 @@ const boards = [
 .board-card h2 {
   margin: 0;
   font-size: 20px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .board-card p {
   margin: 0;
-  color: #8a8574;
+  color: var(--fg-3);
   font-size: 13px;
   line-height: 1.6;
   flex: 1;

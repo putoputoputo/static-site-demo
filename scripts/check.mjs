@@ -1911,7 +1911,10 @@ if (existsSync(notFoundStatic)) {
 
   const styleCss = readFileSync(resolve(root, 'src/assets/style.css'), 'utf-8')
   check('主题·默认色只留一处定义', (styleCss.match(/#d4af37/gi) || []).length, 1)
-  check('主题·默认值挂在 --accent 上', /--accent:\s*#d4af37/.test(styleCss), true)
+  check('主题·原色默认值挂在 --accent-raw 上', /--accent-raw:\s*#d4af37/.test(styleCss), true)
+  // 实际用的 --accent 由原色派生：深色直接用，浅色压暗后再上色
+  check('主题·深色下 --accent 直接取原色', /--accent:\s*var\(--accent-raw\)/.test(styleCss), true)
+  check('主题·浅色下强调色压暗再上色', /--accent:\s*color-mix\(in srgb, var\(--accent-raw\) 52%/.test(styleCss), true)
   check('主题·Element Plus 主色跟着主题走', /--el-color-primary:\s*var\(--accent\)/.test(styleCss), true)
 
   // 全站样式里除了上面那处默认值，不该再有任何写死的品牌金
@@ -1952,13 +1955,10 @@ if (existsSync(notFoundStatic)) {
   // 落盘与注入：用假的 style 对象和 localStorage 走一遍，确认写的是那几个变量
   const fakeEl = { style: { props: {}, setProperty(key, value) { this.props[key] = value } } }
   theme.applyAccent('#7fb98a', fakeEl)
-  check('主题·注入四个颜色变量', Object.keys(fakeEl.style.props).sort(), [
-    '--accent',
-    '--accent-ink',
-    '--accent-line',
-    '--accent-soft',
-  ])
-  check('主题·注入的主色已规范化', fakeEl.style.props['--accent'], '#7fb98a')
+  // 只注入原色一个变量：soft / line / ink 以及浅色下的压暗都由 CSS 派生，
+  // 这样 SSR（没有 document）时也不会算错，CSS 是唯一事实来源
+  check('主题·只注入原色一个变量', Object.keys(fakeEl.style.props).sort(), ['--accent-raw'])
+  check('主题·注入的原色已规范化', fakeEl.style.props['--accent-raw'], '#7fb98a')
 
   const fakeStorage = { data: {}, getItem(k) { return this.data[k] ?? null }, setItem(k, v) { this.data[k] = v }, removeItem(k) { delete this.data[k] } }
   globalThis.localStorage = fakeStorage
@@ -1976,8 +1976,86 @@ if (existsSync(notFoundStatic)) {
   const ThemePicker = (await vite.ssrLoadModule('/src/components/ThemePicker.vue')).default
   const pickerHtml = await renderToString(createSSRApp(ThemePicker))
   check('主题·头部有取色按钮', pickerHtml.includes('class="theme-btn"'), true)
-  check('主题·取色按钮报出用途', pickerHtml.includes('aria-label="更换主题色"'), true)
+  check('主题·取色按钮报出用途', pickerHtml.includes('aria-label="更换主题"'), true)
+  check('主题·面板有深色/浅色两个选项', /THEME_MODES[\s\S]{0,400}深色[\s\S]{0,80}浅色/.test(
+    readFileSync(resolve(root, 'src/utils/theme.js'), 'utf-8')
+  ), true)
+  // 面板是 v-if 展开的，SSR 拿不到；改为检查模板里确实渲染了底色切换按钮
+  const pickerSource = readFileSync(resolve(root, 'src/components/ThemePicker.vue'), 'utf-8')
+  check('主题·面板模板里有底色切换', /class="mode-btn"[\s\S]{0,200}item\.name/.test(pickerSource), true)
   check('主题·按钮上显示当前色', /--accent|#d4af37/.test(pickerHtml), true)
+
+  // ---------- 明暗底色 ----------
+  // 两套 token 都在 style.css 里，切换只靠 <html data-theme>
+  for (const key of ['--bg', '--surface', '--surface-2', '--surface-3', '--fg', '--fg-2', '--fg-3', '--fg-4']) {
+    check(`主题·浅色块定义了 ${key}`, new RegExp(`html\\[data-theme='light'\\][\\s\\S]{0,600}${key}:`).test(styleCss), true)
+  }
+  // 深色 100% = 原色本身（渲染零变化），浅色 40% = 压进深色前景
+  check('主题·深色下语义色不混前景', /--tone-mix:\s*100%/.test(styleCss), true)
+  check('主题·浅色下语义色压到四成', /--tone-mix:\s*40%/.test(styleCss), true)
+
+  // 语义色必须走 --tone-mix，别再写死一份：写死的话浅底上会糊
+  const toneInline = []
+  const scanStyles = (dir, out = []) => {
+    for (const name of readdirSync(dir)) {
+      const full = resolve(dir, name)
+      if (statSync(full).isDirectory()) scanStyles(full, out)
+      else if (/\.(css|vue)$/.test(name)) out.push(full)
+    }
+    return out
+  }
+  for (const file of scanStyles(resolve(root, 'src'))) {
+    const whole = readFileSync(file, 'utf-8')
+    // .vue 只看 <style> 段：模板里 :style 绑的色是 JS 算的，不算「样式漏了」
+    const text = file.endsWith('.vue')
+      ? whole.slice(whole.indexOf('<style'), whole.lastIndexOf('</style>'))
+      : whole
+    // 同一份颜色既出现在 tone-mix 写法里、又还有裸写的地方，就是漏了
+    const tuned = new Set([...text.matchAll(/color-mix\(in srgb, (#[0-9a-f]{6}) var\(--tone-mix\)/gi)].map((m) => m[1].toLowerCase()))
+    for (const hex of tuned) {
+      const hits = (text.match(new RegExp(`${hex}\\b`, 'gi')) || []).length
+      const inMix = (text.match(new RegExp(`${hex} var\\(--tone-mix\\)`, 'gi')) || []).length
+      if (hits > inMix) toneInline.push(`${file.split(/[\\/]/).pop()}:${hex}`)
+    }
+  }
+  check('主题·语义色没有漏网的裸色值', toneInline.slice(0, 6), [])
+
+  // 嵌套 color-mix 会让值算两遍，之前踩过一次
+  const nested = scanStyles(resolve(root, 'src')).filter((file) =>
+    /color-mix\(in srgb, color-mix\(/i.test(readFileSync(file, 'utf-8'))
+  )
+  check('主题·没有嵌套的 color-mix', nested.map((f) => f.split(/[\\/]/).pop()), [])
+
+  // 应用与读取：data-theme 写到 html，默认深色
+  const fakeRoot = {
+    attrs: {},
+    setAttribute(k, v) {
+      this.attrs[k] = v
+    },
+    style: { props: {}, setProperty(k, v) {
+      this.props[k] = v
+    } },
+  }
+  check('主题·切底色时写 data-theme', theme.applyMode('light', fakeRoot), 'light')
+  check('主题·data-theme 落在 html 上', fakeRoot.attrs['data-theme'], 'light')
+  check('主题·非法底色回落到深色', theme.applyMode('紫色', { setAttribute() {}, style: {} }), 'dark')
+
+  globalThis.localStorage = { data: {}, getItem(k) { return this.data[k] ?? null }, setItem(k, v) { this.data[k] = v }, removeItem(k) { delete this.data[k] } }
+  try {
+    check('主题·默认底色是深色', theme.loadMode(), 'dark')
+    theme.saveMode('light')
+    check('主题·存了浅色就记住浅色', theme.loadMode(), 'light')
+    globalThis.localStorage.data[theme.MODE_KEY] = '乱七八糟'
+    check('主题·脏底色也能回落', theme.loadMode(), 'dark')
+  } finally {
+    delete globalThis.localStorage
+  }
+
+  // 浅色下强调色会被压暗，对比度要按压暗后的值算，否则面板提示会对不上实际渲染
+  const lightTokens = theme.accentTokens('#d4af37', 'light')
+  check('主题·浅色下强调色确实变深', theme.relativeLuminance(lightTokens.shown) < theme.relativeLuminance('#d4af37'), true)
+  check('主题·浅色下鎏金对比度达标', lightTokens.contrast >= 3, true)
+  check('主题·深色下强调色原样使用', theme.accentTokens('#d4af37', 'dark').shown, '#d4af37')
 }
 
 await vite.close()

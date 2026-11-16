@@ -256,7 +256,7 @@ const questInfo = computed(() => {
 }
 
 .detail-hero.dlc {
-  background: linear-gradient(135deg, #201c28 0%, color-mix(in srgb, var(--accent) 4%, transparent) 70%);
+  background: linear-gradient(135deg, color-mix(in srgb, #201c28 22%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 70%);
   border-color: #3a3048;
 }
 
@@ -280,20 +280,20 @@ const questInfo = computed(() => {
 }
 
 .tag.base {
-  color: #8a8574;
-  background: #232323;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border-color: color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .tag.dlc {
-  color: #b49ad4;
-  background: #241f2e;
+  color: color-mix(in srgb, #b49ad4 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #241f2e 22%, var(--surface));
   border-color: #3f3453;
 }
 
 .tag.required {
-  color: #e08b88;
-  background: #2a1c1c;
+  color: color-mix(in srgb, #e08b88 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #2a1c1c 22%, var(--surface));
   border-color: #4a2a2a;
 }
 
@@ -304,15 +304,15 @@ const questInfo = computed(() => {
 }
 
 .tag.type {
-  color: #9aa88f;
-  background: #1f241d;
+  color: color-mix(in srgb, #9aa88f var(--tone-mix), var(--fg));
+  background: var(--surface-2);
   border-color: #333a2f;
 }
 
 .boss-title {
   margin: 0 0 8px;
   font-size: 27px;
-  color: #e5e3d8;
+  color: var(--fg);
   letter-spacing: 1px;
 }
 
@@ -322,11 +322,11 @@ const questInfo = computed(() => {
   gap: 6px;
   margin: 0;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .boss-place a {
-  color: #b8b2a0;
+  color: var(--fg-2);
   text-decoration: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--accent) 21%, transparent);
 }
@@ -339,7 +339,7 @@ const questInfo = computed(() => {
   margin: 10px 0 0;
   font-size: 13px;
   line-height: 1.75;
-  color: #a9a496;
+  color: var(--fg-2);
   max-width: 680px;
 }
 
@@ -352,7 +352,7 @@ const questInfo = computed(() => {
 }
 
 .danger-label {
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .danger-pips {
@@ -385,12 +385,12 @@ const questInfo = computed(() => {
   padding: 10px 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 9px;
-  background: #1a1915;
+  background: var(--surface);
 }
 
 .prep-label {
   font-size: 11px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .prep-value {
@@ -402,7 +402,7 @@ const questInfo = computed(() => {
   padding: 20px 22px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
 }
 
 .section-title {
@@ -418,11 +418,11 @@ const questInfo = computed(() => {
   margin: 12px 0 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .section-hint strong {
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
 }
 
 .matchup-grid {
@@ -435,7 +435,7 @@ const questInfo = computed(() => {
   padding: 14px 16px;
   border: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
   border-radius: 9px;
-  background: #191919;
+  background: var(--surface);
 }
 
 .matchup-card.weak {
@@ -454,7 +454,7 @@ const questInfo = computed(() => {
   margin: 0 0 10px;
   font-size: 12.5px;
   font-weight: 600;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .tag-list {
@@ -468,25 +468,25 @@ const questInfo = computed(() => {
   font-size: 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 5px;
-  color: #b8b2a0;
-  background: #202020;
+  color: var(--fg-2);
+  background: var(--surface-2);
 }
 
 .attr-tag.muted {
-  color: #7d7869;
+  color: var(--fg-4);
 }
 
 .attr-tag.immune {
-  color: #c58a86;
+  color: color-mix(in srgb, #c58a86 var(--tone-mix), var(--fg));
   border-color: #4a2f2f;
-  background: #241b1b;
+  background: color-mix(in srgb, #241b1b 22%, var(--surface));
 }
 
 .matchup-empty {
   margin: 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .tip-list {
@@ -517,7 +517,7 @@ const questInfo = computed(() => {
   margin: 0;
   font-size: 13.5px;
   line-height: 1.85;
-  color: #c9c4b4;
+  color: var(--fg-2);
 }
 
 .two-col {
@@ -537,12 +537,12 @@ const questInfo = computed(() => {
 .plain-list li {
   font-size: 13px;
   line-height: 1.7;
-  color: #c9c4b4;
+  color: var(--fg-2);
 }
 
 .exchange-section {
   border-color: color-mix(in srgb, var(--accent) 19%, transparent);
-  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 7%, transparent) 0%, #1c1c1c 60%);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 7%, transparent) 0%, var(--surface) 60%);
 }
 
 .exchange-list {
@@ -558,7 +558,7 @@ const questInfo = computed(() => {
   padding: 9px 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 7px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .exchange-type {
@@ -566,43 +566,43 @@ const questInfo = computed(() => {
   padding: 1px 8px;
   font-size: 11px;
   text-align: center;
-  color: #9aa88f;
-  background: #1f241d;
+  color: color-mix(in srgb, #9aa88f var(--tone-mix), var(--fg));
+  background: var(--surface-2);
   border: 1px solid #333a2f;
   border-radius: 4px;
 }
 
 .exchange-type.t-武器 {
-  color: #c9a86a;
+  color: color-mix(in srgb, #c9a86a var(--tone-mix), var(--fg));
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   border-color: color-mix(in srgb, var(--accent) 19%, transparent);
 }
 
 .exchange-type.t-魔法 {
-  color: #7f9ad4;
-  background: #1a1f2a;
+  color: color-mix(in srgb, #7f9ad4 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #1a1f2a 22%, var(--surface));
   border-color: #2b3548;
 }
 
 .exchange-type.t-祷告 {
-  color: #c9b98a;
+  color: var(--fg-2);
   background: color-mix(in srgb, var(--accent) 9%, transparent);
   border-color: color-mix(in srgb, var(--accent) 21%, transparent);
 }
 
 .exchange-type.t-护符 {
-  color: #b49ad4;
-  background: #221d2a;
+  color: color-mix(in srgb, #b49ad4 var(--tone-mix), var(--fg));
+  background: color-mix(in srgb, #221d2a 22%, var(--surface));
   border-color: #3a3048;
 }
 
 .exchange-name {
   font-size: 13px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .exchange-name.link {
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
   text-decoration: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
 }
@@ -615,7 +615,7 @@ const questInfo = computed(() => {
 .exchange-hint {
   margin-left: auto;
   font-size: 11px;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 .inline-link {
@@ -636,7 +636,7 @@ const questInfo = computed(() => {
   gap: 8px;
   padding: 10px 16px;
   font-size: 13.5px;
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
   text-decoration: none;
   border: 1px solid color-mix(in srgb, var(--accent) 19%, transparent);
   border-radius: 8px;
@@ -651,7 +651,7 @@ const questInfo = computed(() => {
 
 .quest-npc {
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .quest-arrow {
@@ -671,7 +671,7 @@ const questInfo = computed(() => {
   padding: 11px 13px;
   border: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
   border-radius: 8px;
-  background: #191919;
+  background: var(--surface);
   text-decoration: none;
   transition: border-color 0.18s;
 }
@@ -682,7 +682,7 @@ const questInfo = computed(() => {
 
 .sibling-name {
   font-size: 13px;
-  color: #c9c4b4;
+  color: var(--fg-2);
 }
 
 .sibling-meta {
@@ -701,7 +701,7 @@ const questInfo = computed(() => {
 .sibling-type {
   margin-left: 6px;
   font-size: 11px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .neighbors {
@@ -717,7 +717,7 @@ const questInfo = computed(() => {
   padding: 14px 18px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
   text-decoration: none;
   transition: border-color 0.18s;
 }
@@ -737,17 +737,17 @@ const questInfo = computed(() => {
 
 .neighbor-dir {
   font-size: 11px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .neighbor-name {
   font-size: 14px;
-  color: #d9c47a;
+  color: color-mix(in srgb, #d9c47a var(--tone-mix), var(--fg));
 }
 
 .neighbor-region {
   font-size: 11px;
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 @media (max-width: 980px) {

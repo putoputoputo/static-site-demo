@@ -568,7 +568,7 @@ function goDetail(row) {
   padding: 26px 28px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), var(--surface);
 }
 
 .hero-title {
@@ -581,13 +581,13 @@ function goDetail(row) {
 .hero-sub {
   margin: 0;
   max-width: 560px;
-  color: #9d977f;
+  color: var(--fg-3);
   font-size: 13px;
   line-height: 1.7;
 }
 
 .hero-sub strong {
-  color: #e5e3d8;
+  color: var(--fg);
   font-weight: 600;
 }
 
@@ -603,7 +603,7 @@ function goDetail(row) {
   text-align: center;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
-  background: #151515;
+  background: var(--bg);
 }
 
 .badge-value {
@@ -617,7 +617,7 @@ function goDetail(row) {
   display: block;
   margin-top: 2px;
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 /* 筛选区 */
@@ -628,7 +628,7 @@ function goDetail(row) {
   padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .filter-line {
@@ -650,7 +650,7 @@ function goDetail(row) {
   width: 36px;
   flex-shrink: 0;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .chips {
@@ -685,14 +685,14 @@ function goDetail(row) {
   width: 30px;
   flex-shrink: 0;
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 .all-chip {
   padding: 5px 12px;
   font-size: 13px;
-  color: #b8b2a0;
-  background: #202020;
+  color: var(--fg-2);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
@@ -705,7 +705,7 @@ function goDetail(row) {
 }
 
 .all-chip.active {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
@@ -717,8 +717,8 @@ function goDetail(row) {
   gap: 5px;
   padding: 5px 11px;
   font-size: 13px;
-  color: #b8b2a0;
-  background: #202020;
+  color: var(--fg-2);
+  background: var(--surface-2);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
@@ -731,7 +731,7 @@ function goDetail(row) {
 }
 
 .chip.active {
-  color: #121212;
+  color: var(--bg);
   font-weight: 600;
   background: var(--accent);
   border-color: var(--accent);
@@ -757,7 +757,7 @@ function goDetail(row) {
 }
 
 .chip.active .status-dot {
-  background: #121212 !important;
+  background: var(--bg) !important;
 }
 
 /* 结果条 */
@@ -766,7 +766,7 @@ function goDetail(row) {
   align-items: center;
   gap: 12px;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .result-bar strong {
@@ -776,7 +776,7 @@ function goDetail(row) {
 .result-hint {
   margin-left: 10px;
   font-size: 12px;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 /* 卡片 */
@@ -793,7 +793,7 @@ function goDetail(row) {
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
-  background: #1c1c1c;
+  background: var(--surface);
   text-decoration: none;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -822,7 +822,7 @@ function goDetail(row) {
 .card-name {
   margin: 0;
   font-size: 17px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .fav-btn {
@@ -835,7 +835,7 @@ function goDetail(row) {
   width: 26px;
   height: 26px;
   padding: 0;
-  color: #5d5849;
+  color: var(--fg-4);
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -874,14 +874,14 @@ function goDetail(row) {
 }
 
 .mini-tag.region {
-  color: #8a8574;
-  background: #242424;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .mini-tag.attack {
-  color: #9aa7b8;
-  background: #202429;
+  color: color-mix(in srgb, #9aa7b8 var(--tone-mix), var(--fg));
+  background: var(--surface-3);
   border: 1px solid #33404d;
 }
 
@@ -894,7 +894,7 @@ function goDetail(row) {
   margin: 0;
   font-size: 12.5px;
   line-height: 1.7;
-  color: #8a8574;
+  color: var(--fg-3);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -906,7 +906,7 @@ function goDetail(row) {
   gap: 16px;
   padding: 10px 12px;
   border-radius: 8px;
-  background: #161616;
+  background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
@@ -918,12 +918,12 @@ function goDetail(row) {
 
 .value-label {
   font-size: 11px;
-  color: #7a7565;
+  color: var(--fg-4);
 }
 
 .value-num {
   font-size: 15px;
-  color: #e5e3d8;
+  color: var(--fg);
 }
 
 .card-scaling {
@@ -937,7 +937,7 @@ function goDetail(row) {
   font-size: 11px;
   border: 1px solid;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--veil);
 }
 
 .scaling-pill.empty {
@@ -956,26 +956,26 @@ function goDetail(row) {
   padding-top: 10px;
   border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 12.5px;
-  color: #b8b2a0;
+  color: var(--fg-2);
 }
 
 .skill-name {
-  color: #cfae5b;
+  color: color-mix(in srgb, #cfae5b var(--tone-mix), var(--fg));
 }
 
 .arrow {
   margin-left: auto;
-  color: #6b6555;
+  color: var(--fg-4);
 }
 
 /* 表格 */
 .weapon-table {
-  --el-table-bg-color: #1c1c1c;
-  --el-table-tr-bg-color: #1c1c1c;
-  --el-table-header-bg-color: #242424;
+  --el-table-bg-color: var(--surface);
+  --el-table-tr-bg-color: var(--surface);
+  --el-table-header-bg-color: var(--surface-3);
   --el-table-border-color: color-mix(in srgb, var(--accent) 13%, transparent);
-  --el-table-text-color: #c9c4b4;
-  --el-table-header-text-color: #8a8574;
+  --el-table-text-color: var(--fg-2);
+  --el-table-header-text-color: var(--fg-3);
   --el-table-row-hover-bg-color: color-mix(in srgb, var(--accent) 7%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
@@ -986,7 +986,7 @@ function goDetail(row) {
 }
 
 .table-name {
-  color: #e5e3d8;
+  color: var(--fg);
   font-weight: 600;
 }
 
@@ -1000,7 +1000,7 @@ function goDetail(row) {
 }
 
 .muted {
-  color: #5d5849;
+  color: var(--fg-4);
 }
 
 @media (max-width: 1000px) {

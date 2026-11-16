@@ -273,7 +273,7 @@ function goDetail(id) {
   padding: 26px 28px;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), var(--surface);
 }
 
 .hero-title {
@@ -286,13 +286,13 @@ function goDetail(id) {
 .hero-sub {
   margin: 0;
   max-width: 620px;
-  color: #9d977f;
+  color: var(--fg-3);
   font-size: 13px;
   line-height: 1.7;
 }
 
 .hero-sub strong {
-  color: #e5e3d8;
+  color: var(--fg);
   font-weight: 600;
 }
 
@@ -308,7 +308,7 @@ function goDetail(id) {
   text-align: center;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
-  background: #151515;
+  background: var(--bg);
 }
 
 .badge-value {
@@ -322,7 +322,7 @@ function goDetail(id) {
   display: block;
   margin-top: 2px;
   font-size: 11px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 /* 筛选区 */
@@ -333,7 +333,7 @@ function goDetail(id) {
   padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
 }
 
 .filter-line {
@@ -359,7 +359,7 @@ function goDetail(id) {
   width: 36px;
   flex-shrink: 0;
   font-size: 13px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 .chips {
@@ -375,9 +375,9 @@ function goDetail(id) {
   gap: 5px;
   padding: 5px 11px;
   font-size: 12px;
-  color: #a49c86;
-  background: #212121;
-  border: 1px solid #34302a;
+  color: var(--fg-3);
+  background: var(--surface-2);
+  border: 1px solid var(--fg-4);
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.16s ease;
@@ -389,7 +389,7 @@ function goDetail(id) {
 }
 
 .chip.active {
-  color: #1a1a1a;
+  color: var(--surface);
   background: var(--accent);
   border-color: var(--accent);
   font-weight: 600;
@@ -400,14 +400,14 @@ function goDetail(id) {
 }
 
 .chip.warn.active {
-  background: #c16b4f;
-  border-color: #c16b4f;
-  color: #1a1a1a;
+  background: color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
+  border-color: color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
+  color: var(--surface);
 }
 
 .chip-count {
   font-size: 11px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .chip-divider {
@@ -426,7 +426,7 @@ function goDetail(id) {
 
 .result-count {
   font-size: 12px;
-  color: #8a8574;
+  color: var(--fg-3);
 }
 
 /* 卡片 */
@@ -444,7 +444,7 @@ function goDetail(id) {
   padding: 16px 18px 18px;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
-  background: #1a1a1a;
+  background: var(--surface);
   cursor: pointer;
   transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
@@ -456,12 +456,12 @@ function goDetail(id) {
 }
 
 .quest-card.done {
-  border-color: #3f5237;
-  background: linear-gradient(160deg, rgba(122, 158, 106, 0.08), transparent 55%), #1a1a1a;
+  border-color: color-mix(in srgb, #3f5237 var(--tone-mix), var(--fg));
+  background: linear-gradient(160deg, rgba(122, 158, 106, 0.08), transparent 55%), var(--surface);
 }
 
 .quest-card.pending {
-  background: #191919;
+  background: var(--surface);
 }
 
 .card-head {
@@ -474,7 +474,7 @@ function goDetail(id) {
 .card-name {
   margin: 0;
   font-size: 16px;
-  color: #e5e3d8;
+  color: var(--fg);
   display: flex;
   align-items: baseline;
   gap: 6px;
@@ -493,23 +493,23 @@ function goDetail(id) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #5d5849;
+  color: var(--fg-4);
   background: transparent;
-  border: 1px solid #34302a;
+  border: 1px solid var(--fg-4);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.16s ease;
 }
 
 .done-toggle:hover {
-  color: #9bbd8a;
-  border-color: #4e6242;
+  color: color-mix(in srgb, #9bbd8a var(--tone-mix), var(--fg));
+  border-color: color-mix(in srgb, #4e6242 var(--tone-mix), var(--fg));
 }
 
 .done-toggle.active {
-  color: #1a1a1a;
-  background: #8fb87e;
-  border-color: #8fb87e;
+  color: var(--surface);
+  background: color-mix(in srgb, #8fb87e var(--tone-mix), var(--fg));
+  border-color: color-mix(in srgb, #8fb87e var(--tone-mix), var(--fg));
 }
 
 .card-tags {
@@ -525,13 +525,13 @@ function goDetail(id) {
   padding: 2px 7px;
   font-size: 11px;
   border-radius: 4px;
-  color: #8a8574;
-  background: #242424;
+  color: var(--fg-3);
+  background: var(--surface-3);
   border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .mini-tag.region {
-  color: #9d977f;
+  color: var(--fg-3);
 }
 
 .mini-tag.length {
@@ -539,19 +539,19 @@ function goDetail(id) {
 }
 
 .mini-tag.missable {
-  color: #c16b4f;
+  color: color-mix(in srgb, #c16b4f var(--tone-mix), var(--fg));
   background: rgba(193, 107, 79, 0.1);
   border-color: rgba(193, 107, 79, 0.3);
 }
 
 .mini-tag.steps {
-  color: #8fa88a;
+  color: color-mix(in srgb, #8fa88a var(--tone-mix), var(--fg));
   background: rgba(143, 168, 138, 0.1);
   border-color: rgba(143, 168, 138, 0.25);
 }
 
 .mini-tag.pending-tag {
-  color: #6f6a5a;
+  color: var(--fg-4);
   background: transparent;
   border-style: dashed;
   border-color: color-mix(in srgb, var(--accent) 11%, transparent);
@@ -561,7 +561,7 @@ function goDetail(id) {
   margin: 0;
   font-size: 13px;
   line-height: 1.65;
-  color: #9d977f;
+  color: var(--fg-3);
 }
 
 .card-rewards {
@@ -576,7 +576,7 @@ function goDetail(id) {
 
 .reward-label {
   font-size: 11px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 
 .reward-item {
@@ -590,6 +590,6 @@ function goDetail(id) {
 
 .reward-more {
   font-size: 11px;
-  color: #6f6a5a;
+  color: var(--fg-4);
 }
 </style>
