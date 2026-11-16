@@ -58,7 +58,7 @@ const emit = defineEmits(['change-page', 'change-size'])
   gap: 16px;
   flex-wrap: wrap;
   padding: 12px 16px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -78,7 +78,7 @@ const emit = defineEmits(['change-page', 'change-size'])
   font-size: 13px;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.18s;
@@ -86,8 +86,8 @@ const emit = defineEmits(['change-page', 'change-size'])
 
 .pager-step:hover:not(:disabled),
 .pager-num:hover:not(:disabled) {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .pager-step:disabled,
@@ -99,8 +99,8 @@ const emit = defineEmits(['change-page', 'change-size'])
 .pager-num.active {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .pager-num.gap {
@@ -125,22 +125,22 @@ const emit = defineEmits(['change-page', 'change-size'])
   font-size: 12px;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .size-chip:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .size-chip.active {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .pager-all {

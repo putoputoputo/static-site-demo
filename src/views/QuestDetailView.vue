@@ -53,7 +53,7 @@
               :key="index"
               :timestamp="`第 ${index + 1} 步`"
               placement="top"
-              :color="index === 0 ? '#d4af37' : '#5b4f2a'"
+              :color="index === 0 ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 30%, transparent)'"
               size="normal"
             >
               <h3 class="step-title">{{ step.title }}</h3>
@@ -73,7 +73,7 @@
         <section v-else class="panel pending-panel">
           <el-empty description="这条支线的完整步骤正在整理，先放出索引信息">
             <template #image>
-              <el-icon :size="46" color="#5b4f2a"><Clock /></el-icon>
+              <el-icon :size="46" color="color-mix(in srgb, var(--accent) 30%, transparent)"><Clock /></el-icon>
             </template>
           </el-empty>
           <p class="pending-note">
@@ -240,9 +240,9 @@ function goTo(id) {
   justify-content: space-between;
   gap: 24px;
   padding: 24px 26px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.13), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 65%), #1a1a1a;
 }
 
 .hero-main {
@@ -253,7 +253,7 @@ function goTo(id) {
   margin: 0 0 10px;
   font-size: 25px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -261,7 +261,7 @@ function goTo(id) {
 
 .dlc-tag {
   font-size: 12px;
-  color: #c98b3f;
+  color: color-mix(in srgb, var(--accent) 86%, transparent);
   letter-spacing: 0;
 }
 
@@ -281,7 +281,7 @@ function goTo(id) {
   border-radius: 4px;
   color: #9d977f;
   background: #242424;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .tag.missable {
@@ -299,7 +299,7 @@ function goTo(id) {
 .tag.pending {
   color: #6f6a5a;
   border-style: dashed;
-  border-color: #3a352c;
+  border-color: color-mix(in srgb, var(--accent) 11%, transparent);
   background: transparent;
 }
 
@@ -333,7 +333,7 @@ function goTo(id) {
 
 .panel {
   padding: 18px 20px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -345,7 +345,7 @@ function goTo(id) {
   margin: 0 0 14px;
   font-size: 14px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
   letter-spacing: 1px;
 }
 
@@ -383,8 +383,8 @@ function goTo(id) {
   font-size: 12px;
   line-height: 1.7;
   color: #cbb887;
-  background: rgba(201, 162, 39, 0.07);
-  border-left: 2px solid #8a7434;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 57%, transparent);
   border-radius: 0 4px 4px 0;
 }
 
@@ -394,7 +394,7 @@ function goTo(id) {
   padding: 0 5px;
   font-size: 10px;
   color: #1a1a1a;
-  background: #c9a227;
+  background: color-mix(in srgb, var(--accent) 93%, transparent);
   border-radius: 2px;
 }
 
@@ -417,9 +417,9 @@ function goTo(id) {
   flex-shrink: 0;
   padding: 1px 8px;
   font-size: 11px;
-  color: #c9a227;
-  background: rgba(201, 162, 39, 0.1);
-  border: 1px solid rgba(201, 162, 39, 0.25);
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 23%, transparent);
   border-radius: 4px;
 }
 
@@ -496,7 +496,7 @@ function goTo(id) {
 }
 
 .reward-name {
-  color: #c9a227;
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
 }
 
 .reward-note {
@@ -525,8 +525,8 @@ function goTo(id) {
 }
 
 .related-link:hover {
-  color: #d4af37;
-  border-color: #5b4f2a;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .small-dim {
@@ -550,14 +550,14 @@ function goTo(id) {
   padding: 10px 14px;
   text-align: left;
   background: #1a1a1a;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 8px;
   cursor: pointer;
   transition: border-color 0.16s ease;
 }
 
 .pager-btn:hover {
-  border-color: #5b4f2a;
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .pager-btn.right {
@@ -578,7 +578,7 @@ function goTo(id) {
 
 .pager-name {
   font-size: 13px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .pager-btn.disabled .pager-name {

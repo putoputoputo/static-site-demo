@@ -1,3 +1,24 @@
+/* ---------- 主题色 ----------
+   全站强调色只有一个来源：--accent。JS 按用户选择把它写到 <html> 的行内样式
+   （见 src/utils/theme.js），各档深浅全部由 color-mix 从它派生，
+   所以任意一个颜色都能带动全站，不用为每个色相再备一套色板。
+   这里给的是默认值：即使脚本没跑，站点也是原来的鎏金色。 */
+:root {
+  --accent: #d4af37;
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 38%, transparent);
+  --accent-ink: #141414;
+
+  /* Element Plus 跟着走：主色 + 悬停/禁用用的深浅档 */
+  --el-color-primary: var(--accent);
+  --el-color-primary-light-3: color-mix(in srgb, var(--accent) 72%, #121212);
+  --el-color-primary-light-5: color-mix(in srgb, var(--accent) 52%, #121212);
+  --el-color-primary-light-7: color-mix(in srgb, var(--accent) 32%, #121212);
+  --el-color-primary-light-8: color-mix(in srgb, var(--accent) 22%, #121212);
+  --el-color-primary-light-9: color-mix(in srgb, var(--accent) 12%, #121212);
+  --el-color-primary-dark-2: color-mix(in srgb, var(--accent) 78%, #ffffff);
+}
+
 html {
   background-color: #121212;
 }
@@ -28,7 +49,7 @@ body {
   z-index: 100;
   background: rgba(18, 18, 18, 0.92);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid #3a3324;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .header-inner {
@@ -47,7 +68,7 @@ body {
   gap: 8px;
   font-size: 18px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -74,13 +95,13 @@ body {
 }
 
 .nav-link:hover {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.08);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .nav-link.active {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.15);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
   font-weight: bold;
 }
 
@@ -101,7 +122,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px 14px;
-  border-top: 1px solid #3a3324;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   padding: 20px;
   text-align: center;
   color: #7a7565;
@@ -115,7 +136,7 @@ body {
   gap: 10px;
   font-size: 22px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--accent);
   margin-bottom: 16px;
 }
 
@@ -124,7 +145,7 @@ body {
   display: block;
   width: 4px;
   height: 22px;
-  background: #d4af37;
+  background: var(--accent);
   border-radius: 2px;
 }
 

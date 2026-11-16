@@ -235,14 +235,14 @@ watch(logs, (next) => {
 }
 
 .back-link:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .logs-head h1 {
   margin: 0 0 10px;
   font-size: 26px;
   letter-spacing: 3px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .logs-head p {
@@ -263,7 +263,7 @@ watch(logs, (next) => {
   padding: 32px;
   text-align: center;
   background: #1a1a1a;
-  border: 1px dashed #3f3928;
+  border: 1px dashed color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
 }
 
@@ -287,7 +287,7 @@ watch(logs, (next) => {
   color: #121212;
   font-weight: 600;
   text-decoration: none;
-  background: #d4af37;
+  background: var(--accent);
   border-radius: 8px;
   transition: filter 0.18s;
 }
@@ -320,20 +320,20 @@ watch(logs, (next) => {
   font-size: 12.5px;
   color: #d8d3c2;
   background: #202020;
-  border: 1px solid #3f3928;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   cursor: pointer;
   transition: color 0.18s, background 0.18s, border-color 0.18s;
 }
 
 .tool-btn:hover:not(:disabled) {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .tool-btn:disabled {
   color: #5c5749;
-  border-color: #2e2a20;
+  border-color: color-mix(in srgb, var(--accent) 7%, transparent);
   cursor: not-allowed;
 }
 
@@ -376,7 +376,7 @@ watch(logs, (next) => {
   font-size: 12px;
   line-height: 1.85;
   color: #6b6555;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .foot-note span {
@@ -421,7 +421,7 @@ watch(logs, (next) => {
   font-family: inherit;
   text-align: left;
   background: #171717;
-  border: 1px solid #2e2a20;
+  border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 9px;
   cursor: pointer;
   transition: border-color 0.18s, background 0.18s;
@@ -429,8 +429,8 @@ watch(logs, (next) => {
 
 .log-item:hover,
 .log-item.active {
-  background: #1f1c15;
-  border-color: #6b5c2e;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .log-time {
@@ -484,7 +484,7 @@ watch(logs, (next) => {
   gap: 14px;
   padding: 16px;
   background: #1a1a1a;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
 }
 
@@ -498,7 +498,7 @@ watch(logs, (next) => {
 .log-block-title {
   font-size: 12.5px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .log-block-meta {
@@ -530,7 +530,7 @@ watch(logs, (next) => {
   white-space: pre-wrap;
   word-break: break-word;
   background: #121212;
-  border: 1px solid #2e2a20;
+  border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 8px;
 }
 

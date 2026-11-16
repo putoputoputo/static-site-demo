@@ -4,11 +4,12 @@
       <div class="hero-eyebrow">路线规划 · {{ travelMeta.city }} · 公共交通</div>
       <h1>选起点和终点，排出怎么走</h1>
       <p class="hero-lead">
-        起点和终点都是景点：从你选的地方出发，沿路把必去的故宫和长城串进去，最后落在你选的终点。
-        每天几点到、下一段坐什么、大概花多少钱，都在下面。长城单独占一天，因为往返就要 2—5 小时，塞不下第二个景点。
+        出发地和目的地直接打字搜——景点、火车站、机场都能当端点，比如「北京南站 → 颐和园」。
+        算法沿路把必去的故宫和长城串进去，最后落在你选的终点。每天几点到、下一段坐什么、大概花多少钱，都在下面。
+        长城单独占一天，因为往返就要 2—5 小时，塞不下第二个景点。
       </p>
       <div class="hero-meta">
-        <span>{{ planMeta.totalSpots }} 个可规划景点（古北水镇要过夜，未纳入）</span>
+        <span>{{ planMeta.totalSpots }} 个景点 + {{ planMeta.hubCount }} 个交通枢纽可选</span>
         <span>长城自动选更顺的一段</span>
         <span>三档方案：紧凑 / 标准 / 完整</span>
       </div>
@@ -17,27 +18,21 @@
     <section class="panel">
       <h2 class="panel-title">起终点</h2>
       <p class="panel-sub">
-        住处到第一天第一站、最后一天终点回住处这两段不算在路线里（你还没定住哪）；第二天起的第一站按「从住处出发 30 分钟」估。
+        输入框里打字会实时筛，也可以点开列表选。出发地选「北京南站」「首都机场 T3」这类枢纽时，
+        第一天第一段就按真实进城时间算；目的地选枢纽时，最后一天会补上「最后一站 → 枢纽」这段。
+        住处到第一天第一站、最后一天终点回住处这两段不在计算内（你还没定住哪）。
       </p>
 
       <div class="planner-grid">
-        <label class="field">
-          <span class="field-label">起点</span>
-          <select v-model="startId" class="field-input">
-            <optgroup v-for="group in spotOptions" :key="group.id" :label="group.name">
-              <option v-for="spot in group.items" :key="spot.id" :value="spot.id">{{ spot.name }}</option>
-            </optgroup>
-          </select>
-        </label>
+        <div class="field">
+          <span class="field-label">出发地</span>
+          <PlacePicker v-model="startPlace" placeholder="搜景点 / 火车站 / 机场 / 任意地点" />
+        </div>
 
-        <label class="field">
-          <span class="field-label">终点</span>
-          <select v-model="endId" class="field-input">
-            <optgroup v-for="group in spotOptions" :key="group.id" :label="group.name">
-              <option v-for="spot in group.items" :key="spot.id" :value="spot.id">{{ spot.name }}</option>
-            </optgroup>
-          </select>
-        </label>
+        <div class="field">
+          <span class="field-label">目的地</span>
+          <PlacePicker v-model="endPlace" placeholder="搜景点 / 火车站 / 机场 / 任意地点" />
+        </div>
 
         <label class="field">
           <span class="field-label">出发日期</span>
@@ -140,6 +135,7 @@
           <TravelMap
             :spots="travelSpots"
             :areas="travelAreas"
+            :hubs="activeHubPoints"
             :path-ids="activeDayPathIds"
             :active-id="activeSpotId"
             @pick="openSpot"
@@ -185,6 +181,66 @@
       </section>
 
       <section class="panel">
+        <h2 class="panel-title">高德实时路线</h2>
+        <p class="panel-sub">
+          上面那套是按片区通勤矩阵算的估算。这里直接问高德要真实公交方案（含步行段与换乘次数），拿来对照。
+          出发地或目的地是高德搜出来的地点时，会自动算一次。
+        </p>
+
+        <div class="amap-actions">
+          <button type="button" class="btn-link" :disabled="amapLoading" @click="runAmap">
+            {{ amapLoading ? '正在查高德…' : '用高德算这条路' }}
+          </button>
+          <a v-if="amapLink" :href="amapLink" target="_blank" rel="noopener" class="btn-link ghost">
+            在高德地图打开
+          </a>
+        </div>
+
+        <p v-if="amapError" class="pending-note">{{ amapError }}</p>
+
+        <div v-if="amapPlans.length" class="amap-plans">
+          <article v-for="plan in amapPlans" :key="plan.index" class="amap-plan">
+            <header>
+              <strong>方案 {{ plan.index }}</strong>
+              <span class="amap-time">{{ plan.minutes }} 分钟</span>
+              <span class="amap-meta">{{ plan.km }} 公里 · {{ plan.transfers > 0 ? `换乘 ${plan.transfers} 次` : '无需换乘' }} · 步行 {{ plan.walkMeters }} 米</span>
+              <span v-if="plan.cost" class="amap-cost">{{ plan.cost }} 元</span>
+            </header>
+            <ol class="amap-steps">
+              <li v-for="(segment, index) in plan.segments" :key="index">
+                <template v-if="segment.type === 'bus'">
+                  {{ segment.name }}<em v-if="segment.typeName">（{{ segment.typeName }}）</em>
+                  {{ segment.from }} 上车 → {{ segment.to }} 下车，{{ segment.stops }} 站
+                </template>
+                <template v-else>步行 {{ segment.meters }} 米</template>
+              </li>
+            </ol>
+          </article>
+        </div>
+
+        <div class="amap-key">
+          <div class="amap-key-head">
+            <span>高德 Web 服务 Key</span>
+            <span v-if="keyFromStorage" class="tag">用的是你填的 key</span>
+            <span v-else class="tag">用的是代码里的默认 key</span>
+          </div>
+          <div class="amap-key-row">
+            <input v-model="amapKey" class="field-input" placeholder="粘贴 Web 服务类型的 key" />
+            <button type="button" class="btn-link ghost" @click="saveAmapKey">保存</button>
+            <button type="button" class="btn-link ghost" :disabled="probeBusy" @click="testAmapKey">
+              {{ probeBusy ? '测试中…' : '测试' }}
+            </button>
+            <button v-if="keyFromStorage" type="button" class="btn-link ghost" @click="useDefaultKey">用默认 key</button>
+          </div>
+          <p v-if="keyProbe" class="amap-key-result" :class="keyProbe.ok ? 'ok' : 'bad'">{{ keyProbe.message }}</p>
+          <p class="amap-key-hint">
+            必须是「Web 服务」类型的 key。JS API / Android / iOS 的 key 调这个接口会返回 10009 平台不匹配。
+            key 只存在你这台浏览器的 localStorage 里，代码里那个默认值可以随时在控制台重置。
+          </p>
+        </div>
+      </section>
+
+      <section class="panel">
         <h2 class="panel-title">这套路线是怎么算出来的</h2>
         <ul class="bullet-list">
           <li>长城单独占一天，这是硬约束，不参与打分。它和前后两天的城区行程不接续，回程后仍住市区。</li>
@@ -204,39 +260,39 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TravelMap from '../../components/travel/TravelMap.vue'
 import PlanDay from '../../components/travel/PlanDay.vue'
+import PlacePicker from '../../components/travel/PlacePicker.vue'
 import { travelSpots } from '../../data/travel/spots'
 import { travelAreas } from '../../data/travel/areas'
+import { placeItemById } from '../../data/travel/places'
 import { travelMeta, festivalDays } from '../../data/travel/meta'
 import { wallPlans, transitMeta } from '../../data/travel/transit'
 import { planRoutes, planMeta } from '../../utils/travelPlanner'
+import { planAmapTransit, probeAmapKey, isCustomKey, setAmapKey, getAmapKey, clearAmapKey } from '../../utils/amap'
+import { wgs84ToGcj02, amapRouteUrl } from '../../utils/geo'
 import './travel.css'
 
 const route = useRoute()
 const router = useRouter()
 
-// 起点终点写进 URL，刷新不丢、也能直接把链接发给自己
-const startId = ref(route.query.from || 'forbidden-city')
-const endId = ref(route.query.to || 'summer-palace')
+// 起终点既可以是本地库的 id，也可以是高德搜出来的任意地点，所以统一存「地点对象」。
+// URL 里只记本地库的 id：高德结果带坐标，塞进 query 会又长又容易被人手改坏。
+const toPlace = (id, fallbackId) => {
+  const item = placeItemById[id] || placeItemById[fallbackId]
+  return item ? { id: item.id, name: item.name, lat: item.lat, lng: item.lng, group: item.group } : null
+}
+
+const startPlace = ref(toPlace(route.query.from, 'forbidden-city'))
+const endPlace = ref(toPlace(route.query.to, 'summer-palace'))
 const startDate = ref(route.query.date || '')
 const wallChoice = ref(route.query.wall || 'auto')
 const activePaceId = ref('normal')
 const activeDay = ref(1)
 const activeSpotId = ref('')
 
-const spotOptions = computed(() =>
-  travelAreas
-    .map((area) => ({
-      id: area.id,
-      name: area.name,
-      items: travelSpots.filter((spot) => spot.area === area.id && !spot.remote),
-    }))
-    .filter((group) => group.items.length)
-)
-
 const result = computed(() =>
   planRoutes({
-    startId: startId.value,
-    endId: endId.value,
+    startPlace: startPlace.value,
+    endPlace: endPlace.value,
     startDate: startDate.value,
     wallId: wallChoice.value,
   })
@@ -253,18 +309,84 @@ watch(activePaceId, () => {
   activeSpotId.value = ''
 })
 
-watch([startId, endId, startDate, wallChoice], () => {
+watch([startPlace, endPlace, startDate, wallChoice], () => {
   activeDay.value = 1
   activeSpotId.value = ''
+  const from = startPlace.value && startPlace.value.id !== 'forbidden-city' ? startPlace.value.id : ''
+  const to = endPlace.value && endPlace.value.id !== 'summer-palace' ? endPlace.value.id : ''
   router.replace({
     query: {
-      ...(startId.value !== 'forbidden-city' ? { from: startId.value } : {}),
-      ...(endId.value !== 'summer-palace' ? { to: endId.value } : {}),
+      // 高德搜出来的地点没有稳定 id 可回放，只写本地库的
+      ...(from && placeItemById[from] ? { from } : {}),
+      ...(to && placeItemById[to] ? { to } : {}),
       ...(startDate.value ? { date: startDate.value } : {}),
       ...(wallChoice.value !== 'auto' ? { wall: wallChoice.value } : {}),
     },
   })
 })
+
+// 端点带坐标但不是本地景点时（高德搜出来的地点），问一次高德要真实公交方案
+const customEnds = computed(() => {
+  const list = []
+  if (startPlace.value && !placeItemById[startPlace.value.id]) list.push(startPlace.value)
+  if (endPlace.value && !placeItemById[endPlace.value.id]) list.push(endPlace.value)
+  return list
+})
+
+// ---------------------------------------------------------------------------
+// 高德实时路线：我们自己的矩阵是估算，这里是高德给的真实公交方案，放一屏做对照
+const toGcj = (place) => (place.gcj ? { lng: place.lng, lat: place.lat } : wgs84ToGcj02(place.lng, place.lat))
+
+const amapPlans = ref([])
+const amapLoading = ref(false)
+const amapError = ref('')
+
+const runAmap = async () => {
+  if (!startPlace.value || !endPlace.value) return
+  amapLoading.value = true
+  amapError.value = ''
+  amapPlans.value = []
+  const res = await planAmapTransit(toGcj(startPlace.value), toGcj(endPlace.value))
+  amapLoading.value = false
+  if (!res.ok) {
+    amapError.value = res.error
+    return
+  }
+  amapPlans.value = res.plans
+}
+
+// 选了高德搜出来的地点就自动算一次，省得用户还要再点一下
+watch(customEnds, (list) => {
+  if (list.length) runAmap()
+})
+
+const amapLink = computed(() => amapRouteUrl(startPlace.value, endPlace.value, 'bus'))
+
+// key 设置：存在 localStorage，换 key 不用重新构建
+const amapKey = ref(getAmapKey())
+const keyProbe = ref(null)
+const probeBusy = ref(false)
+const keyFromStorage = ref(isCustomKey())
+
+const saveAmapKey = () => {
+  setAmapKey(amapKey.value)
+  keyFromStorage.value = isCustomKey()
+  keyProbe.value = null
+}
+
+const testAmapKey = async () => {
+  probeBusy.value = true
+  keyProbe.value = await probeAmapKey()
+  probeBusy.value = false
+}
+
+// 回到代码里的默认 key（默认 key 已实测可用）
+const useDefaultKey = () => {
+  clearAmapKey()
+  amapKey.value = getAmapKey()
+  keyFromStorage.value = isCustomKey()
+  keyProbe.value = { ok: true, message: '已切回默认 key，下面的路线会用它重新请求' }
+}
 
 const spotById = travelSpots.reduce((map, spot) => {
   map[spot.id] = spot
@@ -276,7 +398,21 @@ const activeDayData = computed(() => {
   return activeRoute.value.days.find((day) => day.index === activeDay.value) || activeRoute.value.days[0]
 })
 
-const activeDayPathIds = computed(() => (activeDayData.value ? activeDayData.value.stops.map((stop) => stop.id) : []))
+// 出发点只在第一天画在图上，终点只在最后一天画；其它天不带锚点，免得常驻标签和景点打架
+const activeHubPoints = computed(() => {
+  const route = activeRoute.value
+  const day = activeDayData.value
+  if (!route || !day) return []
+  const list = []
+  if (route.origin && day.index === 1 && startPlace.value) list.push(startPlace.value)
+  if (route.terminus && day.index === route.dayCount && endPlace.value) list.push(endPlace.value)
+  return list.filter((place) => place && Number.isFinite(place.lat))
+})
+
+const activeDayPathIds = computed(() => [
+  ...activeHubPoints.value.map((hub) => hub.id),
+  ...(activeDayData.value ? activeDayData.value.stops.map((stop) => stop.id) : []),
+])
 
 const wallCompare = computed(() =>
   ['badaling', 'mutianyu'].map((id) => ({
@@ -287,9 +423,9 @@ const wallCompare = computed(() =>
 )
 
 const swapEnds = () => {
-  const temp = startId.value
-  startId.value = endId.value
-  endId.value = temp
+  const temp = startPlace.value
+  startPlace.value = endPlace.value
+  endPlace.value = temp
 }
 
 // 天 chip 上带一句摘要：长城日写「长城」，其余写「3 站」

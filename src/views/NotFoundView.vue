@@ -66,9 +66,9 @@ function goBack() {
   max-width: 620px;
   padding: 40px 36px;
   text-align: center;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(140deg, rgba(212, 175, 55, 0.08), transparent 60%), #1a1a1a;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%), #1a1a1a;
 }
 
 .nf-code {
@@ -76,7 +76,7 @@ function goBack() {
   font-weight: 600;
   line-height: 1;
   letter-spacing: 6px;
-  color: #d4af37;
+  color: var(--accent);
   opacity: 0.85;
 }
 
@@ -101,7 +101,7 @@ function goBack() {
   font-size: 12px;
   color: #cfae5b;
   background: #141414;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   word-break: break-all;
 }
@@ -122,7 +122,7 @@ function goBack() {
   font-size: 13px;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
@@ -130,15 +130,15 @@ function goBack() {
 }
 
 .nf-btn:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .nf-btn.primary {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .nf-btn.primary:hover {
@@ -154,7 +154,7 @@ function goBack() {
   flex-wrap: wrap;
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .nf-suggest-label {
@@ -171,7 +171,7 @@ function goBack() {
 }
 
 .nf-link:hover {
-  color: #d4af37;
-  border-bottom-color: #6b5c2e;
+  color: var(--accent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 </style>

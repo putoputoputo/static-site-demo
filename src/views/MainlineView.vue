@@ -245,16 +245,16 @@ function goDetail(id) {
   justify-content: space-between;
   gap: 24px;
   padding: 26px 28px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.14), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
 }
 
 .hero-title {
   margin: 0 0 8px;
   font-size: 26px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -281,13 +281,13 @@ function goDetail(id) {
   width: 220px;
   height: 6px;
   border-radius: 3px;
-  background: #2c2820;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8a7434, #d4af37);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 57%, transparent), var(--accent));
   transition: width 0.3s ease;
 }
 
@@ -310,17 +310,17 @@ function goDetail(id) {
   gap: 6px;
   padding: 6px 12px;
   font-size: 12px;
-  color: #d4af37;
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   border-radius: 6px;
-  background: rgba(212, 175, 55, 0.07);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
   text-decoration: none;
   transition: all 0.16s ease;
 }
 
 .guide-link:hover {
-  border-color: rgba(212, 175, 55, 0.7);
-  background: rgba(212, 175, 55, 0.14);
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .guide-hint {
@@ -338,7 +338,7 @@ function goDetail(id) {
   min-width: 78px;
   padding: 10px 12px;
   text-align: center;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -347,7 +347,7 @@ function goDetail(id) {
   display: block;
   font-size: 18px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .badge-label {
@@ -360,7 +360,7 @@ function goDetail(id) {
 /* 筛选 */
 .filter-panel {
   padding: 16px 20px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -416,7 +416,7 @@ function goDetail(id) {
 .index-num {
   font-size: 13px;
   font-weight: 600;
-  color: #6b5a2a;
+  color: color-mix(in srgb, var(--accent) 41%, transparent);
   letter-spacing: 1px;
 }
 
@@ -424,7 +424,7 @@ function goDetail(id) {
   flex: 1;
   width: 1px;
   margin-top: 8px;
-  background: linear-gradient(180deg, #3a3324, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent);
 }
 
 .chapter-card:last-child .index-line {
@@ -438,7 +438,7 @@ function goDetail(id) {
   flex-direction: column;
   gap: 9px;
   padding: 16px 18px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
   cursor: pointer;
@@ -446,7 +446,7 @@ function goDetail(id) {
 }
 
 .chapter-body:hover {
-  border-color: #6b5a2a;
+  border-color: color-mix(in srgb, var(--accent) 41%, transparent);
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
@@ -474,7 +474,7 @@ function goDetail(id) {
 
 .dlc-tag {
   font-size: 11px;
-  color: #c98b3f;
+  color: color-mix(in srgb, var(--accent) 86%, transparent);
   font-weight: 400;
 }
 
@@ -482,7 +482,7 @@ function goDetail(id) {
   font-size: 11px;
   color: #8a8574;
   font-weight: 400;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 3px;
   padding: 0 4px;
 }
@@ -534,13 +534,13 @@ function goDetail(id) {
   border-radius: 4px;
   color: #8a8574;
   background: #242424;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .meta-item.level {
-  color: #c9a227;
-  background: rgba(201, 162, 39, 0.08);
-  border-color: rgba(201, 162, 39, 0.22);
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .meta-item.weapon {
@@ -593,7 +593,7 @@ function goDetail(id) {
   display: flex;
   gap: 8px;
   padding-top: 9px;
-  border-top: 1px dashed #2e2a22;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 7%, transparent);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -611,7 +611,7 @@ function goDetail(id) {
 .ending-section {
   margin-top: 10px;
   padding: 22px 24px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #171717;
 }
@@ -623,7 +623,7 @@ function goDetail(id) {
 .section-title {
   margin: 0 0 6px;
   font-size: 18px;
-  color: #d4af37;
+  color: var(--accent);
   letter-spacing: 1px;
 }
 
@@ -646,7 +646,7 @@ function goDetail(id) {
   flex-direction: column;
   gap: 7px;
   padding: 14px 16px;
-  border: 1px solid #2c2820;
+  border: 1px solid color-mix(in srgb, var(--accent) 6%, transparent);
   border-radius: 8px;
   background: #1c1c1c;
 }
@@ -668,7 +668,7 @@ function goDetail(id) {
   flex-shrink: 0;
   font-size: 10px;
   color: #8a8574;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 3px;
   padding: 1px 5px;
 }
@@ -682,7 +682,7 @@ function goDetail(id) {
   margin: 0;
   font-size: 12px;
   line-height: 1.6;
-  color: #c9a227;
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
 }
 
 .ending-detail {
@@ -701,7 +701,7 @@ function goDetail(id) {
 }
 
 .ending-link:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 @media (max-width: 900px) {

@@ -148,13 +148,13 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   text-align: left;
   cursor: pointer;
   background: #1a1a1a;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 7px;
   transition: border-color 0.18s, background 0.18s;
 }
 
 .picker-trigger:hover {
-  border-color: #5a4f2c;
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
   background: #1d1d1d;
 }
 
@@ -192,7 +192,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   min-width: 260px;
   padding: 8px;
   background: #191919;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 9px;
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
 }
@@ -203,7 +203,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   gap: 7px;
   padding: 6px 9px;
   background: #141414;
-  border: 1px solid #322c1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
 }
 
@@ -233,7 +233,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 }
 
 .panel-clear:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .panel-list {
@@ -259,11 +259,11 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 }
 
 .panel-row:hover {
-  background: rgba(212, 175, 55, 0.1);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .panel-row.current {
-  background: rgba(212, 175, 55, 0.07);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .row-label {
@@ -276,7 +276,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 }
 
 .panel-row.current .row-label {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .row-meta {
@@ -289,8 +289,8 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
 .row-flag {
   flex-shrink: 0;
   font-size: 10px;
-  color: #8a7440;
-  border: 1px solid #4a3f20;
+  color: color-mix(in srgb, var(--accent) 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 27%, transparent);
   border-radius: 3px;
   padding: 0 4px;
 }
@@ -310,7 +310,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   gap: 8px;
   margin-top: 6px;
   padding: 6px 4px 0;
-  border-top: 1px solid #262119;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .foot-count {
@@ -325,12 +325,12 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDown)
   color: #8a8574;
   cursor: pointer;
   background: #232323;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 4px;
 }
 
 .foot-btn:hover {
-  color: #d4af37;
-  border-color: rgba(212, 175, 55, 0.4);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 </style>

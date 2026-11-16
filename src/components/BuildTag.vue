@@ -15,7 +15,7 @@ import { APP_LABEL, APP_TITLE } from '../utils/version.js'
   line-height: 1.7;
   color: #6b6555;
   background: #171717;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: default;
   transition: color 0.18s, border-color 0.18s;
@@ -23,6 +23,6 @@ import { APP_LABEL, APP_TITLE } from '../utils/version.js'
 
 .build-tag:hover {
   color: #b99a4e;
-  border-color: #6b5c2e;
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 </style>

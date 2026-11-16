@@ -1,13 +1,14 @@
 /* 旅游板块共用样式
-   口径与影之刃零一致：深底 #1a1a1a 卡片、#3a3324 描边、金色作强调；
+   口径与影之刃零一致：深底 #1a1a1a 卡片、color-mix(in srgb, var(--accent) 14%, transparent) 描边、金色作强调；
    旅游板块自己的强调色换成绿色系，和游戏板块的暗金、影之刃零的赤红区分开。 */
 
 .travel {
-  --tv-accent: #6f9e7a;
-  --tv-accent-soft: #1a2620;
-  --tv-accent-line: #35513f;
+  /* 强调色不再定死为绿色，统一跟全局主题色（--accent 由 src/utils/theme.js 注入） */
+  --tv-accent: var(--accent);
+  --tv-accent-soft: var(--accent-soft);
+  --tv-accent-line: var(--accent-line);
   --tv-card: #1a1a1a;
-  --tv-line: #3a3324;
+  --tv-line: color-mix(in srgb, var(--accent) 14%, transparent);
   --tv-text: #e5e3d8;
   --tv-text-2: #a8a292;
   --tv-text-3: #7a7565;
@@ -67,8 +68,8 @@
   gap: 10px 14px;
   margin-top: 20px;
   padding: 14px 16px;
-  background: #1d1a12;
-  border: 1px solid #4a3f22;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 8px;
   font-size: 13px;
   line-height: 1.7;
@@ -77,7 +78,7 @@
 
 .travel .festival-note {
   font-size: 12px;
-  color: #8d7742;
+  color: color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 /* ---------- 通用面板 ---------- */
@@ -210,8 +211,8 @@
 }
 
 .travel .notice.warn {
-  background: #1a1710;
-  border-left-color: #6b5a30;
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  border-left-color: color-mix(in srgb, var(--accent) 39%, transparent);
 }
 
 .travel .notice-head {
@@ -380,8 +381,8 @@
 
 .travel .tag.must {
   color: #d8c79a;
-  background: #241f10;
-  border: 1px solid #4a3f22;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .travel .tag.book {
@@ -627,6 +628,93 @@
   color: var(--tv-text);
 }
 
+/* ---------- 起终点选择器（可打字搜） ---------- */
+.travel .place-picker {
+  position: relative;
+}
+
+.travel .place-picker .field-input {
+  cursor: text;
+}
+
+.travel .picker-panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  min-width: 240px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 6px;
+  background: #17181a;
+  border: 1px solid var(--tv-accent-line);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+.travel .picker-group + .picker-group {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--tv-line);
+}
+
+.travel .picker-group-label {
+  padding: 4px 8px 6px;
+  font-size: 11.5px;
+  color: var(--tv-text-3);
+  letter-spacing: 0.04em;
+}
+
+.travel .picker-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 8px;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  color: var(--tv-text);
+  background: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.travel .picker-item:hover,
+.travel .picker-item.on {
+  background: var(--tv-accent-soft);
+}
+
+.travel .picker-item.picked .picker-name::after {
+  content: ' ✓';
+  color: var(--tv-accent);
+}
+
+.travel .picker-hint {
+  flex: none;
+  font-size: 11.5px;
+  font-style: normal;
+  color: var(--tv-text-3);
+}
+
+.travel .picker-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  font-size: 12px;
+  color: var(--tv-text-3);
+}
+
+.travel .picker-empty strong {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--tv-text-2);
+}
+
 .travel .planner-actions {
   display: flex;
   flex-wrap: wrap;
@@ -697,6 +785,115 @@
 
 .travel .home-planner-link:hover {
   color: var(--tv-accent);
+}
+
+/* ---------- 高德实时路线 ---------- */
+.travel .amap-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.travel .amap-actions .btn-link:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.travel .amap-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.travel .amap-plan {
+  padding: 12px 14px;
+  background: var(--tv-card);
+  border: 1px solid var(--tv-line);
+  border-radius: 8px;
+}
+
+.travel .amap-plan header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.travel .amap-plan header strong {
+  font-weight: 600;
+  color: var(--tv-text);
+}
+
+.travel .amap-time {
+  color: var(--tv-accent);
+}
+
+.travel .amap-meta,
+.travel .amap-cost {
+  font-size: 12px;
+  color: var(--tv-text-3);
+}
+
+.travel .amap-steps {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--tv-text-2);
+}
+
+.travel .amap-steps em {
+  font-style: normal;
+  color: var(--tv-text-3);
+}
+
+.travel .amap-key {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--tv-line);
+}
+
+.travel .amap-key-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--tv-text-2);
+}
+
+.travel .amap-key-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.travel .amap-key-row .field-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.travel .amap-key-result {
+  margin-top: 10px;
+  font-size: 12.5px;
+}
+
+.travel .amap-key-result.ok {
+  color: #7fb98a;
+}
+
+.travel .amap-key-result.bad {
+  color: #d08a7a;
+}
+
+.travel .amap-key-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--tv-text-3);
 }
 
 /* ---------- 三档方案切换 ---------- */
@@ -814,8 +1011,8 @@
 
 .travel .route-warnings .warn {
   color: #d8b97a;
-  background: #1d1a12;
-  border-left: 2px solid #6b5a30;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 39%, transparent);
 }
 
 /* ---------- 主体：地图在上，行程在下 ----------
@@ -867,7 +1064,7 @@
 }
 
 .travel .day-card.over {
-  border-color: #6b5a30;
+  border-color: color-mix(in srgb, var(--accent) 39%, transparent);
 }
 
 .travel .day-head {
@@ -901,14 +1098,14 @@
 
 .travel .day-badge.wall {
   color: #d8c79a;
-  background: #241f10;
-  border: 1px solid #4a3f22;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .travel .day-badge.over {
   color: #d8b97a;
-  background: #1d1a12;
-  border: 1px solid #6b5a30;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 39%, transparent);
 }
 
 .travel .day-meta {
@@ -939,7 +1136,7 @@
   line-height: 1.75;
   color: #c8bda0;
   background: #1d1c17;
-  border-left: 2px solid #4a3f22;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 0 4px 4px 0;
 }
 
@@ -971,7 +1168,7 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: #2a2c2e;
+  background: #1d1c17;
 }
 
 .travel .stop::after {
@@ -1018,7 +1215,7 @@
 
 .travel .leg-fare {
   font-size: 11.5px;
-  color: #8d7742;
+  color: color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 .travel .stop-clock {
@@ -1242,7 +1439,7 @@
 }
 
 .travel .bullet-list.muted li::before {
-  background: #4a453a;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 @media (max-width: 860px) {

@@ -12,7 +12,7 @@
         :to="board.path"
         class="board-card"
       >
-        <el-icon :size="36" color="#d4af37">
+        <el-icon :size="36" color="var(--accent)">
           <component :is="board.icon" />
         </el-icon>
         <h2>{{ board.label }}</h2>
@@ -134,17 +134,17 @@ const boards = [
 .banner {
   padding: 48px 24px;
   text-align: center;
-  background: linear-gradient(180deg, rgba(212, 175, 55, 0.12), transparent),
-    radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08), transparent 70%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent),
+    radial-gradient(ellipse at center, color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%);
   border-radius: 12px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   margin-bottom: 32px;
 }
 
 .banner h1 {
   margin: 0 0 12px;
   font-size: 32px;
-  color: #d4af37;
+  color: var(--accent);
   letter-spacing: 4px;
 }
 
@@ -179,16 +179,16 @@ const boards = [
   gap: 10px;
   padding: 24px;
   background: #1c1c1c;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
   text-decoration: none;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .board-card:hover {
-  border-color: #d4af37;
+  border-color: var(--accent);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.12);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .board-card h2 {

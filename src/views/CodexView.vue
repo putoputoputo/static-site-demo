@@ -331,9 +331,9 @@ function resetFilters() {
   justify-content: space-between;
   gap: 28px;
   padding: 26px 28px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.14), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
 }
 
 .hero-text {
@@ -352,7 +352,7 @@ function resetFilters() {
   margin: 0 0 8px;
   font-size: 26px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -373,7 +373,7 @@ function resetFilters() {
   min-width: 82px;
   padding: 10px 12px;
   text-align: center;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -382,7 +382,7 @@ function resetFilters() {
   display: block;
   font-size: 18px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .badge-label {
@@ -398,7 +398,7 @@ function resetFilters() {
   flex-direction: column;
   gap: 14px;
   padding: 18px 20px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -447,7 +447,7 @@ function resetFilters() {
   font-size: 13px;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
@@ -455,16 +455,16 @@ function resetFilters() {
 
 .all-chip:hover,
 .chip:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .all-chip.active,
 .chip.active {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .chip-count {
@@ -482,7 +482,7 @@ function resetFilters() {
 }
 
 .result-bar strong {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .result-hint {
@@ -503,7 +503,7 @@ function resetFilters() {
   flex-direction: column;
   gap: 11px;
   padding: 18px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
   background: #1c1c1c;
   text-decoration: none;
@@ -511,9 +511,9 @@ function resetFilters() {
 }
 
 .codex-card:hover {
-  border-color: #d4af37;
+  border-color: var(--accent);
   transform: translateY(-3px);
-  box-shadow: 0 10px 26px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .card-head {
@@ -537,7 +537,7 @@ function resetFilters() {
   margin-left: 2px;
   font-size: 11px;
   font-weight: 400;
-  color: #c98b3f;
+  color: color-mix(in srgb, var(--accent) 86%, transparent);
 }
 
 .fav-btn {
@@ -557,12 +557,12 @@ function resetFilters() {
 }
 
 .fav-btn:hover {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.12);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .fav-btn.active {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .tier-badge {
@@ -592,9 +592,9 @@ function resetFilters() {
 }
 
 .mini-tag.category {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .mini-tag.role {
@@ -608,7 +608,7 @@ function resetFilters() {
   flex-wrap: wrap;
   gap: 8px;
   padding: 9px 11px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -670,7 +670,7 @@ function resetFilters() {
   gap: 6px;
   margin-top: auto;
   padding-top: 10px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 12px;
 }
 

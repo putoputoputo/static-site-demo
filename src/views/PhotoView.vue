@@ -312,7 +312,7 @@ onBeforeUnmount(() => {
   margin: 0 0 10px;
   font-size: 28px;
   letter-spacing: 3px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .photo-head p {
@@ -326,7 +326,7 @@ onBeforeUnmount(() => {
   margin: 0 auto;
   padding: 20px;
   background: #1a1a1a;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
 }
 
@@ -337,7 +337,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   padding: 12px;
-  border: 1px dashed #3f3928;
+  border: 1px dashed color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 10px;
   background: #141414;
   overflow: hidden;
@@ -390,35 +390,35 @@ onBeforeUnmount(() => {
   color: #d8d3c2;
   text-decoration: none;
   background: #202020;
-  border: 1px solid #3f3928;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   cursor: pointer;
   transition: color 0.18s, background 0.18s, border-color 0.18s;
 }
 
 .act-btn:hover:not(:disabled) {
-  color: #d4af37;
-  border-color: #6b5c2e;
-  background: #24211a;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .act-btn.primary {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .act-btn.primary:hover:not(:disabled) {
   color: #121212;
   filter: brightness(1.08);
-  background: #d4af37;
+  background: var(--accent);
 }
 
 .act-btn:disabled {
   color: #5c5749;
   background: #1c1c1c;
-  border-color: #2e2a20;
+  border-color: color-mix(in srgb, var(--accent) 7%, transparent);
   cursor: not-allowed;
 }
 
@@ -438,7 +438,7 @@ onBeforeUnmount(() => {
   line-height: 16px;
   text-align: center;
   color: #121212;
-  background: #d4af37;
+  background: var(--accent);
   border-radius: 999px;
 }
 
@@ -468,7 +468,7 @@ onBeforeUnmount(() => {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #d4af37;
+  background: var(--accent);
   animation: pulse 1s ease-in-out infinite;
 }
 
@@ -490,8 +490,8 @@ onBeforeUnmount(() => {
   font-size: 12px;
   line-height: 1.8;
   color: #b99a4e;
-  background: rgba(212, 175, 55, 0.06);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 8px;
 }
 
@@ -525,14 +525,14 @@ onBeforeUnmount(() => {
   color: #8a8574;
   background: transparent;
   border: none;
-  border-bottom: 1px dashed #4a4436;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent) 22%, transparent);
   cursor: pointer;
   transition: color 0.18s, border-color 0.18s;
 }
 
 .link-btn:hover {
-  color: #d4af37;
-  border-bottom-color: #6b5c2e;
+  color: var(--accent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .failure-panel,
@@ -567,7 +567,7 @@ onBeforeUnmount(() => {
 }
 
 .result-panel {
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .result-head {
@@ -576,7 +576,7 @@ onBeforeUnmount(() => {
   flex-wrap: wrap;
   gap: 10px;
   padding-bottom: 12px;
-  border-bottom: 1px dashed #332d20;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .result-title {
@@ -600,8 +600,8 @@ onBeforeUnmount(() => {
   font-size: 12.5px;
   line-height: 1.75;
   color: #d9b25f;
-  background: rgba(212, 175, 55, 0.07);
-  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
   border-radius: 8px;
 }
 
@@ -616,7 +616,7 @@ onBeforeUnmount(() => {
   font-size: 12px;
   color: #d9b25f;
   background: transparent;
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
@@ -624,8 +624,8 @@ onBeforeUnmount(() => {
 
 .notice-btn:hover {
   color: #121212;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .sec {
@@ -634,7 +634,7 @@ onBeforeUnmount(() => {
 
 .sec + .sec {
   margin-top: 18px;
-  border-top: 1px solid #262217;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .sec-head {
@@ -649,7 +649,7 @@ onBeforeUnmount(() => {
   padding-left: 10px;
   font-size: 14.5px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
   letter-spacing: 0.5px;
 }
 
@@ -661,7 +661,7 @@ onBeforeUnmount(() => {
   bottom: 3px;
   width: 3px;
   border-radius: 2px;
-  background: #d4af37;
+  background: var(--accent);
 }
 
 .copy-btn {
@@ -671,7 +671,7 @@ onBeforeUnmount(() => {
   font-size: 12px;
   color: #b99a4e;
   background: transparent;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
@@ -679,8 +679,8 @@ onBeforeUnmount(() => {
 
 .copy-btn:hover {
   color: #121212;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .sec-p {
@@ -714,7 +714,7 @@ onBeforeUnmount(() => {
   white-space: pre-wrap;
   word-break: break-word;
   background: #141414;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
 }
 

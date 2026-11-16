@@ -16,7 +16,7 @@
       @opened="focusInput"
     >
       <div class="dialog-head">
-        <el-icon :size="16" color="#d4af37"><Search /></el-icon>
+        <el-icon :size="16" color="var(--accent)"><Search /></el-icon>
         <input
           ref="inputRef"
           v-model="keyword"
@@ -177,14 +177,14 @@ onUnmounted(() => {
   color: #9c9686;
   cursor: pointer;
   background: #1b1b1b;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
   transition: color 0.2s, border-color 0.2s;
 }
 
 .search-trigger:hover {
-  color: #d4af37;
-  border-color: rgba(212, 175, 55, 0.45);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 .trigger-kbd {
@@ -193,7 +193,7 @@ onUnmounted(() => {
   font-size: 10.5px;
   color: #6f6a5c;
   background: #232323;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 3px;
 }
 
@@ -202,7 +202,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 10px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #302b22;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .dialog-input {
@@ -224,7 +224,7 @@ onUnmounted(() => {
   color: #8a8574;
   cursor: pointer;
   background: #242424;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
 }
 
@@ -247,7 +247,7 @@ onUnmounted(() => {
 
 .group-label {
   font-size: 12px;
-  color: #d4af37;
+  color: var(--accent);
   letter-spacing: 1px;
 }
 
@@ -267,7 +267,7 @@ onUnmounted(() => {
 }
 
 .result-row:hover {
-  background: rgba(212, 175, 55, 0.09);
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
 }
 
 .result-name {
@@ -305,13 +305,13 @@ onUnmounted(() => {
   color: #9c9686;
   cursor: pointer;
   background: #1e1e1e;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
 }
 
 .hint-chip:hover {
-  color: #d4af37;
-  border-color: rgba(212, 175, 55, 0.45);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 .hint-foot {

@@ -271,16 +271,16 @@ function goDetail(id) {
   justify-content: space-between;
   gap: 24px;
   padding: 26px 28px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.14), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
 }
 
 .hero-title {
   margin: 0 0 8px;
   font-size: 26px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -306,7 +306,7 @@ function goDetail(id) {
   min-width: 78px;
   padding: 10px 12px;
   text-align: center;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -315,7 +315,7 @@ function goDetail(id) {
   display: block;
   font-size: 18px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .badge-label {
@@ -331,7 +331,7 @@ function goDetail(id) {
   flex-direction: column;
   gap: 14px;
   padding: 18px 20px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -384,19 +384,19 @@ function goDetail(id) {
 }
 
 .chip:hover {
-  color: #d4af37;
-  border-color: #5b4f2a;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .chip.active {
   color: #1a1a1a;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
   font-weight: 600;
 }
 
 .chip.active .chip-count {
-  color: rgba(26, 26, 26, 0.65);
+  color: var(--accent);
 }
 
 .chip.warn.active {
@@ -413,7 +413,7 @@ function goDetail(id) {
 .chip-divider {
   width: 1px;
   height: 16px;
-  background: #3a352c;
+  background: color-mix(in srgb, var(--accent) 11%, transparent);
   margin: 0 2px;
 }
 
@@ -442,7 +442,7 @@ function goDetail(id) {
   flex-direction: column;
   gap: 10px;
   padding: 16px 18px 18px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
   cursor: pointer;
@@ -450,7 +450,7 @@ function goDetail(id) {
 }
 
 .quest-card:hover {
-  border-color: #6b5a2a;
+  border-color: color-mix(in srgb, var(--accent) 41%, transparent);
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
@@ -482,7 +482,7 @@ function goDetail(id) {
 
 .dlc-tag {
   font-size: 11px;
-  color: #c98b3f;
+  color: color-mix(in srgb, var(--accent) 86%, transparent);
   font-weight: 400;
 }
 
@@ -527,7 +527,7 @@ function goDetail(id) {
   border-radius: 4px;
   color: #8a8574;
   background: #242424;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .mini-tag.region {
@@ -554,7 +554,7 @@ function goDetail(id) {
   color: #6f6a5a;
   background: transparent;
   border-style: dashed;
-  border-color: #3a352c;
+  border-color: color-mix(in srgb, var(--accent) 11%, transparent);
 }
 
 .card-summary {
@@ -571,7 +571,7 @@ function goDetail(id) {
   gap: 6px;
   margin-top: auto;
   padding-top: 10px;
-  border-top: 1px dashed #2e2a22;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .reward-label {
@@ -581,9 +581,9 @@ function goDetail(id) {
 
 .reward-item {
   font-size: 11px;
-  color: #c9a227;
-  background: rgba(201, 162, 39, 0.08);
-  border: 1px solid rgba(201, 162, 39, 0.22);
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
   border-radius: 4px;
   padding: 1px 6px;
 }

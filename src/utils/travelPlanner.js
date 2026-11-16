@@ -14,6 +14,7 @@
 
 import { travelSpots } from '../data/travel/spots.js'
 import { travelAreas, areaById } from '../data/travel/areas.js'
+import { travelHubs } from '../data/travel/hubs.js'
 import { legBetween, wallPlans } from '../data/travel/transit.js'
 import { festivalDays, seasonOf } from '../data/travel/meta.js'
 
@@ -21,6 +22,35 @@ const spotById = travelSpots.reduce((map, spot) => {
   map[spot.id] = spot
   return map
 }, {})
+
+// 起终点可以从「景点」里选，也可以从「交通枢纽」里选（机场 / 火车站 / 长城专线发车点）。
+// 枢纽不进景点序列：它没有停留时长也没有门票，只作一天的起点锚或终点锚。
+const placeById = travelHubs.reduce(
+  (map, hub) => {
+    map[hub.id] = hub
+    return map
+  },
+  { ...spotById }
+)
+
+// 锚点 = 不作为景点出现的端点（交通枢纽，或高德搜出来的任意地点）
+const isAnchor = (place) => Boolean(place && (place.isHub || place.isCustom))
+
+// 起终点解析：字符串按 id 查库；对象先看 id 在不在库里（页面传的是轻量对象，缺 durationMin 等字段），
+// 库里没有才按「高德搜出来的任意地点」处理
+export const resolvePlace = (value) => {
+  if (!value) return null
+  if (typeof value === 'string') return placeById[value] || null
+  if (value.id && placeById[value.id]) return placeById[value.id]
+  if (!Number.isFinite(value.lat) || !Number.isFinite(value.lng)) return null
+  return {
+    ...value,
+    // 自定义地点没有停留与门票概念，按 0 处理，否则容量计算会算成 NaN
+    durationMin: 0,
+    isCustom: true,
+    area: value.area || '',
+  }
+}
 
 // 当天必须排第一 / 排最后的景点。
 // 故宫只能午门进神武门出，且淡季 15:30 停止入馆，排在第一站才稳；
@@ -199,7 +229,7 @@ const orderDay = (spots, entry, pinnedFirst, pinnedLast) => {
 // 第一天的第一站是用户选的起点，不重复算通勤；
 // 之后每天的第一站从住处出发，用 LODGING_MIN 固定估算，并在 legs 里标明。
 const buildDay = (spots, entry, options) => {
-  const { dayStart, date, fromLodging = false } = options
+  const { dayStart, date, fromLodging = false, terminus = null } = options
   const legs = []
   const stops = []
   let clock = dayStart
@@ -252,6 +282,27 @@ const buildDay = (spots, entry, options) => {
     })
     cursor = spot
   })
+
+  // 终点是枢纽（机场 / 火车站）：最后补一段「最后一站 → 枢纽」，
+  // 这段的时间和票价必须计入当天，否则用户会以为到景点就算完了。
+  let exitLeg = null
+  if (terminus && spots.length) {
+    const last = spots[spots.length - 1]
+    const leg = legBetween(last, terminus)
+    clock += leg.minutes
+    exitLeg = {
+      fromId: last.id,
+      fromName: last.name,
+      toId: terminus.id,
+      toName: terminus.name,
+      minutes: leg.minutes,
+      fare: leg.fare,
+      mode: leg.mode,
+      kind: leg.kind,
+      via: leg.via,
+    }
+    legs.push(exitLeg)
+  }
 
   const commuteMin = legs.reduce((sum, leg) => sum + leg.minutes, 0)
   const fare = legs.reduce((sum, leg) => sum + leg.fare, 0)
@@ -344,7 +395,8 @@ const buildWallDay = (wallSpot, planId, options) => {
 }
 
 // 把「天 → 景点数组」转成完整的方案对象，并检查是否超时
-const finalizeDays = (dayPlans, entry, pacing, endPin = null, keepOrder = false) => {
+const finalizeDays = (dayPlans, entry, pacing, endPin = null, keepOrder = false, options = {}) => {
+  const { terminus = null } = options
   let cityIndex = 0
   const days = dayPlans.map((plan, index) => {
     let day
@@ -360,14 +412,19 @@ const finalizeDays = (dayPlans, entry, pacing, endPin = null, keepOrder = false)
         : orderDay(
             plan.spots,
             entry,
-            isFirstCityDay && !isWall(entry) ? entry : null,
+            // 起点是枢纽 / 自定义地点时不能当 firstPin —— orderDay 会把它钉进景点序列，
+            // 结果「北京南站」变成一个要停留 0 分钟的景点，还占掉当天容量。
+            isFirstCityDay && !isWall(entry) && !isAnchor(entry) ? entry : null,
             isLastCityDay ? endPin : null
           )
       day = buildDay(ordered, entry, {
         dayStart: pacing.dayStart,
         date: plan.date,
-        // 第一个城区日的第一站就是用户选的起点时不算接驳；其余情况（含起点是长城）都从住处出发
-        fromLodging: cityIndex > 0 || isWall(entry),
+        // 第一个城区日的第一站就是用户选的起点时不算接驳；其余情况（含起点是长城）都从住处出发。
+        // 起点是枢纽时不走「住处」这条虚拟接驳，直接按「枢纽 → 第一站」算真实路段。
+        fromLodging: !entry.isHub && (cityIndex > 0 || isWall(entry)),
+        // 终点是枢纽时，最后一天收尾要补一段「最后一站 → 枢纽」
+        terminus: isLastCityDay ? terminus : null,
       })
       cityIndex += 1
     }
@@ -453,7 +510,8 @@ const clusterDays = (spots, axis, pacing, start) => {
   // 第一天还要塞起点，容量提前扣掉起点时长
   const capacityOf = (dayIndex) => {
     let cap = pacing.dayBudget - LUNCH_MIN
-    if (dayIndex === 0 && start) cap -= start.durationMin + 20
+    // 枢纽没有停留时长，按 0 算；否则 undefined 会把容量算成 NaN，整天都排不进去
+    if (dayIndex === 0 && start) cap -= (start.durationMin || 0) + 20
     return cap
   }
 
@@ -573,16 +631,24 @@ export const planRoutes = (options = {}) => {
   const {
     startId,
     endId,
+    startPlace,
+    endPlace,
     startDate = '',
     wallId = 'auto',
     pacingId = 'normal',
   } = options
 
-  const start = spotById[startId]
-  const end = spotById[endId]
+  // 起终点可以是：库里的 id、枢纽、或高德搜出来的任意地点（带 lat/lng 的对象）
+  const start = resolvePlace(startPlace || startId)
+  const end = resolvePlace(endPlace || endId)
   if (!start || !end) return { error: '起终点不存在', routes: [] }
-  if (start.id === end.id) return { error: '起点和终点不能是同一个景点', routes: [] }
+  if (start.id === end.id) return { error: '起点和终点不能是同一个地点', routes: [] }
   if (start.remote || end.remote) return { error: '古北水镇需要过夜，暂不纳入自动规划', routes: [] }
+
+  // 枢纽与自定义地点只当端点：它们没有停留时长、没有门票，不进景点序列，
+  // 角色是「一天的起点锚」和「最后一天的终点锚」。
+  const origin = isAnchor(start) ? start : null
+  const terminus = isAnchor(end) ? end : null
 
   const axis = buildAxis(start, end)
 
@@ -612,9 +678,9 @@ export const planRoutes = (options = {}) => {
     wallSpot = spotById[wallId] || null
   }
 
-  // 必去：起点、终点、故宫、长城
+  // 必去：起点、终点、故宫、长城（枢纽不当必去景点）
   const palace = travelSpots.find((spot) => spot.id === 'forbidden-city')
-  const must = [start, end, palace, wallSpot].filter(Boolean)
+  const must = [origin ? null : start, terminus ? null : end, palace, wallSpot].filter(Boolean)
   const mustIds = new Set(must.map((spot) => spot.id))
 
   // 候选补充：排除必去、排除长城（单独占一天）、排除古北（需要过夜）
@@ -635,16 +701,18 @@ export const planRoutes = (options = {}) => {
       (spot, index) => middleSpots.findIndex((item) => item.id === spot.id) === index
     )
 
-    // 起点是长城时，城区日的入口不能拿长城当起点，否则第一段会算成「长城 → 市区」的长途通勤
+    // 起点是长城时，城区日的入口不能拿长城当起点，否则第一段会算成「长城 → 市区」的长途通勤。
+    // 起点是枢纽时，枢纽正好该当入口：天内最近邻从这里开始排，第一段就是「枢纽 → 第一站」。
     const cityEntry = isWall(start) ? uniqueMiddle[0] || null : start
     const cityDays = clusterDays(uniqueMiddle, axis, pacing, cityEntry)
 
     // 钉起点：第一天最前。起点本身是长城时不钉 —— 长城单独成日，钉进来会「故宫 + 八达岭」挤一天。
+    // 起点是枢纽时同样不钉：枢纽不是景点，它只作为第一段通勤的出发点。
     if (!cityDays.length) cityDays.push({ spots: [], usedMin: 0 })
-    if (!isWall(start)) cityDays[0].spots.unshift(start)
+    if (!isWall(start) && !origin) cityDays[0].spots.unshift(start)
 
     // 钉终点：最后一天最后。装不下就给它单独一天，别硬塞成超时的一天
-    if (!isWall(end)) {
+    if (!isWall(end) && !terminus) {
       const last = cityDays[cityDays.length - 1]
       const leg = last.spots.length ? legBetween(last.spots[last.spots.length - 1], end).minutes : 20
       if (last.spots.length && (last.usedMin || 0) + end.durationMin + leg > pacing.dayBudget - LUNCH_MIN) {
@@ -696,7 +764,9 @@ export const planRoutes = (options = {}) => {
     }
 
     // 起点在第一天要作为 entry，让第一站不重复计算通勤
-    const route = finalizeDays(dayPlans, start, pacing, isWall(end) ? null : end)
+    const route = finalizeDays(dayPlans, start, pacing, isWall(end) || terminus ? null : end, false, {
+      terminus,
+    })
 
     // 日期：从 startDate 起连续排
     if (startDate) {
@@ -731,6 +801,8 @@ export const planRoutes = (options = {}) => {
       name: pacing.name,
       desc: pacing.desc,
       wall: wallSpot ? { id: wallSpot.id, name: wallSpot.name, plan: (wallPlans[wallSpot.id] || [{}])[0] } : null,
+      origin: origin ? { id: origin.id, name: origin.name, mode: origin.mode } : null,
+      terminus: terminus ? { id: terminus.id, name: terminus.name, mode: terminus.mode } : null,
       ...route,
       warnings,
     }
@@ -760,6 +832,10 @@ export const spotAreaName = (id) => {
   return area ? area.name : ''
 }
 
+// 起终点可以是景点也可以是枢纽，页面取名要统一走这里
+export const placeName = (id) => (placeById[id] ? placeById[id].name : '')
+export const placeByIdSafe = (id) => placeById[id] || null
+
 // 经典路线用：行程是手排的，不参与自动排序，只负责把时间线算出来
 export const buildFixedPlan = (itinerary, pacingId = 'normal') => {
   const pacing = pacings.find((item) => item.id === pacingId) || pacings[1]
@@ -774,5 +850,6 @@ export const buildFixedPlan = (itinerary, pacingId = 'normal') => {
 
 export const planMeta = {
   totalSpots: travelSpots.filter((spot) => !spot.remote).length,
+  hubCount: travelHubs.length,
   areaCount: travelAreas.length,
 }

@@ -29,6 +29,8 @@
             </nav>
             <!-- 全站搜索覆盖游戏与旅游；摄影板块下没有可搜内容 -->
             <GlobalSearch v-if="inGame || inPbz || inTravel" />
+            <!-- 主题色：色点即当前色，点开可换预设或自定义 -->
+            <ThemePicker />
           </div>
         </div>
       </header>
@@ -51,6 +53,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import GlobalSearch from './components/GlobalSearch.vue'
 import NavGroup from './components/NavGroup.vue'
 import BuildTag from './components/BuildTag.vue'
+import ThemePicker from './components/ThemePicker.vue'
 
 // 页面已经有 11 个，平铺会把头部撑爆（窄屏只能横向滚动找链接）。
 // 按「流程 / 图鉴 / 工具」分成三组下拉，头部只占四个位置。

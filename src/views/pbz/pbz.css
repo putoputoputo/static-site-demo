@@ -1,12 +1,13 @@
 /* 影之刃零板块共用样式。
  * 板块内 7 个页面的页头、筛选条、卡片、详情面板结构相同，样式集中在这里，
  * 各页面 import 一次即可；所有规则都挂在 .pbz 下，不影响艾尔登法环的页面。
- * 配色沿用全站暗色底，强调色换成朱红，和艾尔登法环板块的金色区分开。 */
+ * 配色沿用全站暗色底，强调色跟随全站主题色（src/utils/theme.js）。 */
 
 .pbz {
-  --pbz-accent: #d8574a;
-  --pbz-accent-soft: rgba(216, 87, 74, 0.14);
-  --pbz-accent-line: rgba(216, 87, 74, 0.38);
+  /* 主题色统一：这三行原来定死朱红，现在跟全局 --accent 走 */
+  --pbz-accent: var(--accent);
+  --pbz-accent-soft: var(--accent-soft);
+  --pbz-accent-line: var(--accent-line);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -86,7 +87,7 @@
   flex-direction: column;
   gap: 14px;
   padding: 18px 20px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -128,7 +129,7 @@
   font-family: inherit;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: color 0.18s, border-color 0.18s, background-color 0.18s;
@@ -175,7 +176,7 @@
   flex-direction: column;
   gap: 11px;
   padding: 18px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
   background: #1c1c1c;
   text-decoration: none;
@@ -233,7 +234,7 @@
   padding: 0 10px;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .pbz .fav-btn.labelled:hover,
@@ -290,7 +291,7 @@
   flex-wrap: wrap;
   gap: 8px 14px;
   padding: 9px 11px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -330,7 +331,7 @@
   gap: 5px;
   margin: auto 0 0;
   padding-top: 10px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 11.5px;
   line-height: 1.6;
   color: #7a7565;
@@ -401,7 +402,7 @@
 
 .pbz .fact {
   padding: 10px 14px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -438,7 +439,7 @@
 
 .pbz .panel {
   padding: 20px 22px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -492,7 +493,7 @@
 
 .pbz .move-item {
   padding: 12px 14px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -549,7 +550,7 @@
   flex-direction: column;
   gap: 5px;
   padding: 11px 13px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
   text-decoration: none;
@@ -594,7 +595,7 @@
   gap: 8px;
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .pbz .pager-btn {
@@ -608,7 +609,7 @@
   font-family: inherit;
   color: #b8b2a0;
   background: #222;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
   cursor: pointer;
   transition: color 0.18s, border-color 0.18s;
@@ -659,7 +660,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 22px 20px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
   background: #1c1c1c;
   text-decoration: none;
@@ -701,7 +702,7 @@
 
 .pbz .entry {
   padding: 14px 16px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -747,7 +748,7 @@
 
 .pbz .primer-item {
   padding: 14px 16px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -772,7 +773,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 10px 12px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -819,7 +820,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 14px 16px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
   text-decoration: none;
@@ -861,7 +862,7 @@
 .pbz .loadout-location {
   margin-top: auto;
   padding-top: 8px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 11px;
   line-height: 1.6;
   color: #6b6555;
@@ -901,7 +902,7 @@
 /* 成型路线 */
 .pbz .phase-block {
   padding: 14px 16px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -943,7 +944,7 @@
   font-size: 11.5px;
   color: #d8d3c4;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   text-decoration: none;
 }
@@ -994,7 +995,7 @@
   gap: 12px;
   align-items: start;
   padding: 11px 13px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -1174,7 +1175,7 @@
   flex: 1 1 auto;
   min-width: 0;
   padding-bottom: 12px;
-  border-bottom: 1px dashed #2a2519;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .pbz .step-item:last-child .step-body {
@@ -1208,14 +1209,14 @@
   font-size: 12px;
   line-height: 1.75;
   color: #c8a86a;
-  background: #1d1a12;
-  border-left: 2px solid #6b5a30;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 39%, transparent);
   border-radius: 0 4px 4px 0;
 }
 
 .pbz .step-tip::before {
   content: '提示 · ';
-  color: #8d7742;
+  color: color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 .pbz .step-boss-link {

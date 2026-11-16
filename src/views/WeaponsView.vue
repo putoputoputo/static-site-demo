@@ -566,16 +566,16 @@ function goDetail(row) {
   justify-content: space-between;
   gap: 24px;
   padding: 26px 28px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.14), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
 }
 
 .hero-title {
   margin: 0 0 8px;
   font-size: 26px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -601,7 +601,7 @@ function goDetail(row) {
   min-width: 82px;
   padding: 10px 12px;
   text-align: center;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -610,7 +610,7 @@ function goDetail(row) {
   display: block;
   font-size: 18px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .badge-label {
@@ -626,7 +626,7 @@ function goDetail(row) {
   flex-direction: column;
   gap: 14px;
   padding: 18px 20px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -693,22 +693,22 @@ function goDetail(row) {
   font-size: 13px;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .all-chip:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .all-chip.active {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .chip {
@@ -719,22 +719,22 @@ function goDetail(row) {
   font-size: 13px;
   color: #b8b2a0;
   background: #202020;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .chip:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .chip.active {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .chip-count {
@@ -770,7 +770,7 @@ function goDetail(row) {
 }
 
 .result-bar strong {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .result-hint {
@@ -791,7 +791,7 @@ function goDetail(row) {
   flex-direction: column;
   gap: 12px;
   padding: 18px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
   background: #1c1c1c;
   text-decoration: none;
@@ -806,9 +806,9 @@ function goDetail(row) {
 }
 
 .weapon-card:hover {
-  border-color: #d4af37;
+  border-color: var(--accent);
   transform: translateY(-3px);
-  box-shadow: 0 10px 26px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .card-head {
@@ -844,12 +844,12 @@ function goDetail(row) {
 }
 
 .fav-btn:hover {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.12);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .fav-btn.active {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .card-tags {
@@ -868,15 +868,15 @@ function goDetail(row) {
 }
 
 .mini-tag.type {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .mini-tag.region {
   color: #8a8574;
   background: #242424;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .mini-tag.attack {
@@ -907,7 +907,7 @@ function goDetail(row) {
   padding: 10px 12px;
   border-radius: 8px;
   background: #161616;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .value-item {
@@ -954,7 +954,7 @@ function goDetail(row) {
   gap: 6px;
   margin-top: auto;
   padding-top: 10px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 12.5px;
   color: #b8b2a0;
 }
@@ -973,11 +973,11 @@ function goDetail(row) {
   --el-table-bg-color: #1c1c1c;
   --el-table-tr-bg-color: #1c1c1c;
   --el-table-header-bg-color: #242424;
-  --el-table-border-color: #332d20;
+  --el-table-border-color: color-mix(in srgb, var(--accent) 13%, transparent);
   --el-table-text-color: #c9c4b4;
   --el-table-header-text-color: #8a8574;
-  --el-table-row-hover-bg-color: rgba(212, 175, 55, 0.07);
-  border: 1px solid #332d20;
+  --el-table-row-hover-bg-color: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
 }
 

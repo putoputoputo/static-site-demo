@@ -336,16 +336,16 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 24px;
   padding: 26px 28px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.14), transparent 65%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%), #1a1a1a;
 }
 
 .hero-title {
   margin: 0 0 8px;
   font-size: 26px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -403,7 +403,7 @@ onMounted(async () => {
   min-width: 78px;
   padding: 10px 12px;
   text-align: center;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -412,7 +412,7 @@ onMounted(async () => {
   display: block;
   font-size: 18px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .badge-label {
@@ -429,7 +429,7 @@ onMounted(async () => {
   gap: 12px;
   flex-wrap: wrap;
   padding: 16px 20px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -474,7 +474,7 @@ onMounted(async () => {
   margin: 0;
   font-size: 18px;
   letter-spacing: 1px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .layer-count {
@@ -501,15 +501,15 @@ onMounted(async () => {
   flex-direction: column;
   gap: 9px;
   padding: 16px 18px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
   scroll-margin-top: 80px;
 }
 
 .region-card.dlc {
-  border-color: #3d3226;
-  background: linear-gradient(160deg, rgba(201, 139, 63, 0.06), transparent 55%), #1a1a1a;
+  border-color: color-mix(in srgb, var(--accent) 15%, transparent);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 55%), #1a1a1a;
 }
 
 .region-head {
@@ -536,7 +536,7 @@ onMounted(async () => {
   padding: 1px 7px;
   font-size: 10px;
   border-radius: 3px;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   color: #8a8574;
 }
 
@@ -547,9 +547,9 @@ onMounted(async () => {
 }
 
 .path-tag.dlc {
-  color: #c98b3f;
-  border-color: rgba(201, 139, 63, 0.35);
-  background: rgba(201, 139, 63, 0.08);
+  color: color-mix(in srgb, var(--accent) 86%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .meta-row {
@@ -564,13 +564,13 @@ onMounted(async () => {
   border-radius: 4px;
   color: #8a8574;
   background: #242424;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .meta-item.level {
-  color: #c9a227;
-  background: rgba(201, 162, 39, 0.08);
-  border-color: rgba(201, 162, 39, 0.22);
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .meta-item.remembrance {
@@ -612,7 +612,7 @@ onMounted(async () => {
   flex-direction: column;
   gap: 1px;
   margin-top: 3px;
-  border-top: 1px dashed #2e2a22;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 7%, transparent);
   padding-top: 8px;
 }
 
@@ -627,7 +627,7 @@ onMounted(async () => {
 }
 
 .boss-row.hit {
-  background: rgba(212, 175, 55, 0.08);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .boss-main {
@@ -652,19 +652,19 @@ onMounted(async () => {
 }
 
 .boss-name.link:hover {
-  color: #d4af37;
-  border-bottom-color: #6b5c2e;
+  color: var(--accent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .boss-quest.guide {
-  color: #8a7a3f;
+  color: color-mix(in srgb, var(--accent) 59%, transparent);
 }
 
 .chip {
   padding: 0 5px;
   font-size: 10px;
   border-radius: 3px;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   color: #6f6a5a;
 }
 
@@ -703,13 +703,13 @@ onMounted(async () => {
 }
 
 .boss-quest:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .no-boss {
   margin: 4px 0 0;
   padding-top: 8px;
-  border-top: 1px dashed #2e2a22;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 7%, transparent);
   font-size: 11.5px;
   color: #6f6a5a;
 }
@@ -717,13 +717,13 @@ onMounted(async () => {
 .chapter-row {
   margin-top: auto;
   padding-top: 8px;
-  border-top: 1px dashed #2e2a22;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 7%, transparent);
   flex-wrap: wrap;
 }
 
 .chapter-link {
   font-size: 11.5px;
-  color: #c9a227;
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
   text-decoration: none;
 }
 
@@ -735,7 +735,7 @@ onMounted(async () => {
 .remembrance-section {
   margin-top: 8px;
   padding: 22px 24px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #171717;
 }
@@ -747,7 +747,7 @@ onMounted(async () => {
 .section-title {
   margin: 0 0 6px;
   font-size: 18px;
-  color: #d4af37;
+  color: var(--accent);
   letter-spacing: 1px;
 }
 
@@ -768,7 +768,7 @@ onMounted(async () => {
 .col-title {
   margin: 0 0 8px;
   font-size: 13px;
-  color: #c9a227;
+  color: color-mix(in srgb, var(--accent) 93%, transparent);
   font-weight: 500;
 }
 
@@ -803,7 +803,7 @@ onMounted(async () => {
 }
 
 .rm-region:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .section-foot {
@@ -827,7 +827,7 @@ onMounted(async () => {
 }
 
 .back-link:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 @media (max-width: 900px) {

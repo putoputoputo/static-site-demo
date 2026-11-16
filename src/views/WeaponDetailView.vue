@@ -130,7 +130,7 @@
           <h2 class="panel-title">战技</h2>
           <div v-if="weapon.skill" class="skill-box">
             <div class="skill-head">
-              <el-icon :size="16" color="#d4af37"><MagicStick /></el-icon>
+              <el-icon :size="16" color="var(--accent)"><MagicStick /></el-icon>
               <span class="skill-name">{{ weapon.skill.name }}</span>
             </div>
             <p class="skill-desc">{{ weapon.skill.description }}</p>
@@ -182,7 +182,7 @@
         <section class="panel">
           <h2 class="panel-title">获取方式</h2>
           <div class="location-box">
-            <el-icon :size="16" color="#d4af37"><Location /></el-icon>
+            <el-icon :size="16" color="var(--accent)"><Location /></el-icon>
             <p>{{ weapon.location }}</p>
           </div>
         </section>
@@ -324,9 +324,9 @@ function goTo(target) {
   justify-content: space-between;
   gap: 28px;
   padding: 26px 28px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.13), transparent 62%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%), #1a1a1a;
 }
 
 .hero-main {
@@ -346,7 +346,7 @@ function goTo(target) {
   margin: 0;
   font-size: 27px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .fav-btn {
@@ -357,21 +357,21 @@ function goTo(target) {
   font-size: 12px;
   color: #b8b2a0;
   background: #222;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .fav-btn:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .fav-btn.active {
   color: #121212;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .hero-tags {
@@ -391,15 +391,15 @@ function goTo(target) {
 }
 
 .tag.type {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.32);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
 }
 
 .tag.region {
   color: #b8b2a0;
   background: #242424;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .tag.attrs {
@@ -437,7 +437,7 @@ function goTo(target) {
 
 .fact {
   padding: 10px 14px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -473,7 +473,7 @@ function goTo(target) {
 
 .panel {
   padding: 20px 22px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -485,7 +485,7 @@ function goTo(target) {
   margin: 0 0 16px;
   font-size: 16px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .panel-title::before {
@@ -493,7 +493,7 @@ function goTo(target) {
   width: 3px;
   height: 15px;
   border-radius: 2px;
-  background: #d4af37;
+  background: var(--accent);
 }
 
 .panel-title.small {
@@ -556,14 +556,14 @@ function goTo(target) {
   justify-content: space-between;
   margin-top: 16px;
   padding-top: 13px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 13px;
   color: #8a8574;
 }
 
 .damage-total strong {
   font-size: 20px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 /* 补正 */
@@ -578,7 +578,7 @@ function goTo(target) {
   flex-direction: column;
   gap: 6px;
   padding: 12px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
 }
@@ -623,9 +623,9 @@ function goTo(target) {
 /* 战技 */
 .skill-box {
   padding: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.22);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
   border-radius: 8px;
-  background: rgba(212, 175, 55, 0.05);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
 }
 
 .skill-head {
@@ -675,8 +675,8 @@ function goTo(target) {
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  color: #d4af37;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
   border-radius: 50%;
 }
 
@@ -692,7 +692,7 @@ function goTo(target) {
   align-items: baseline;
   justify-content: space-between;
   padding: 8px 12px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 6px;
   background: #161616;
   font-size: 12.5px;
@@ -719,20 +719,20 @@ function goTo(target) {
   font-size: 12px;
   color: #c9c4b4;
   background: #232323;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
 }
 
 /* 能链到图鉴的标签给出可点击反馈；纯文本描述保持原样，避免误以为可以点 */
 .item-tag.is-link {
-  color: #d4af37;
+  color: var(--accent);
   text-decoration: none;
   transition: border-color 0.2s, background 0.2s;
 }
 
 .item-tag.is-link:hover {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: rgba(212, 175, 55, 0.55);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .tag-note {
@@ -741,7 +741,7 @@ function goTo(target) {
   font-size: 10px;
   font-style: normal;
   color: #8a8574;
-  border: 1px solid #3a3428;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 3px;
 }
 
@@ -750,7 +750,7 @@ function goTo(target) {
   display: flex;
   gap: 10px;
   padding: 14px 16px;
-  border-left: 3px solid rgba(212, 175, 55, 0.6);
+  border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
   border-radius: 0 8px 8px 0;
   background: #161616;
 }
@@ -787,8 +787,8 @@ function goTo(target) {
 }
 
 .sibling-item:hover {
-  border-color: #4a4228;
-  background: rgba(212, 175, 55, 0.07);
+  border-color: color-mix(in srgb, var(--accent) 21%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .sibling-name {
@@ -806,7 +806,7 @@ function goTo(target) {
   gap: 8px;
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .pager-btn {
@@ -819,15 +819,15 @@ function goTo(target) {
   font-size: 12px;
   color: #b8b2a0;
   background: #222;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .pager-btn:hover:not(:disabled) {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .pager-btn:disabled {

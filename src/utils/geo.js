@@ -50,6 +50,30 @@ export const wgs84ToGcj02 = (lng, lat) => {
 
 const fmt = (value) => Number(value).toFixed(6)
 
+// GCJ-02 → WGS-84：没有解析解，用一次迭代逼近（残差 < 1 米，对示意图足够）。
+// 高德返回的点位是 GCJ-02，画到我们按 WGS-84 投影的图上之前必须先转回来，
+// 否则会整体往东北偏 300—500 米，看着像「点标错了一个街区」。
+export const gcj02ToWgs84 = (lng, lat) => {
+  const gcj = wgs84ToGcj02(lng, lat)
+  return { lng: lng * 2 - gcj.lng, lat: lat * 2 - gcj.lat }
+}
+
+// 起终点之间的导航外链：mode 可传 bus / car / walk，高德网页版会直接算路线
+export const amapRouteUrl = (from, to, mode = 'bus') => {
+  if (!from || !to) return ''
+  const start = from.gcj ? from : wgs84ToGcj02(from.lng, from.lat)
+  const end = to.gcj ? to : wgs84ToGcj02(to.lng, to.lat)
+  const params = [
+    `from=${fmt(start.lng)},${fmt(start.lat)},${encodeURIComponent(from.name || '起点')}`,
+    `to=${fmt(end.lng)},${fmt(end.lat)},${encodeURIComponent(to.name || '终点')}`,
+    `mode=${mode}`,
+    'policy=1',
+    'callnative=0',
+    'src=myplan',
+  ]
+  return `https://uri.amap.com/navigation?${params.join('&')}`
+}
+
 // 单个景点的「在高德地图打开」
 export const amapSpotUrl = (spot) => {
   if (!spot) return ''

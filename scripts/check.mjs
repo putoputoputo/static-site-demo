@@ -7,7 +7,7 @@
  *
  * 运行：npm run check
  */
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { ref, nextTick, h } from 'vue'
 import { createServer } from 'vite'
@@ -1493,11 +1493,22 @@ if (existsSync(notFoundStatic)) {
     (travelHomeHtml.match(/class="field-input"/g) || []).length,
     3
   )
-  // 17 个可规划景点必须同时出现在「出发地」「目的地」两个下拉里（远端景点不进下拉）
+  check(
+    '旅游·首页起终点用可输入选择器',
+    (travelHomeHtml.match(/class="place-picker/g) || []).length,
+    2
+  )
+  // 列表是点开才渲染的，SSR 里没有 option，所以覆盖度断言放在数据层
+  const { allPlaces, searchPlaces } = await vite.ssrLoadModule('/src/data/travel/places.js')
+  const { travelHubs } = await vite.ssrLoadModule('/src/data/travel/hubs.js')
   const pickable = travelSpots.filter((spot) => !spot.remote)
-  const missingInPicker = pickable.filter((spot) => travelHomeHtml.split(`value="${spot.id}"`).length - 1 !== 2)
-  check('旅游·首页起终点下拉覆盖全部可规划景点', missingInPicker.map((s) => s.id), [])
-  check('旅游·首页起终点下拉可规划数为 17', pickable.length, 17)
+  const missingInPlaces = pickable.filter((spot) => !allPlaces.some((item) => item.id === spot.id))
+  check('旅游·可选地点覆盖全部可规划景点', missingInPlaces.map((s) => s.id), [])
+  check('旅游·可选地点含全部交通枢纽', allPlaces.filter((item) => item.group === 'hub').length, travelHubs.length)
+  check('旅游·可选地点总数是景点加枢纽', allPlaces.length, pickable.length + travelHubs.length)
+  check('旅游·搜「南站」能命中北京南站', searchPlaces('南站').some((item) => item.id === 'hub-beijing-south'), true)
+  check('旅游·搜别名「紫禁城」能命中故宫', searchPlaces('紫禁城').some((item) => item.id === 'forbidden-city'), true)
+  check('旅游·搜机场命中两个机场', searchPlaces('机场').filter((item) => item.group === 'hub').length, 2)
 
   const travelListHtml = await renderView(TravelSpotsView, '/travel/spots')
   check('旅游·景点列表 18 张卡', (travelListHtml.match(/class="spot-card"/g) || []).length, 18)
@@ -1666,6 +1677,87 @@ if (existsSync(notFoundStatic)) {
   check('旅游·规划器渲染逐站时间线', (travelPlanHtml.match(/class="stop[\s"]/g) || []).length >= 6, true)
   check('旅游·规划器给出高德地图外链', travelPlanHtml.includes('uri.amap.com'), true)
   check('旅游·规划器说明长城独占一天', travelPlanHtml.includes('长城日 · 市区往返'), true)
+  check('旅游·规划器起终点用可输入选择器', (travelPlanHtml.match(/class="place-picker/g) || []).length, 2)
+
+  /* ---- 交通枢纽当起终点：机场 / 火车站不进景点序列 ---- */
+  const hubStart = planRoutes({ startId: 'hub-beijing-south', endId: 'summer-palace', pacingId: 'normal' })
+  const hubStartRoute = hubStart.routes.find((item) => item.id === 'normal')
+  check('旅游·枢纽起点被识别为 origin', hubStartRoute.origin && hubStartRoute.origin.name, '北京南站')
+  check(
+    '旅游·枢纽不会混进景点序列',
+    hubStartRoute.days.flatMap((day) => day.stops).some((stop) => stop.id === 'hub-beijing-south'),
+    false
+  )
+  check(
+    '旅游·第一天第一段从枢纽出发',
+    hubStartRoute.days[0].legs[0] && hubStartRoute.days[0].legs[0].fromName,
+    '北京南站'
+  )
+  check(
+    '旅游·枢纽到景点标为估算',
+    hubStartRoute.days[0].legs[0] && hubStartRoute.days[0].legs[0].kind,
+    'estimate'
+  )
+
+  const hubEnd = planRoutes({ startId: 'forbidden-city', endId: 'hub-capital-airport', pacingId: 'normal' })
+  const hubEndRoute = hubEnd.routes.find((item) => item.id === 'normal')
+  const lastDay = hubEndRoute.days[hubEndRoute.days.length - 1]
+  const exitLeg = lastDay.legs[lastDay.legs.length - 1]
+  check('旅游·枢纽终点被识别为 terminus', hubEndRoute.terminus && hubEndRoute.terminus.name, '首都机场 T3')
+  check('旅游·最后一天补上「最后一站 → 枢纽」', exitLeg && exitLeg.toName, '首都机场 T3')
+  check('旅游·枢纽收尾段用机场线计价', exitLeg && exitLeg.fare, 25)
+  check(
+    '旅游·两端都是枢纽也能排',
+    planRoutes({ startId: 'hub-daxing-airport', endId: 'hub-qinghe', pacingId: 'normal' }).routes.length,
+    3
+  )
+  check(
+    '旅游·枢纽当端点后景点数不减少',
+    hubStartRoute.totalSpots >= 6,
+    true
+  )
+
+  /* ---- 高德：key 报错要说人话、任意地点能当端点 ---- */
+  const { explainAmapError } = await vite.ssrLoadModule('/src/utils/amap.js')
+  const geoUtils = await vite.ssrLoadModule('/src/utils/geo.js')
+  const gcjBack = geoUtils.gcj02ToWgs84
+  const amapNav = geoUtils.amapRouteUrl
+  check(
+    '旅游·高德 10009 被翻译成平台不匹配',
+    explainAmapError({ status: '0', info: 'USERKEY_PLAT_NOMATCH', infocode: '10009' }).includes('Web 服务'),
+    true
+  )
+  check(
+    '旅游·高德 10008 提示要安全密钥',
+    explainAmapError({ status: '0', info: 'INVALID_USER_SCODE', infocode: '10008' }).includes('安全密钥'),
+    true
+  )
+  // 默认 key 直接能用：32 位十六进制，且不是那个被平台拒掉的旧 key
+  const { DEFAULT_AMAP_KEY, clearAmapKey } = await vite.ssrLoadModule('/src/utils/amap.js')
+  check('旅游·默认高德 key 是 32 位十六进制', /^[0-9a-f]{32}$/.test(DEFAULT_AMAP_KEY), true)
+  check('旅游·默认高德 key 已换成 Web 服务平台的', DEFAULT_AMAP_KEY !== '193c549723253ec81f66d888de1b9cdf', true)
+  check('旅游·可以清掉自填 key 回到默认', typeof clearAmapKey, 'function')
+  // 高德给的是 GCJ-02，转回 WGS-84 后与原始点的距离要在 5 米内，否则地图上会偏
+  const amapGcj = wgs84ToGcj02(116.3972, 39.9163)
+  const amapBack = gcjBack(amapGcj.lng, amapGcj.lat)
+  const amapDrift = Math.hypot((amapBack.lng - 116.3972) * 85000, (amapBack.lat - 39.9163) * 111000)
+  check('旅游·坐标来回转换误差小于 5 米', amapDrift < 5, true)
+  check(
+    '旅游·高德导航外链带 mode 与六位坐标',
+    /mode=bus/.test(amapNav({ lng: 116.3972, lat: 39.9163, name: '故宫' }, { lng: 116.2724, lat: 39.9998, name: '颐和园' })),
+    true
+  )
+
+  const customPlace = { id: 'amap-B000TEST', name: '某某酒店', lat: 39.9075, lng: 116.3972 }
+  const customPlan = planRoutes({ startPlace: customPlace, endId: 'summer-palace', pacingId: 'normal' })
+  const customRoute = customPlan.routes.find((item) => item.id === 'normal')
+  check('旅游·高德搜出的任意地点能当出发点', customRoute.origin && customRoute.origin.name, '某某酒店')
+  check('旅游·任意地点第一段从它出发', customRoute.days[0].legs[0].fromName, '某某酒店')
+  check(
+    '旅游·任意地点不会混进景点序列',
+    customRoute.days.flatMap((day) => day.stops).some((stop) => stop.id === 'amap-B000TEST'),
+    false
+  )
 
   const travelRoutesHtml = await renderView(TravelRoutesView, '/travel/routes')
   check('旅游·经典路线渲染三条切换', (travelRoutesHtml.match(/class="route-tab/g) || []).length, 3)
@@ -1792,6 +1884,100 @@ if (existsSync(notFoundStatic)) {
     true
   )
   check('搜索按板块过滤结果', /scopedGroups/.test(readFileSync(resolve(root, 'src/components/GlobalSearch.vue'), 'utf-8')), true)
+
+  /* ---- 主题色：颜色派生、对比度、样式里不能有漏网的写死色 ---- */
+  const theme = await vite.ssrLoadModule('/src/utils/theme.js')
+  check('主题·预设数量够用', theme.THEME_PRESETS.length >= 6, true)
+  check(
+    '主题·预设色值都是规范的六位十六进制',
+    theme.THEME_PRESETS.every((preset) => theme.normalizeHex(preset.hex) === preset.hex),
+    true
+  )
+  // 深底上做小字要 4.5:1，达不到的预设拿来做「主题色」会看不清
+  check(
+    '主题·预设对比度都不低于 4.5',
+    theme.THEME_PRESETS.filter((preset) => theme.contrastRatio(preset.hex, theme.PAGE_BG) < 4.5).map((preset) => preset.id),
+    []
+  )
+  check('主题·三位简写补全成六位', theme.normalizeHex('#abc'), '#aabbcc')
+  check('主题·大写与不带井号都能认', theme.normalizeHex('D4AF37'), '#d4af37')
+  check('主题·中文颜色名判为非法', theme.normalizeHex('金色'), null)
+  check('主题·黑白对比度接近 21', Math.round(theme.contrastRatio('#ffffff', '#000000')), 21)
+  check('主题·软背景按 14% 派生', theme.accentTokens('#6f9e7a').soft, 'rgba(111, 158, 122, 0.14)')
+  check('主题·描边按 38% 派生', theme.accentTokens('#6f9e7a').line, 'rgba(111, 158, 122, 0.38)')
+  check('主题·浅色主色上压深字', theme.accentTokens('#d8d3c2').ink, '#141414')
+  check('主题·深色主色上压浅字', theme.accentTokens('#3a6b3a').ink, '#f2efe6')
+  check('主题·默认色就是原来的鎏金', theme.loadAccent(), '#d4af37')
+
+  const styleCss = readFileSync(resolve(root, 'src/assets/style.css'), 'utf-8')
+  check('主题·默认色只留一处定义', (styleCss.match(/#d4af37/gi) || []).length, 1)
+  check('主题·默认值挂在 --accent 上', /--accent:\s*#d4af37/.test(styleCss), true)
+  check('主题·Element Plus 主色跟着主题走', /--el-color-primary:\s*var\(--accent\)/.test(styleCss), true)
+
+  // 全站样式里除了上面那处默认值，不该再有任何写死的品牌金
+  const walkStyles = (dir, out = []) => {
+    for (const name of readdirSync(dir)) {
+      const full = resolve(dir, name)
+      if (statSync(full).isDirectory()) walkStyles(full, out)
+      else if (/\.(css|vue)$/.test(name)) out.push(full)
+    }
+    return out
+  }
+  const styleFiles = walkStyles(resolve(root, 'src'))
+  const hardCodedGold = styleFiles
+    // style.css 里那一行是默认值本身，不算写死
+    .filter((file) => !file.endsWith('assets\\style.css'))
+    .map((file) => ({ file, hits: (readFileSync(file, 'utf-8').match(/#d4af37/gi) || []).length }))
+    .filter((item) => item.hits > 0)
+    .map((item) => item.file.replace(root, '').replace(/\\/g, '/'))
+  check('主题·除了默认值，没有写死的品牌金', hardCodedGold, [])
+  // 迁移脚本曾把 rgba 底色算成「0% 强调色」，等于把背景变透明，这条是给它兜底的
+  const zeroMix = styleFiles.filter((file) =>
+    /color-mix\(in srgb, var\(--accent\) 0%/.test(readFileSync(file, 'utf-8'))
+  )
+    .map((file) => file.replace(root, '').replace(/\\/g, '/'))
+  check('主题·没有退化成 0% 的强调色混合', zeroMix, [])
+  check(
+    '主题·旅游板块强调色跟随全局',
+    /--tv-accent:\s*var\(--accent\)/.test(readFileSync(resolve(root, 'src/views/travel/travel.css'), 'utf-8')),
+    true
+  )
+  check(
+    '主题·影之刃零强调色跟随全局',
+    /--pbz-accent:\s*var\(--accent\)/.test(readFileSync(resolve(root, 'src/views/pbz/pbz.css'), 'utf-8')),
+    true
+  )
+  check('主题·取色器挂在头部', /<ThemePicker\s*\/>/.test(appSource), true)
+
+  // 落盘与注入：用假的 style 对象和 localStorage 走一遍，确认写的是那几个变量
+  const fakeEl = { style: { props: {}, setProperty(key, value) { this.props[key] = value } } }
+  theme.applyAccent('#7fb98a', fakeEl)
+  check('主题·注入四个颜色变量', Object.keys(fakeEl.style.props).sort(), [
+    '--accent',
+    '--accent-ink',
+    '--accent-line',
+    '--accent-soft',
+  ])
+  check('主题·注入的主色已规范化', fakeEl.style.props['--accent'], '#7fb98a')
+
+  const fakeStorage = { data: {}, getItem(k) { return this.data[k] ?? null }, setItem(k, v) { this.data[k] = v }, removeItem(k) { delete this.data[k] } }
+  globalThis.localStorage = fakeStorage
+  try {
+    theme.saveAccent('7FB98A')
+    check('主题·保存时顺手规范化并落盘', fakeStorage.data[theme.STORAGE_KEY], '#7fb98a')
+    fakeStorage.data[theme.STORAGE_KEY] = '不是颜色'
+    check('主题·存了脏数据也能回到默认', theme.loadAccent(), '#d4af37')
+    theme.clearAccent()
+    check('主题·恢复默认会清掉存储', fakeStorage.data[theme.STORAGE_KEY], undefined)
+  } finally {
+    delete globalThis.localStorage
+  }
+
+  const ThemePicker = (await vite.ssrLoadModule('/src/components/ThemePicker.vue')).default
+  const pickerHtml = await renderToString(createSSRApp(ThemePicker))
+  check('主题·头部有取色按钮', pickerHtml.includes('class="theme-btn"'), true)
+  check('主题·取色按钮报出用途', pickerHtml.includes('aria-label="更换主题色"'), true)
+  check('主题·按钮上显示当前色', /--accent|#d4af37/.test(pickerHtml), true)
 }
 
 await vite.close()

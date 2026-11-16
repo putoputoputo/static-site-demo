@@ -24,28 +24,21 @@
     <section class="panel home-planner">
       <h2 class="panel-title">你从哪儿开始，到哪儿结束</h2>
       <p class="panel-sub">
-        下面 {{ pickCount }} 个景点都能当出发地和目的地（古北水镇要过夜，没放进来）。选好点「排路线」，
-        给你紧凑 / 标准 / 完整三套方案，每套都有逐日顺序、每段交通时长与当天花费。
+        出发地和目的地直接打字搜：{{ pickCount }} 个景点，加上 {{ hubCount }} 个火车站与机场都能当端点
+        （古北水镇要过夜，没放进来）。选好点「排路线」，给你紧凑 / 标准 / 完整三套方案，
+        每套都有逐日顺序、每段交通时长与当天花费。
       </p>
 
       <div class="planner-grid home-planner-grid">
-        <label class="field">
+        <div class="field">
           <span class="field-label">出发地</span>
-          <select v-model="quickFrom" class="field-input">
-            <optgroup v-for="group in spotOptions" :key="`from-${group.id}`" :label="group.name">
-              <option v-for="spot in group.items" :key="spot.id" :value="spot.id">{{ spot.name }}</option>
-            </optgroup>
-          </select>
-        </label>
+          <PlacePicker v-model="quickFrom" placeholder="搜景点 / 火车站 / 机场" />
+        </div>
 
-        <label class="field">
+        <div class="field">
           <span class="field-label">目的地</span>
-          <select v-model="quickTo" class="field-input">
-            <optgroup v-for="group in spotOptions" :key="`to-${group.id}`" :label="group.name">
-              <option v-for="spot in group.items" :key="spot.id" :value="spot.id">{{ spot.name }}</option>
-            </optgroup>
-          </select>
-        </label>
+          <PlacePicker v-model="quickTo" placeholder="搜景点 / 火车站 / 机场" />
+        </div>
 
         <label class="field">
           <span class="field-label">出发日期</span>
@@ -160,9 +153,13 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TravelMap from '../../components/travel/TravelMap.vue'
+import PlacePicker from '../../components/travel/PlacePicker.vue'
 import { travelSpots } from '../../data/travel/spots'
 import { travelAreas } from '../../data/travel/areas'
+import { travelHubs } from '../../data/travel/hubs'
+import { placeItemById } from '../../data/travel/places'
 import { travelMeta, springFestival, festivalNotices, festivalDays } from '../../data/travel/meta'
+import { planMeta } from '../../utils/travelPlanner'
 import './travel.css'
 
 const router = useRouter()
@@ -172,21 +169,18 @@ const palace = travelSpots.find((spot) => spot.must)
 const wallMain = travelSpots.find((spot) => spot.id === 'badaling')
 
 // 首页的起终点快选：默认故宫 → 颐和园，与规划器的默认值保持一致
-const quickFrom = ref('forbidden-city')
-const quickTo = ref('summer-palace')
+const localPlace = (id) => {
+  const item = placeItemById[id]
+  return item ? { id: item.id, name: item.name, lat: item.lat, lng: item.lng, group: item.group } : null
+}
+
+// 起终点存地点对象（选择器统一用对象），跳转时只取 id
+const quickFrom = ref(localPlace('forbidden-city'))
+const quickTo = ref(localPlace('summer-palace'))
 const quickDate = ref('')
 
-const spotOptions = computed(() =>
-  travelAreas
-    .map((area) => ({
-      id: area.id,
-      name: area.name,
-      items: travelSpots.filter((spot) => spot.area === area.id && !spot.remote),
-    }))
-    .filter((group) => group.items.length)
-)
-
-const pickCount = computed(() => spotOptions.value.reduce((sum, group) => sum + group.items.length, 0))
+const pickCount = planMeta.totalSpots
+const hubCount = travelHubs.length
 
 const swapQuick = () => {
   const temp = quickFrom.value
@@ -199,8 +193,8 @@ const goPlan = () => {
   router.push({
     path: '/travel/plan',
     query: {
-      from: quickFrom.value,
-      to: quickTo.value,
+      from: quickFrom.value.id,
+      to: quickTo.value.id,
       ...(quickDate.value ? { date: quickDate.value } : {}),
     },
   })

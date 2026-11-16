@@ -207,9 +207,9 @@ function resetFilters() {
   justify-content: space-between;
   gap: 28px;
   padding: 26px 28px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
-  background: linear-gradient(135deg, #1e1c16 0%, #16150f 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 6%, transparent) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 100%);
 }
 
 .hero-text {
@@ -247,7 +247,7 @@ function resetFilters() {
 
 .stat strong {
   font-size: 22px;
-  color: #d4af37;
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 
@@ -262,9 +262,9 @@ function resetFilters() {
   flex-direction: column;
   gap: 12px;
   padding: 16px 18px;
-  border: 1px solid #302b20;
+  border: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
   border-radius: 10px;
-  background: #1a1914;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
 }
 
 .search-box {
@@ -274,7 +274,7 @@ function resetFilters() {
   gap: 8px;
   padding: 0 12px;
   height: 40px;
-  border: 1px solid #3a3427;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 8px;
   background: #14130f;
 }
@@ -309,7 +309,7 @@ function resetFilters() {
 }
 
 .clear-btn:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .filter-row {
@@ -337,9 +337,9 @@ function resetFilters() {
   align-items: center;
   gap: 5px;
   padding: 5px 11px;
-  border: 1px solid #393325;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 999px;
-  background: #1d1b15;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   color: #b5ae9c;
   font-size: 12px;
   font-family: inherit;
@@ -348,13 +348,13 @@ function resetFilters() {
 }
 
 .chip:hover {
-  border-color: #55492c;
+  border-color: color-mix(in srgb, var(--accent) 27%, transparent);
   color: #ddd6c2;
 }
 
 .chip.on {
-  border-color: #d4af37;
-  background: #2a2413;
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
   color: #f0dda0;
 }
 
@@ -397,9 +397,9 @@ function resetFilters() {
   flex-direction: column;
   gap: 8px;
   padding: 18px 20px 16px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
-  background: linear-gradient(160deg, #1c1a15 0%, #17160f 100%);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 5%, transparent) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 100%);
   text-decoration: none;
   overflow: hidden;
   transition: transform 0.16s, border-color 0.16s;
@@ -416,7 +416,7 @@ function resetFilters() {
 
 .card:hover {
   transform: translateY(-2px);
-  border-color: #4d4229;
+  border-color: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 .card-top {
@@ -434,14 +434,14 @@ function resetFilters() {
 .primary-tag {
   padding: 2px 8px;
   border-radius: 4px;
-  background: #262115;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
   color: var(--primary);
   font-size: 11px;
 }
 
 .stage-tag {
   padding: 2px 8px;
-  border: 1px solid #3a3427;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 4px;
   color: #8f8877;
   font-size: 11px;
@@ -456,11 +456,11 @@ function resetFilters() {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #353024;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .pip.on {
-  background: #c9a53c;
+  background: color-mix(in srgb, var(--accent) 94%, transparent);
 }
 
 .card-title {
@@ -491,7 +491,7 @@ function resetFilters() {
 
 .tag {
   padding: 2px 7px;
-  border: 1px solid #333026;
+  border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 3px;
   color: #8a8474;
   font-size: 10.5px;
@@ -503,7 +503,7 @@ function resetFilters() {
   gap: 8px;
   margin-top: 6px;
   padding-top: 12px;
-  border-top: 1px solid #2b271d;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 9%, transparent);
 }
 
 .meta-cell {
@@ -539,14 +539,14 @@ function resetFilters() {
 
 .card:hover .card-go {
   gap: 7px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 /* 空态 */
 .empty {
   padding: 60px 20px;
   text-align: center;
-  border: 1px dashed #332d20;
+  border: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
 }
 
@@ -564,10 +564,10 @@ function resetFilters() {
 
 .empty-btn {
   padding: 7px 16px;
-  border: 1px solid #4a3f22;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 6px;
-  background: #241f13;
-  color: #d4af37;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
   font-size: 12px;
   font-family: inherit;
   cursor: pointer;
@@ -576,8 +576,8 @@ function resetFilters() {
 .page-note {
   margin: 4px 0 0;
   padding: 14px 16px;
-  border-left: 2px solid #3d3524;
-  background: #191812;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 16%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
   font-size: 12px;
   line-height: 1.9;
   color: #857e6e;

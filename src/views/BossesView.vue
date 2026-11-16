@@ -30,7 +30,7 @@
     </header>
 
     <section class="notice">
-      <el-icon :size="15" color="#d4af37"><InfoFilled /></el-icon>
+      <el-icon :size="15" color="var(--accent)"><InfoFilled /></el-icon>
       <p>
         弱点只写有把握的：不同站点对同一只 BOSS 的属性弱点经常互相矛盾，凡是没有把握的一律留空，
         界面上显示「无特别弱点记录」，强过写一个错的让你把武器附错属性。
@@ -369,9 +369,9 @@ function resetFilters() {
   justify-content: space-between;
   gap: 24px;
   padding: 24px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
-  background: linear-gradient(135deg, #1e1c16 0%, #16150f 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 6%, transparent) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 100%);
 }
 
 .hero-text {
@@ -382,7 +382,7 @@ function resetFilters() {
 .hero-title {
   margin: 0 0 10px;
   font-size: 26px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -430,7 +430,7 @@ function resetFilters() {
 }
 
 .dot.remembrance {
-  background: #d4af37;
+  background: var(--accent);
 }
 
 .hero-badges {
@@ -446,7 +446,7 @@ function resetFilters() {
   align-items: center;
   gap: 4px;
   padding: 12px 14px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 10px;
   background: #1a1915;
 }
@@ -454,7 +454,7 @@ function resetFilters() {
 .badge-value {
   font-size: 20px;
   font-weight: 700;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .badge-label {
@@ -467,8 +467,8 @@ function resetFilters() {
   gap: 10px;
   align-items: flex-start;
   padding: 12px 16px;
-  border: 1px solid #3a3324;
-  border-left: 3px solid #d4af37;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
+  border-left: 3px solid var(--accent);
   border-radius: 8px;
   background: #1a1915;
 }
@@ -486,7 +486,7 @@ function resetFilters() {
   gap: 12px;
   align-items: center;
   padding: 14px 16px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
   background: #1c1c1c;
 }
@@ -528,22 +528,22 @@ function resetFilters() {
   font-size: 12px;
   color: #b8b2a0;
   background: #1c1c1c;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .chip:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .chip.active {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .chip-count {
@@ -561,7 +561,7 @@ function resetFilters() {
 }
 
 .result-bar strong {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .result-hint {
@@ -581,7 +581,7 @@ function resetFilters() {
   flex-direction: column;
   gap: 9px;
   padding: 16px 18px 18px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
   background: #1c1c1c;
   text-decoration: none;
@@ -589,7 +589,7 @@ function resetFilters() {
 }
 
 .boss-card:hover {
-  border-color: #6b5c2e;
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
@@ -626,7 +626,7 @@ function resetFilters() {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #2f2c22;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .badge-row {
@@ -645,7 +645,7 @@ function resetFilters() {
 .tag.base {
   color: #8a8574;
   background: #232323;
-  border-color: #383225;
+  border-color: color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .tag.dlc {
@@ -661,9 +661,9 @@ function resetFilters() {
 }
 
 .tag.remembrance {
-  color: #d4af37;
-  background: #2a2413;
-  border-color: #4a3f1e;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 29%, transparent);
 }
 
 .tag.type {
@@ -739,11 +739,11 @@ function resetFilters() {
   margin-top: auto;
   align-self: flex-end;
   font-size: 12px;
-  color: #6b5c2e;
+  color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .boss-card:hover .card-arrow {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 @media (max-width: 980px) {

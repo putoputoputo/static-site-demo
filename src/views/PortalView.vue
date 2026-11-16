@@ -110,7 +110,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   margin: 0 0 10px;
   font-size: 34px;
   letter-spacing: 4px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .portal-head p {
@@ -134,7 +134,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   min-height: 260px;
   text-decoration: none;
   background: #1a1a1a;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
   overflow: hidden;
   transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
@@ -150,7 +150,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 }
 
 .portal-card.game::before {
-  background: radial-gradient(120% 100% at 20% 0%, rgba(212, 175, 55, 0.16), transparent 70%);
+  background: radial-gradient(120% 100% at 20% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%);
 }
 
 .portal-card.pbz::before {
@@ -167,8 +167,8 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 }
 
 .portal-card.game:hover {
-  border-color: #d4af37;
-  box-shadow: 0 10px 28px rgba(212, 175, 55, 0.14);
+  border-color: var(--accent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .portal-card.pbz:hover {
@@ -189,12 +189,12 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   width: 62px;
   height: 62px;
   border-radius: 14px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   background: #141414;
 }
 
 .portal-card.game .card-icon {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .portal-card.pbz .card-icon {
@@ -237,7 +237,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   font-size: 12px;
   color: #a09a86;
   background: #141414;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
 }
 
@@ -253,7 +253,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 }
 
 .portal-card.game:hover .card-enter {
-  color: #d4af37;
+  color: var(--accent);
   gap: 10px;
 }
 

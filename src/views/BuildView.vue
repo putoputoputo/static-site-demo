@@ -794,9 +794,9 @@ function pruneQueryBuild() {
   justify-content: space-between;
   gap: 24px;
   padding: 22px 24px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
-  background: linear-gradient(135deg, #1e1c16 0%, #16150f 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 6%, transparent) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 100%);
 }
 
 .hero-text {
@@ -807,7 +807,7 @@ function pruneQueryBuild() {
 .hero-title {
   margin: 0 0 9px;
   font-size: 25px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -833,27 +833,27 @@ function pruneQueryBuild() {
   font-size: 12.5px;
   color: #d9c47a;
   cursor: pointer;
-  background: #241f14;
-  border: 1px solid #4a3f20;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 27%, transparent);
   border-radius: 7px;
   transition: all 0.18s;
 }
 
 .hero-btn:hover {
-  color: #d4af37;
-  background: #2c2617;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .hero-btn.ghost {
   color: #8a8574;
   background: transparent;
-  border-color: #332d20;
+  border-color: color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .hero-btn.ghost:hover {
   color: #c9c4b4;
-  border-color: #4a4231;
+  border-color: color-mix(in srgb, var(--accent) 21%, transparent);
 }
 
 .preset-bar {
@@ -879,7 +879,7 @@ function pruneQueryBuild() {
   color: #b8b2a0;
   cursor: pointer;
   background: #1c1c1c;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   transition: all 0.18s;
 }
@@ -891,14 +891,14 @@ function pruneQueryBuild() {
 }
 
 .preset-chip:hover {
-  color: #d4af37;
-  border-color: #5a4f2c;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .preset-chip.on {
-  color: #d4af37;
-  background: #241f14;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .preset-library {
@@ -913,7 +913,7 @@ function pruneQueryBuild() {
 }
 
 .preset-library:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .preset-link {
@@ -922,7 +922,7 @@ function pruneQueryBuild() {
   gap: 4px;
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
   font-size: 11.5px;
   color: #8a7c4a;
   text-decoration: none;
@@ -930,13 +930,13 @@ function pruneQueryBuild() {
 }
 
 .preset-link:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .preset-note {
   padding: 14px 16px;
-  border: 1px solid #3a3324;
-  border-left: 3px solid #6b5c2e;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
+  border-left: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
   border-radius: 9px;
   background: #1a1915;
 }
@@ -986,7 +986,7 @@ function pruneQueryBuild() {
 
 .panel {
   padding: 18px 20px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
   background: #1c1c1c;
 }
@@ -1003,9 +1003,9 @@ function pruneQueryBuild() {
   margin: 0;
   font-size: 15px;
   line-height: 1.2;
-  color: #d4af37;
+  color: var(--accent);
   padding-left: 10px;
-  border-left: 3px solid #d4af37;
+  border-left: 3px solid var(--accent);
 }
 
 .panel-meta {
@@ -1030,7 +1030,7 @@ function pruneQueryBuild() {
 
 .stat-cell {
   padding: 9px 10px;
-  border: 1px solid #2c2a22;
+  border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 8px;
   background: #191919;
 }
@@ -1080,14 +1080,14 @@ function pruneQueryBuild() {
   color: #8a8574;
   cursor: pointer;
   background: #232323;
-  border: 1px solid #322c1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   transition: all 0.15s;
 }
 
 .step-btn:hover {
-  color: #d4af37;
-  border-color: #5a4f2c;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .stat-input {
@@ -1101,7 +1101,7 @@ function pruneQueryBuild() {
   color: #e8d9a8;
   text-align: center;
   background: #141414;
-  border: 1px solid #322c1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   outline: none;
   font-variant-numeric: tabular-nums;
@@ -1109,7 +1109,7 @@ function pruneQueryBuild() {
 }
 
 .stat-input:focus {
-  border-color: #6b5c2e;
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .stat-input::-webkit-outer-spin-button,
@@ -1153,7 +1153,7 @@ function pruneQueryBuild() {
 
 .slot-weight {
   font-size: 11px;
-  color: #8a7440;
+  color: color-mix(in srgb, var(--accent) 58%, transparent);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1188,12 +1188,12 @@ function pruneQueryBuild() {
   font-size: 11px;
   color: #8a8574;
   text-decoration: none;
-  border-bottom: 1px dashed #3a3324;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .slot-link:hover {
-  color: #d4af37;
-  border-bottom-color: #6b5c2e;
+  color: var(--accent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .mini-toggle {
@@ -1203,20 +1203,20 @@ function pruneQueryBuild() {
   color: #7a7565;
   cursor: pointer;
   background: #1e1e1e;
-  border: 1px solid #322c1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   transition: all 0.15s;
 }
 
 .mini-toggle:hover {
   color: #c9c4b4;
-  border-color: #4a4231;
+  border-color: color-mix(in srgb, var(--accent) 21%, transparent);
 }
 
 .mini-toggle.on {
-  color: #d4af37;
-  background: #241f14;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 /* ---------- 法术 ---------- */
@@ -1238,7 +1238,7 @@ function pruneQueryBuild() {
   color: #e8d9a8;
   text-align: center;
   background: #141414;
-  border: 1px solid #322c1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 4px;
   outline: none;
   font-variant-numeric: tabular-nums;
@@ -1269,7 +1269,7 @@ function pruneQueryBuild() {
   align-items: center;
   gap: 9px;
   padding: 7px 10px;
-  border: 1px solid #2c2a22;
+  border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 7px;
   background: #191919;
 }
@@ -1278,9 +1278,9 @@ function pruneQueryBuild() {
   flex-shrink: 0;
   padding: 0 5px;
   font-size: 10px;
-  color: #8a7440;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid #4a3f20;
+  color: color-mix(in srgb, var(--accent) 58%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 27%, transparent);
   border-radius: 3px;
 }
 
@@ -1384,7 +1384,7 @@ function pruneQueryBuild() {
   top: 0;
   width: 1px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .bar-legend {
@@ -1429,7 +1429,7 @@ function pruneQueryBuild() {
   margin: 14px 0 0;
   padding: 12px 0 0;
   list-style: none;
-  border-top: 1px solid #282419;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 9%, transparent);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -1457,7 +1457,7 @@ function pruneQueryBuild() {
 .formula-box {
   margin-top: 12px;
   padding: 10px 12px;
-  border: 1px solid #2c2a22;
+  border: 1px solid color-mix(in srgb, var(--accent) 7%, transparent);
   border-radius: 7px;
   background: #181818;
 }
@@ -1476,7 +1476,7 @@ function pruneQueryBuild() {
 }
 
 .formula-line.total b {
-  color: #d4af37;
+  color: var(--accent);
   font-size: 12.5px;
 }
 
@@ -1497,8 +1497,8 @@ function pruneQueryBuild() {
 
 .advice.warn {
   color: #d9b06a;
-  border-color: #4a3f20;
-  background: #211d15;
+  border-color: color-mix(in srgb, var(--accent) 27%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .ok-hint {

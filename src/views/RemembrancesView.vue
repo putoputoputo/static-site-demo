@@ -29,7 +29,7 @@
     </header>
 
     <section class="notice">
-      <el-icon :size="15" color="#d4af37"><InfoFilled /></el-icon>
+      <el-icon :size="15" color="var(--accent)"><InfoFilled /></el-icon>
       <p>{{ notice }}</p>
     </section>
 
@@ -206,9 +206,9 @@ function typeClass(value) {
   gap: 28px;
   justify-content: space-between;
   padding: 26px 28px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.09), rgba(20, 20, 20, 0.4));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, transparent), rgba(20, 20, 20, 0.4));
 }
 
 .hero-text {
@@ -230,7 +230,7 @@ function typeClass(value) {
 }
 
 .hero-sub strong {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .hero-legend {
@@ -262,7 +262,7 @@ function typeClass(value) {
 }
 
 .dot.link {
-  background: #d4af37;
+  background: var(--accent);
 }
 
 .hero-badges {
@@ -278,15 +278,15 @@ function typeClass(value) {
   align-items: center;
   gap: 4px;
   padding: 12px 14px;
-  border: 1px solid #3a3428;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.25);
+  background: #7a7565;
 }
 
 .badge-value {
   font-size: 20px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .badge-label {
@@ -298,7 +298,7 @@ function typeClass(value) {
   display: flex;
   gap: 10px;
   padding: 12px 16px;
-  border-left: 3px solid rgba(212, 175, 55, 0.6);
+  border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
   border-radius: 0 8px 8px 0;
   background: #161616;
 }
@@ -357,20 +357,20 @@ function typeClass(value) {
   color: #9c9686;
   cursor: pointer;
   background: #1e1e1e;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 999px;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .type-chip:hover {
-  color: #d4af37;
-  border-color: rgba(212, 175, 55, 0.45);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 .type-chip.active {
   color: #12100c;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .remembrance-grid {
@@ -384,7 +384,7 @@ function typeClass(value) {
   flex-direction: column;
   gap: 12px;
   padding: 18px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 10px;
   background: #1c1c1c;
 }
@@ -414,8 +414,8 @@ function typeClass(value) {
 }
 
 .boss-link:hover {
-  color: #d4af37;
-  border-bottom-color: #6b5c2e;
+  color: var(--accent);
+  border-bottom-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .boss-name {
@@ -439,7 +439,7 @@ function typeClass(value) {
 .origin-chip.base {
   color: #a8a293;
   background: #262626;
-  border: 1px solid #3a3428;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
 }
 
 .origin-chip.dlc {
@@ -469,7 +469,7 @@ function typeClass(value) {
   flex-direction: column;
   gap: 8px;
   padding-top: 10px;
-  border-top: 1px dashed #302b22;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .item-row {
@@ -489,8 +489,8 @@ function typeClass(value) {
 
 .type-0 {
   color: #d8c48a;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .type-1 {
@@ -524,14 +524,14 @@ function typeClass(value) {
 }
 
 .item-name.link {
-  color: #d4af37;
+  color: var(--accent);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s;
 }
 
 .item-name.link:hover {
-  border-color: rgba(212, 175, 55, 0.6);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 .item-hint {

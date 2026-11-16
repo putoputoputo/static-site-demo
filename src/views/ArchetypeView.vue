@@ -334,9 +334,9 @@ async function copyLink() {
   display: flex;
   gap: 30px;
   padding: 26px 28px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 12px;
-  background: linear-gradient(135deg, #1e1c16 0%, #16150f 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 6%, transparent) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 100%);
   border-left: 3px solid var(--primary);
 }
 
@@ -363,12 +363,12 @@ async function copyLink() {
 }
 
 .tag.primary {
-  background: #262115;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
   color: var(--primary);
 }
 
 .tag.stage {
-  border: 1px solid #3a3427;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   color: #8f8877;
 }
 
@@ -380,11 +380,11 @@ async function copyLink() {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #3b3527;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .pip.on {
-  background: #c9a53c;
+  background: color-mix(in srgb, var(--accent) 94%, transparent);
 }
 
 .hero-title {
@@ -421,8 +421,8 @@ async function copyLink() {
   gap: 6px;
   padding: 9px 18px;
   border-radius: 7px;
-  background: linear-gradient(135deg, #d4af37 0%, #b08d26 100%);
-  color: #1b1608;
+  background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 80%, transparent) 100%);
+  color: color-mix(in srgb, var(--accent) 5%, transparent);
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
@@ -438,7 +438,7 @@ async function copyLink() {
   align-items: center;
   gap: 6px;
   padding: 9px 14px;
-  border: 1px solid #423a28;
+  border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
   border-radius: 7px;
   background: transparent;
   color: #a9a08c;
@@ -449,7 +449,7 @@ async function copyLink() {
 }
 
 .ghost-btn:hover {
-  border-color: #5c4f31;
+  border-color: color-mix(in srgb, var(--accent) 31%, transparent);
   color: #d9d2be;
 }
 
@@ -466,9 +466,9 @@ async function copyLink() {
   flex-direction: column;
   gap: 2px;
   padding: 10px 12px;
-  border: 1px solid #2f2a1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 8px;
-  background: #1a1813;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
 }
 
 .side-label {
@@ -497,8 +497,8 @@ async function copyLink() {
   flex-direction: column;
   gap: 10px;
   padding: 18px 20px;
-  border-left: 2px solid #3d3524;
-  background: #191812;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 16%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
 }
 
 .prose p {
@@ -521,7 +521,7 @@ async function copyLink() {
   justify-content: space-between;
   gap: 12px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #2c2820;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 6%, transparent);
 }
 
 .section-title {
@@ -580,15 +580,15 @@ async function copyLink() {
   flex-direction: column;
   gap: 6px;
   padding: 12px 14px;
-  border: 1px solid #302b20;
+  border: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
   border-radius: 9px;
-  background: #1a1914;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
   text-decoration: none;
   transition: border-color 0.15s, transform 0.15s;
 }
 
 .gear-card:hover {
-  border-color: #55492c;
+  border-color: color-mix(in srgb, var(--accent) 27%, transparent);
   transform: translateY(-1px);
 }
 
@@ -672,7 +672,7 @@ async function copyLink() {
 .attr-bar {
   height: 6px;
   border-radius: 3px;
-  background: #232019;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   overflow: hidden;
 }
 
@@ -680,7 +680,7 @@ async function copyLink() {
   display: block;
   height: 100%;
   border-radius: 3px;
-  background: #4a4436;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 .attr-fill.major {
@@ -707,7 +707,7 @@ async function copyLink() {
   display: flex;
   gap: 12px;
   padding-bottom: 10px;
-  border-bottom: 1px dashed #2a261d;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .plan-item:last-child {
@@ -719,7 +719,7 @@ async function copyLink() {
   flex-shrink: 0;
   width: 62px;
   font-size: 11.5px;
-  color: #c9a53c;
+  color: color-mix(in srgb, var(--accent) 94%, transparent);
   font-variant-numeric: tabular-nums;
 }
 
@@ -755,10 +755,10 @@ async function copyLink() {
   justify-content: center;
   width: 24px;
   height: 24px;
-  border: 1px solid #4a3f22;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 50%;
-  background: #241f13;
-  color: #d4af37;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
@@ -767,7 +767,7 @@ async function copyLink() {
   flex: 1;
   width: 1px;
   margin: 4px 0;
-  background: linear-gradient(to bottom, #3a3324, #262219);
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 14%, transparent), color-mix(in srgb, var(--accent) 8%, transparent));
 }
 
 .phase-body {
@@ -832,17 +832,17 @@ async function copyLink() {
 
 .gear-chip {
   padding: 3px 9px;
-  border: 1px solid #35301f;
+  border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
   border-radius: 999px;
-  background: #1d1b15;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   color: #a9a08c;
   font-size: 11px;
   text-decoration: none;
 }
 
 .gear-chip:hover {
-  border-color: #55492c;
-  color: #d4af37;
+  border-color: color-mix(in srgb, var(--accent) 27%, transparent);
+  color: var(--accent);
 }
 
 /* 打法 */
@@ -859,15 +859,15 @@ async function copyLink() {
   display: flex;
   gap: 14px;
   padding: 11px 14px;
-  border: 1px solid #2c2820;
+  border: 1px solid color-mix(in srgb, var(--accent) 6%, transparent);
   border-radius: 8px;
-  background: #1a1914;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
 }
 
 .loop-num {
   flex-shrink: 0;
   font-size: 11px;
-  color: #6b6034;
+  color: color-mix(in srgb, var(--accent) 41%, transparent);
   font-variant-numeric: tabular-nums;
   letter-spacing: 1px;
 }
@@ -888,9 +888,9 @@ async function copyLink() {
 
 .pc-card {
   padding: 16px 18px;
-  border: 1px solid #2f2a1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 10px;
-  background: #1a1914;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
 }
 
 .pc-card.good {
@@ -944,9 +944,9 @@ async function copyLink() {
   align-items: flex-start;
   gap: 9px;
   padding: 11px 14px;
-  border: 1px solid #33291f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 8px;
-  background: #1c1813;
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
   font-size: 12.5px;
   line-height: 1.85;
   color: #a99f8d;
@@ -971,16 +971,16 @@ async function copyLink() {
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  border: 1px solid #2c2820;
+  border: 1px solid color-mix(in srgb, var(--accent) 6%, transparent);
   border-radius: 8px;
-  background: #1a1914;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
   font-size: 12px;
 }
 
 .swap-slot {
   padding: 1px 7px;
   border-radius: 3px;
-  background: #262115;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
   color: #a89a63;
   font-size: 10.5px;
 }
@@ -1019,9 +1019,9 @@ async function copyLink() {
   flex-direction: column;
   gap: 4px;
   padding: 14px 18px;
-  border: 1px solid #2f2a1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 11%, transparent);
   border-radius: 10px;
-  background: #1a1914;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
   text-decoration: none;
   transition: border-color 0.15s;
 }
@@ -1031,7 +1031,7 @@ async function copyLink() {
 }
 
 .neighbor:not(.placeholder):hover {
-  border-color: #55492c;
+  border-color: color-mix(in srgb, var(--accent) 27%, transparent);
 }
 
 .neighbor.placeholder {
@@ -1070,10 +1070,10 @@ async function copyLink() {
 .missing-btn {
   display: inline-block;
   padding: 9px 20px;
-  border: 1px solid #4a3f22;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 7px;
-  background: #241f13;
-  color: #d4af37;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
   font-size: 12.5px;
   text-decoration: none;
 }

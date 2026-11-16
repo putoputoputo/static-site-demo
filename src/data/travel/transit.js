@@ -331,8 +331,32 @@ export const haversine = (lat1, lng1, lat2, lng2) => {
   return 2 * R * Math.asin(Math.sqrt(a))
 }
 
+// 枢纽 ↔ 景点：机场 / 火车站不在片区矩阵里，按直线距离 × 绕行系数 ÷ 平均速度估，
+// 再加进出站固定开销。机场用 `speed` 提速（机场线实际旅速远高于市区地铁）。
+// 一律 `kind: 'estimate'`，页面上按估算显示。
+export const hubLeg = (hub, spot) => {
+  const straight = haversine(hub.lat, hub.lng, spot.lat, spot.lng)
+  const meters = straight * DETOUR
+  const speed = hub.speed || 583
+  const buffer = typeof hub.buffer === 'number' ? hub.buffer : 8
+  const minutes = Math.round(meters / speed + buffer)
+  const mode = hub.mode === 'air' ? '机场线 + 地铁' : hub.mode === 'bus' ? '公交' : '地铁'
+  const fare = typeof hub.expressFare === 'number' ? hub.expressFare : metroFare(meters)
+  return {
+    minutes: Math.max(10, minutes),
+    fare,
+    mode,
+    kind: 'estimate',
+    via: `${hub.short || hub.name} 出发，直线约 ${(straight / 1000).toFixed(1)} 公里，含进出站`,
+  }
+}
+
 // 返回 { minutes, fare, mode, kind, via }
 export const legBetween = (from, to) => {
+  // 任一端是枢纽 / 自定义地点就单独算，别退化到片区矩阵（矩阵里没有这些点）
+  if (from.isHub || from.isCustom) return hubLeg(from, to)
+  if (to.isHub || to.isCustom) return hubLeg(to, from)
+
   const straight = haversine(from.lat, from.lng, to.lat, to.lng)
 
   // 同片区：基本靠走。1.5 公里内步行，超过就坐一两站地铁

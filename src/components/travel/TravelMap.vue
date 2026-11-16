@@ -76,6 +76,15 @@
         <title>{{ point.name }} · {{ point.areaName }}</title>
       </g>
 
+      <!-- 交通枢纽：方形点，跟圆形的景点区分开 -->
+      <g v-for="point in hubPoints" :key="point.id" class="map-hub">
+        <rect :x="point.x - 4.5" :y="point.y - 4.5" width="9" height="9" rx="1.5" class="hub-box" />
+        <text :x="point.x + point.dx" :y="point.y + point.dy" :text-anchor="point.anchor" class="map-label hub-label">
+          {{ point.label }}
+        </text>
+        <title>{{ point.name }} · 交通枢纽</title>
+      </g>
+
       <!-- 出城的两个长城点：画在边界外会挤坏城内布局，改用方向牌表示 -->
       <g v-for="exit in exits" :key="exit.id" class="map-exit" @click="$emit('pick', exit.id)">
         <rect :x="exit.x" :y="exit.y" :width="exit.w" height="34" rx="6" class="exit-box" />
@@ -110,6 +119,8 @@ const props = defineProps({
   // 选中的路线（景点 id 数组），为空时不画连线
   pathIds: { type: Array, default: () => [] },
   activeId: { type: String, default: '' },
+  // 起终点是机场 / 火车站时传进来，会画成方形点位并参与折线
+  hubs: { type: Array, default: () => [] },
 })
 
 defineEmits(['pick'])
@@ -194,8 +205,36 @@ const areaBubbles = computed(() =>
     .filter(Boolean)
 )
 
+// 起终点可能是机场 / 火车站这类枢纽：单独画成方块，三角形方向牌那套留给长城
+const hubPoints = computed(() =>
+  props.hubs
+    .filter((hub) => hub && !hub.remote)
+    .map((hub) => {
+      const { x, y } = project(hub.lat, hub.lng)
+      const inside =
+        hub.lat <= mapBounds.maxLat &&
+        hub.lat >= mapBounds.minLat &&
+        hub.lng >= mapBounds.minLng &&
+        hub.lng <= mapBounds.maxLng
+      return {
+        id: hub.id,
+        name: hub.name,
+        label: hub.short || hub.name,
+        isHub: true,
+        inside,
+        x: Math.round(x * 10) / 10,
+        y: Math.round(y * 10) / 10,
+        dx: 9,
+        dy: 4,
+        anchor: 'start',
+      }
+    })
+    // 出界的（大兴机场在南六环外）不画点，交给方向牌那套逻辑也不合适，直接略过
+    .filter((hub) => hub.inside)
+)
+
 const pointMap = computed(() =>
-  points.value.reduce((map, point) => {
+  [...points.value, ...hubPoints.value].reduce((map, point) => {
     map[point.id] = point
     return map
   }, {})
@@ -285,7 +324,7 @@ const gridLines = computed(() => {
 }
 
 .map-axis {
-  stroke: #3a3324;
+  stroke: color-mix(in srgb, var(--accent) 14%, transparent);
   stroke-width: 1;
   stroke-dasharray: 6 6;
 }
@@ -350,9 +389,20 @@ const gridLines = computed(() => {
   fill: #d8c79a;
 }
 
+/* 机场 / 火车站：方形点，和圆形景点区分 */
+.hub-box {
+  fill: #6f9e7a;
+  stroke: #0f1011;
+  stroke-width: 1.4;
+}
+
+.hub-label {
+  fill: #8fb79a;
+}
+
 .exit-box {
   fill: #191a1b;
-  stroke: #3a3324;
+  stroke: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .map-exit {
@@ -383,7 +433,7 @@ const gridLines = computed(() => {
 }
 
 .legend-scale {
-  stroke: #3a3324;
+  stroke: color-mix(in srgb, var(--accent) 14%, transparent);
   stroke-width: 1.4;
 }
 

@@ -150,12 +150,12 @@ onBeforeUnmount(() => {
 
 .nav-trigger:hover,
 .nav-trigger.open {
-  color: #d4af37;
-  background: #1f1d16;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .nav-trigger.active {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .caret {
@@ -184,7 +184,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   padding: 6px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 10px;
   background: #1a1915;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
@@ -201,15 +201,15 @@ onBeforeUnmount(() => {
 }
 
 .panel-link:hover {
-  background: #24211a;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .panel-link.active {
-  background: #24211a;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .panel-link.active .panel-label {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .panel-label {

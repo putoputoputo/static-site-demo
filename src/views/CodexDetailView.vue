@@ -72,7 +72,7 @@
         <section class="panel">
           <h2 class="panel-title">获取方式</h2>
           <div class="location-box">
-            <el-icon :size="16" color="#d4af37"><Location /></el-icon>
+            <el-icon :size="16" color="var(--accent)"><Location /></el-icon>
             <p>{{ item.location }}</p>
           </div>
         </section>
@@ -186,21 +186,21 @@ function goTo(target) {
   font-family: inherit;
   color: #8a8574;
   background: #1f1f1f;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
   cursor: pointer;
   transition: color 0.18s, border-color 0.18s, background 0.18s;
 }
 
 .fav-btn:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .fav-btn.active {
-  color: #d4af37;
-  background: #2a2413;
-  border-color: #4a3f1e;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 29%, transparent);
 }
 
 .codex-detail {
@@ -220,9 +220,9 @@ function goTo(target) {
   justify-content: space-between;
   gap: 28px;
   padding: 26px 28px;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 12px;
-  background: linear-gradient(120deg, rgba(212, 175, 55, 0.13), transparent 62%), #1a1a1a;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%), #1a1a1a;
 }
 
 .hero-main {
@@ -254,13 +254,13 @@ function goTo(target) {
   margin: 0;
   font-size: 27px;
   letter-spacing: 2px;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .dlc-tag {
   font-size: 12px;
   font-weight: 400;
-  color: #c98b3f;
+  color: color-mix(in srgb, var(--accent) 86%, transparent);
 }
 
 .tier-badge {
@@ -295,9 +295,9 @@ function goTo(target) {
 }
 
 .tag.category {
-  color: #d4af37;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.32);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
 }
 
 .tag.role {
@@ -323,7 +323,7 @@ function goTo(target) {
 
 .fact {
   padding: 10px 14px;
-  border: 1px solid #332d20;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 8px;
   background: #151515;
 }
@@ -361,7 +361,7 @@ function goTo(target) {
 
 .panel {
   padding: 20px 22px;
-  border: 1px solid #302b1f;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
   border-radius: 10px;
   background: #1a1a1a;
 }
@@ -373,7 +373,7 @@ function goTo(target) {
   margin: 0 0 16px;
   font-size: 16px;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .panel-title::before {
@@ -381,7 +381,7 @@ function goTo(target) {
   width: 3px;
   height: 15px;
   border-radius: 2px;
-  background: #d4af37;
+  background: var(--accent);
 }
 
 .panel-title.small {
@@ -408,7 +408,7 @@ function goTo(target) {
   display: flex;
   gap: 10px;
   padding: 14px 16px;
-  border-left: 3px solid rgba(212, 175, 55, 0.6);
+  border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
   border-radius: 0 8px 8px 0;
   background: #161616;
 }
@@ -432,7 +432,7 @@ function goTo(target) {
   flex-direction: column;
   gap: 5px;
   padding: 11px 13px;
-  border: 1px solid #2a2519;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 8px;
   background: #161616;
   text-decoration: none;
@@ -440,8 +440,8 @@ function goTo(target) {
 }
 
 .sibling-card:hover {
-  border-color: #5a4c28;
-  background: rgba(212, 175, 55, 0.06);
+  border-color: color-mix(in srgb, var(--accent) 32%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
 }
 
 .sibling-head {
@@ -490,7 +490,7 @@ function goTo(target) {
   gap: 8px;
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px dashed #332d20;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
 }
 
 .pager-btn {
@@ -503,15 +503,15 @@ function goTo(target) {
   font-size: 12px;
   color: #b8b2a0;
   background: #222;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .pager-btn:hover:not(:disabled) {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .pager-btn:disabled {
@@ -537,7 +537,7 @@ function goTo(target) {
 }
 
 .back-link:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 @media (max-width: 1000px) {

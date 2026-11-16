@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
   padding: 20px 22px 18px;
   box-sizing: border-box;
   background: #1a1915;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 14px;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.6);
 }
@@ -199,8 +199,8 @@ onBeforeUnmount(() => {
 }
 
 .ai-close:hover {
-  color: #d4af37;
-  background: #24211a;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .ai-desc {
@@ -231,14 +231,14 @@ onBeforeUnmount(() => {
   font-size: 12.5px;
   color: #e8e2cf;
   background: #141414;
-  border: 1px solid #3a3324;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   outline: none;
   transition: border-color 0.18s;
 }
 
 .ai-input:focus {
-  border-color: #8a7434;
+  border-color: color-mix(in srgb, var(--accent) 57%, transparent);
 }
 
 .ai-input::placeholder {
@@ -264,13 +264,13 @@ onBeforeUnmount(() => {
   font-size: 11.5px;
   color: #8a8574;
   background: #232323;
-  border: 1px solid #383225;
+  border: 1px solid color-mix(in srgb, var(--accent) 13%, transparent);
   border-radius: 5px;
   cursor: pointer;
 }
 
 .ai-eye:hover {
-  color: #d4af37;
+  color: var(--accent);
 }
 
 .ai-error,
@@ -300,22 +300,22 @@ onBeforeUnmount(() => {
   font-size: 13px;
   color: #d8d3c2;
   background: #202020;
-  border: 1px solid #3f3928;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 8px;
   cursor: pointer;
   transition: color 0.18s, background 0.18s, border-color 0.18s;
 }
 
 .ai-btn:hover {
-  color: #d4af37;
-  border-color: #6b5c2e;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .ai-btn.primary {
   color: #121212;
   font-weight: 600;
-  background: #d4af37;
-  border-color: #d4af37;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .ai-btn.primary:hover {
