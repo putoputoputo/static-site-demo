@@ -1481,6 +1481,24 @@ if (existsSync(notFoundStatic)) {
     true
   )
 
+  // 起终点快选必须在首页第一屏，而不是只藏在导航下拉里
+  check(
+    '旅游·首页首屏能选出发地与目的地',
+    ['出发地', '目的地', '出发日期', '排路线'].every((text) => travelHomeHtml.includes(text)),
+    true
+  )
+  // 17 个可规划景点 × 起点、终点两个下拉，各一套 optgroup 与 option
+  check(
+    '旅游·首页起终点下拉按片区分组',
+    (travelHomeHtml.match(/class="field-input"/g) || []).length,
+    3
+  )
+  // 17 个可规划景点必须同时出现在「出发地」「目的地」两个下拉里（远端景点不进下拉）
+  const pickable = travelSpots.filter((spot) => !spot.remote)
+  const missingInPicker = pickable.filter((spot) => travelHomeHtml.split(`value="${spot.id}"`).length - 1 !== 2)
+  check('旅游·首页起终点下拉覆盖全部可规划景点', missingInPicker.map((s) => s.id), [])
+  check('旅游·首页起终点下拉可规划数为 17', pickable.length, 17)
+
   const travelListHtml = await renderView(TravelSpotsView, '/travel/spots')
   check('旅游·景点列表 18 张卡', (travelListHtml.match(/class="spot-card"/g) || []).length, 18)
   check(

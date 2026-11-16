@@ -20,6 +20,54 @@
       <span class="festival-note">{{ springFestival.note }}</span>
     </div>
 
+    <!-- 路线规划入口放首页第一屏：起终点自己选，直接跳进规划器 -->
+    <section class="panel home-planner">
+      <h2 class="panel-title">你从哪儿开始，到哪儿结束</h2>
+      <p class="panel-sub">
+        下面 {{ pickCount }} 个景点都能当出发地和目的地（古北水镇要过夜，没放进来）。选好点「排路线」，
+        给你紧凑 / 标准 / 完整三套方案，每套都有逐日顺序、每段交通时长与当天花费。
+      </p>
+
+      <div class="planner-grid home-planner-grid">
+        <label class="field">
+          <span class="field-label">出发地</span>
+          <select v-model="quickFrom" class="field-input">
+            <optgroup v-for="group in spotOptions" :key="`from-${group.id}`" :label="group.name">
+              <option v-for="spot in group.items" :key="spot.id" :value="spot.id">{{ spot.name }}</option>
+            </optgroup>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field-label">目的地</span>
+          <select v-model="quickTo" class="field-input">
+            <optgroup v-for="group in spotOptions" :key="`to-${group.id}`" :label="group.name">
+              <option v-for="spot in group.items" :key="spot.id" :value="spot.id">{{ spot.name }}</option>
+            </optgroup>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field-label">出发日期</span>
+          <select v-model="quickDate" class="field-input">
+            <option value="">不指定（只排顺序）</option>
+            <option v-for="day in festivalDays" :key="day.date" :value="day.date">
+              {{ day.date }} {{ day.weekday }} · {{ day.label }}
+            </option>
+          </select>
+        </label>
+
+        <div class="field field-action">
+          <button type="button" class="btn-link btn-go" @click="goPlan">排路线 →</button>
+        </div>
+      </div>
+
+      <div class="home-planner-foot">
+        <button type="button" class="btn-swap" @click="swapQuick">对调出发地和目的地</button>
+        <RouterLink to="/travel/routes" class="home-planner-link">不想自己选，直接看三条经典路线</RouterLink>
+      </div>
+    </section>
+
     <section class="panel">
       <h2 class="panel-title">景点分布</h2>
       <p class="panel-sub">
@@ -109,12 +157,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TravelMap from '../../components/travel/TravelMap.vue'
 import { travelSpots } from '../../data/travel/spots'
 import { travelAreas } from '../../data/travel/areas'
-import { travelMeta, springFestival, festivalNotices } from '../../data/travel/meta'
+import { travelMeta, springFestival, festivalNotices, festivalDays } from '../../data/travel/meta'
 import './travel.css'
 
 const router = useRouter()
@@ -122,6 +170,41 @@ const router = useRouter()
 const palace = travelSpots.find((spot) => spot.must)
 // 长城两张卡里挑八达岭作主入口，慕田峪从它的详情页与列表进
 const wallMain = travelSpots.find((spot) => spot.id === 'badaling')
+
+// 首页的起终点快选：默认故宫 → 颐和园，与规划器的默认值保持一致
+const quickFrom = ref('forbidden-city')
+const quickTo = ref('summer-palace')
+const quickDate = ref('')
+
+const spotOptions = computed(() =>
+  travelAreas
+    .map((area) => ({
+      id: area.id,
+      name: area.name,
+      items: travelSpots.filter((spot) => spot.area === area.id && !spot.remote),
+    }))
+    .filter((group) => group.items.length)
+)
+
+const pickCount = computed(() => spotOptions.value.reduce((sum, group) => sum + group.items.length, 0))
+
+const swapQuick = () => {
+  const temp = quickFrom.value
+  quickFrom.value = quickTo.value
+  quickTo.value = temp
+}
+
+// 把选择直接带去规划器，规划器读 query 初始化，用户落地即可看到完整行程
+const goPlan = () => {
+  router.push({
+    path: '/travel/plan',
+    query: {
+      from: quickFrom.value,
+      to: quickTo.value,
+      ...(quickDate.value ? { date: quickDate.value } : {}),
+    },
+  })
+}
 
 const areaCards = computed(() =>
   travelAreas.map((area) => ({

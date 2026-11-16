@@ -640,6 +640,65 @@
   color: var(--tv-text-3);
 }
 
+/* ---------- 首页的起终点快选 ---------- */
+.travel .home-planner {
+  border-color: var(--tv-accent-line);
+}
+
+/* 三列输入 + 一列按钮；按钮对齐到输入框底边，不跟 label 走 */
+.travel .home-planner-grid {
+  grid-template-columns: 1fr 1fr 1fr auto;
+  align-items: end;
+}
+
+.travel .field-action {
+  display: flex;
+  align-items: flex-end;
+}
+
+.travel .btn-go {
+  padding: 9px 18px;
+  font-family: inherit;
+  font-size: 13.5px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.travel .home-planner-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.travel .btn-swap {
+  padding: 0;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: var(--tv-text-2);
+  background: none;
+  border: none;
+  border-bottom: 1px dashed var(--tv-line);
+  cursor: pointer;
+  transition: color 0.16s, border-color 0.16s;
+}
+
+.travel .btn-swap:hover {
+  color: var(--tv-text);
+  border-bottom-color: var(--tv-accent-line);
+}
+
+.travel .home-planner-link {
+  font-size: 12.5px;
+  color: var(--tv-text-3);
+  text-decoration: none;
+}
+
+.travel .home-planner-link:hover {
+  color: var(--tv-accent);
+}
+
 /* ---------- 三档方案切换 ---------- */
 .travel .pace-tabs {
   display: grid;
