@@ -5,7 +5,7 @@
         <div class="header-inner">
           <RouterLink to="/" class="logo">
             <el-icon :size="26"><Trophy /></el-icon>
-            <span>艾尔登法环攻略站</span>
+            <span>我的计划</span>
           </RouterLink>
           <div class="header-right">
             <nav class="nav">
@@ -21,9 +21,14 @@
               </template>
               <RouterLink v-else to="/pbz" class="nav-link">影之刃零</RouterLink>
               <RouterLink to="/photo" class="nav-link" :class="{ active: route.path.startsWith('/photo') }">摄影</RouterLink>
+              <!-- 旅游板块内部同样展开自己的分组；板块外只留一个入口 -->
+              <template v-if="inTravel">
+                <NavGroup v-for="group in travelNavGroups" :key="group.label" :label="group.label" :items="group.items" />
+              </template>
+              <RouterLink v-else to="/travel" class="nav-link" :class="{ active: inTravel }">旅游</RouterLink>
             </nav>
-            <!-- 全站搜索覆盖两个游戏的资料；摄影板块下没有可搜内容 -->
-            <GlobalSearch v-if="inGame || inPbz" />
+            <!-- 全站搜索覆盖游戏与旅游；摄影板块下没有可搜内容 -->
+            <GlobalSearch v-if="inGame || inPbz || inTravel" />
           </div>
         </div>
       </header>
@@ -31,7 +36,7 @@
         <RouterView />
       </main>
       <footer class="site-footer">
-        <span>艾尔登法环攻略站 · 交界地褪色者们的指引 · 仅供学习交流</span>
+        <span>我的计划 · 攻略与出行 · 仅供学习交流</span>
         <BuildTag />
       </footer>
     </div>
@@ -100,10 +105,31 @@ const pbzNavGroups = [
   },
 ]
 
+// 旅游板块的导航：景点两组，路线两组
+const travelNavGroups = [
+  {
+    label: '旅游 · 北京',
+    items: [
+      { path: '/travel', label: '分布图', desc: '18 个景点 · 7 个片区' },
+      { path: '/travel/spots', label: '景点库', desc: '门票 · 预约 · 闭馆' },
+    ],
+  },
+  {
+    label: '旅游 · 路线',
+    items: [
+      { path: '/travel/plan', label: '路线规划', desc: '选起点终点 · 三档方案' },
+      { path: '/travel/routes', label: '经典路线', desc: '中轴 3 天 · 深度 5 天' },
+    ],
+  },
+]
+
 const route = useRoute()
 
 const inPbz = computed(() => route.path.startsWith('/pbz'))
+const inTravel = computed(() => route.path.startsWith('/travel'))
 
-// 除门户页、摄影板块（含 /photo/logs 这类子页）与影之刃零板块外，其余路径都属于艾尔登法环的游戏板块（含 404 兜底页）
-const inGame = computed(() => route.path !== '/' && !route.path.startsWith('/photo') && !inPbz.value)
+// 除门户页、摄影板块（含 /photo/logs 这类子页）、旅游板块与影之刃零板块外，其余路径都属于艾尔登法环的游戏板块（含 404 兜底页）
+const inGame = computed(
+  () => route.path !== '/' && !route.path.startsWith('/photo') && !inTravel.value && !inPbz.value
+)
 </script>

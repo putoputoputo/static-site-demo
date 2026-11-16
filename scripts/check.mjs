@@ -107,6 +107,12 @@ async function renderView(component, path, props) {
       { path: '/pbz/archetypes/:id', component: Blank },
       // 主线流程的章节详情靠 params.id 取章节
       { path: '/pbz/walkthrough/:id', component: Blank },
+      // 旅游景点详情靠 params.id 取景点
+      { path: '/travel', component: Blank },
+      { path: '/travel/spots', component: Blank },
+      { path: '/travel/spots/:id', component: Blank },
+      { path: '/travel/plan', component: Blank },
+      { path: '/travel/routes', component: Blank },
       { path: '/:pathMatch(.*)*', component: Blank },
     ],
   })
@@ -872,10 +878,29 @@ if (existsSync(notFoundStatic)) {
   const { default: PhotoView } = await vite.ssrLoadModule('/src/views/PhotoView.vue')
 
   const portalHtml = await renderView(PortalView, '/')
-  check('门户页渲染三个板块卡片', (portalHtml.match(/class="[^"]*\bportal-card\b/g) || []).length, 3)
+  check('门户页渲染四个板块卡片', (portalHtml.match(/class="[^"]*\bportal-card\b/g) || []).length, 4)
   check('门户页能进游戏板块', portalHtml.includes('href="/game"'), true)
   check('门户页能进影之刃零板块', portalHtml.includes('href="/pbz"'), true)
   check('门户页能进摄影板块', portalHtml.includes('href="/photo"'), true)
+  check('门户页能进旅游板块', portalHtml.includes('href="/travel"'), true)
+  check(
+    '门户页站名已改为「我的计划」',
+    portalHtml.includes('我的计划') && !portalHtml.includes('艾尔登法环'),
+    true
+  )
+  // gen-404.mjs 会整份重写 public/404.html，手改产物会被构建覆盖，所以生成脚本一起查
+  const nameFiles = [
+    'index.html',
+    'public/404.html',
+    'src/App.vue',
+    'src/views/PortalView.vue',
+    'scripts/gen-404.mjs',
+  ]
+  check(
+    '全站已无旧站名残留',
+    nameFiles.filter((file) => readFileSync(resolve(root, file), 'utf8').includes('艾尔登法环攻略站')),
+    []
+  )
 
   // 原首页整体搬到 /game，卡片数量不变
   const gameHtml = await renderView(GameHomeView, '/game')
@@ -1392,6 +1417,243 @@ if (existsSync(notFoundStatic)) {
   const pbzWalkMissingHtml = await renderView(PbzWalkthroughChapterView, '/pbz/walkthrough/not-exist')
   check('影之刃零·流程详情 id 不存在时给空态', pbzWalkMissingHtml.includes('没有找到这一章'), true)
 
+  /* ---- 旅游板块：数据口径 + 三个页面 ---- */
+  const { travelSpots, spotById } = await vite.ssrLoadModule('/src/data/travel/spots.js')
+  const { travelAreas } = await vite.ssrLoadModule('/src/data/travel/areas.js')
+  const { springFestival, festivalNotices } = await vite.ssrLoadModule('/src/data/travel/meta.js')
+
+  check('旅游·景点 18 个', travelSpots.length, 18)
+  check('旅游·景点 id 唯一', new Set(travelSpots.map((spot) => spot.id)).size, travelSpots.length)
+  check(
+    '旅游·每个景点都要有出处，查不到就必须标待核实',
+    travelSpots.filter((spot) => !spot.source?.url && !spot.pending).map((spot) => spot.id),
+    []
+  )
+  check(
+    '旅游·片区都在片区表里',
+    [...new Set(travelSpots.map((spot) => spot.area))].filter(
+      (id) => !travelAreas.some((area) => area.id === id)
+    ),
+    []
+  )
+  check('旅游·必去景点齐全', ['forbidden-city', 'badaling', 'mutianyu'].filter((id) => !spotById[id]), [])
+  check(
+    '旅游·坐标落在北京范围内',
+    travelSpots
+      .filter((spot) => spot.lat < 39.4 || spot.lat > 41.1 || spot.lng < 115.4 || spot.lng > 117.6)
+      .map((spot) => spot.id),
+    []
+  )
+  check(
+    '旅游·门票要么免费，要么有淡季价',
+    travelSpots
+      .filter((spot) => !spot.ticket || (!spot.ticket.free && typeof spot.ticket.offPeak !== 'number'))
+      .map((spot) => spot.id),
+    []
+  )
+  check('旅游·春节窗口 9 天', springFestival.days, 9)
+  check(
+    '旅游·春节提示同时有已确认与待公告',
+    ['confirmed', 'pending'].every((status) =>
+      festivalNotices.some((notice) => notice.status === status)
+    ),
+    true
+  )
+
+  const { default: TravelHomeView } = await vite.ssrLoadModule('/src/views/travel/TravelHomeView.vue')
+  const { default: TravelSpotsView } = await vite.ssrLoadModule('/src/views/travel/TravelSpotsView.vue')
+  const { default: TravelSpotView } = await vite.ssrLoadModule('/src/views/travel/TravelSpotView.vue')
+
+  const travelHomeHtml = await renderView(TravelHomeView, '/travel')
+  // 城内 15 个点画在图上；八达岭与慕田峪在城外，改用方向牌表示
+  // 注意：动态 class 有值时 Vue 会输出 class="must map-point"，所以匹配要放松到属性内任意位置
+  check(
+    '旅游·分布图画出城内 15 个点位',
+    (travelHomeHtml.match(/class="[^"]*\bmap-point\b/g) || []).length,
+    15
+  )
+  check('旅游·分布图给长城两块方向牌', (travelHomeHtml.match(/class="map-exit"/g) || []).length, 2)
+  check(
+    '旅游·首页给出春节窗口与必去入口',
+    ['2027 年春节', '2 月 5 日', '故宫博物院', 'href="/travel/spots/badaling"'].every((text) =>
+      travelHomeHtml.includes(text)
+    ),
+    true
+  )
+
+  const travelListHtml = await renderView(TravelSpotsView, '/travel/spots')
+  check('旅游·景点列表 18 张卡', (travelListHtml.match(/class="spot-card"/g) || []).length, 18)
+  check(
+    '旅游·列表标出预约与闭馆',
+    travelListHtml.includes('需预约') && travelListHtml.includes('周一闭馆'),
+    true
+  )
+
+  const travelChromeHtml = await renderView(TravelSpotView, '/travel/spots/forbidden-city')
+  check(
+    '旅游·故宫详情渲染八行条件表',
+    ['故宫博物院', '淡季 40 元 / 旺季 60 元', '提前 7 天', '周一闭馆', '午门', '建议停留'].every((text) =>
+      travelChromeHtml.includes(text)
+    ),
+    true
+  )
+  check('旅游·详情页给出官网出处', travelChromeHtml.includes('ticket.dpm.org.cn'), true)
+
+  const travelWallHtml = await renderView(TravelSpotView, '/travel/spots/badaling')
+  check(
+    '旅游·长城详情给出四种交通方式',
+    ['京张高铁', 'S2 线', '877 路', '919 路'].every((text) => travelWallHtml.includes(text)),
+    true
+  )
+
+  const travelMissHtml = await renderView(TravelSpotView, '/travel/spots/not-exist')
+  check('旅游·景点 id 不存在时给空态', travelMissHtml.includes('没有找到这个景点'), true)
+
+  /* ---- 旅游·路线规划：通勤数据、算法、两个页面 ---- */
+  const { areaLinks, metroFare, areaTransit, wallPlans, transitMeta } = await vite.ssrLoadModule(
+    '/src/data/travel/transit.js'
+  )
+  const { planRoutes, ticketOf } = await vite.ssrLoadModule('/src/utils/travelPlanner.js')
+  const { classicRoutes } = await vite.ssrLoadModule('/src/data/travel/routes.js')
+  const { wgs84ToGcj02, amapSpotUrl } = await vite.ssrLoadModule('/src/utils/geo.js')
+  const { festivalDays } = await vite.ssrLoadModule('/src/data/travel/meta.js')
+
+  check('旅游·片区间通勤 15 对（6 城区两两）', areaLinks.length, 15)
+  check(
+    '旅游·通勤都标了来源等级（measured / estimate）',
+    areaLinks.filter((link) => !['measured', 'estimate'].includes(link.kind)).map((link) => link.a + link.b),
+    []
+  )
+  check(
+    '旅游·8 号线那 6 对标为 measured',
+    areaLinks.filter((link) => link.kind === 'measured').length,
+    6
+  )
+  check(
+    '旅游·地铁票价按里程分档',
+    [metroFare(3000), metroFare(9000), metroFare(18000), metroFare(28000), metroFare(40000)],
+    [3, 4, 5, 6, 7]
+  )
+  check(
+    '旅游·通勤双向对称',
+    areaTransit('gugong', 'tiantan') === areaTransit('tiantan', 'gugong'),
+    true
+  )
+  check(
+    '旅游·长城两段都有出城方案',
+    [wallPlans.badaling.length >= 3, wallPlans.mutianyu.length >= 1],
+    [true, true]
+  )
+  check('旅游·通勤口径自检数字与数据一致', transitMeta.checkedCount, 6)
+
+  // 算法：18 个起点的每一种组合，起点必须在第一天第一站、终点在最后一天最后一站、长城独占一天
+  const planIds = travelSpots.filter((spot) => !spot.remote).map((spot) => spot.id)
+  const planFails = []
+  planIds.forEach((fromId) => {
+    const result = planRoutes({ startId: fromId, endId: 'summer-palace' })
+    if (result.error) return
+    result.routes.forEach((route) => {
+      const first = route.days[0].stops[0]
+      const last = route.days[route.days.length - 1].stops[route.days[route.days.length - 1].stops.length - 1]
+      if (first.id !== fromId) planFails.push(`${fromId}:起点错位`)
+      if (last.id !== 'summer-palace') planFails.push(`${fromId}:终点错位`)
+      route.days.forEach((day) => {
+        const walls = day.stops.filter((stop) => ['badaling', 'mutianyu'].includes(stop.id))
+        if (walls.length && day.stops.length > 1) planFails.push(`${fromId}:长城没独占一天`)
+      })
+      if (route.days.some((day) => !day.stops.length)) planFails.push(`${fromId}:有空天`)
+    })
+  })
+  check('旅游·每个起点都能排出合法路线', [...new Set(planFails)], [])
+
+  const threeRoutes = planRoutes({ startId: 'forbidden-city', endId: 'summer-palace' }).routes
+  check('旅游·三档方案天数不递减', threeRoutes.map((route) => route.dayCount).every((n, i, arr) => i === 0 || arr[i - 1] <= n), true)
+  check(
+    '旅游·三档方案站点数不递减',
+    threeRoutes.map((route) => route.totalSpots).every((n, i, arr) => i === 0 || arr[i - 1] <= n),
+    true
+  )
+  check(
+    '旅游·起点是故宫时故宫排第一站',
+    threeRoutes.every((route) => route.days.every((day) => {
+      const index = day.stops.findIndex((stop) => stop.id === 'forbidden-city')
+      return index <= 0
+    })),
+    true
+  )
+  check(
+    '旅游·费用 = 门票 + 交通',
+    threeRoutes.every((route) => route.totalCost === route.totalTicket + route.totalFare),
+    true
+  )
+  check('旅游·门票按淡季价（故宫 40）', ticketOf(spotById['forbidden-city'], 'offPeak'), 40)
+  check('旅游·免费景点门票为 0', ticketOf(spotById.qianmen, 'offPeak'), 0)
+
+  // 周一闭馆：2027-02-06 起连排，2/8 是周一，不能排到闭馆景点
+  const weekdayOfDate = (date) => {
+    const festival = festivalDays.find((item) => item.date === date)
+    return festival ? festival.weekdayIndex : new Date(`${date}T00:00:00`).getDay()
+  }
+  const mondayPlan = planRoutes({
+    startId: 'forbidden-city',
+    endId: 'summer-palace',
+    startDate: '2027-02-06',
+    pacingId: 'normal',
+  })
+  check(
+    '旅游·周一不排闭馆景点',
+    mondayPlan.routes.flatMap((route) =>
+      route.days.flatMap((day) => {
+        if (!day.date) return []
+        const weekday = weekdayOfDate(day.date)
+        return day.stops
+          .filter((stop) => stop.closedWeekday !== null && stop.closedWeekday === weekday)
+          .map((stop) => `第${day.index}天 ${stop.name}`)
+      })
+    ),
+    []
+  )
+  check(
+    '旅游·日期连续递增',
+    mondayPlan.routes.every((route) =>
+      route.days.every((day, index) => {
+        if (!day.date) return true
+        const expected = new Date('2027-02-06T00:00:00')
+        expected.setDate(expected.getDate() + index)
+        return day.date === `${expected.getFullYear()}-${String(expected.getMonth() + 1).padStart(2, '0')}-${String(expected.getDate()).padStart(2, '0')}`
+      })
+    ),
+    true
+  )
+
+  check('旅游·经典路线 3 条', classicRoutes.length, 3)
+  check(
+    '旅游·经典路线都有逐天安排与取舍说明',
+    classicRoutes.filter((route) => !route.itinerary.length || !route.tips.length || !route.skip.length).map((route) => route.id),
+    []
+  )
+
+  // 坐标转换：WGS-84 到 GCJ-02 在北京会偏移几百米，偏移量必须落在合理区间
+  const gcj = wgs84ToGcj02(116.3972, 39.9163)
+  const offsetMeters = Math.hypot((gcj.lng - 116.3972) * 111000 * 0.766, (gcj.lat - 39.9163) * 111000)
+  check('旅游·坐标转换偏移在 100—800 米之间', offsetMeters > 100 && offsetMeters < 800, true)
+  check('旅游·高德外链带 gcj 坐标而非原始坐标', amapSpotUrl(spotById['forbidden-city']).includes('coordinate=gaode'), true)
+
+  const { default: TravelPlanView } = await vite.ssrLoadModule('/src/views/travel/TravelPlanView.vue')
+  const { default: TravelRoutesView } = await vite.ssrLoadModule('/src/views/travel/TravelRoutesView.vue')
+
+  const travelPlanHtml = await renderView(TravelPlanView, '/travel/plan')
+  check('旅游·规划器渲染起终点与长城选择', ['起点', '终点', '长城段', '出发日期'].every((text) => travelPlanHtml.includes(text)), true)
+  check('旅游·规划器渲染三档方案', (travelPlanHtml.match(/class="pace-tab/g) || []).length, 3)
+  check('旅游·规划器渲染逐站时间线', (travelPlanHtml.match(/class="stop[\s"]/g) || []).length >= 6, true)
+  check('旅游·规划器给出高德地图外链', travelPlanHtml.includes('uri.amap.com'), true)
+  check('旅游·规划器说明长城独占一天', travelPlanHtml.includes('长城日 · 市区往返'), true)
+
+  const travelRoutesHtml = await renderView(TravelRoutesView, '/travel/routes')
+  check('旅游·经典路线渲染三条切换', (travelRoutesHtml.match(/class="route-tab/g) || []).length, 3)
+  check('旅游·经典路线渲染每天卡片', (travelRoutesHtml.match(/class="day-card/g) || []).length, 3)
+  check('旅游·经典路线给出取舍说明', travelRoutesHtml.includes('故意没排进来的'), true)
+
   /* ---- 中文化：正文里除了平台名、站点名与 BOSS / Lv 这类通用词，不该再出现英文 ---- */
   {
     const asciiAllow = new Set([
@@ -1506,7 +1768,12 @@ if (existsSync(notFoundStatic)) {
 
   // 板块内如果没有搜索框，索引建了也点不到
   const appSource = readFileSync(resolve(root, 'src/App.vue'), 'utf-8')
-  check('影之刃零·板块内展开全站搜索', /GlobalSearch\s+v-if="inGame \|\| inPbz"/.test(appSource), true)
+  check(
+    '全站搜索在游戏 / 影之刃零 / 旅游三个板块都展开',
+    /GlobalSearch\s+v-if="inGame \|\| inPbz \|\| inTravel"/.test(appSource),
+    true
+  )
+  check('搜索按板块过滤结果', /scopedGroups/.test(readFileSync(resolve(root, 'src/components/GlobalSearch.vue'), 'utf-8')), true)
 }
 
 await vite.close()

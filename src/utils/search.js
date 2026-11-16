@@ -21,6 +21,10 @@ import pbzEdges from '../data/pbz/phantomEdges.js'
 import pbzBosses from '../data/pbz/bosses.js'
 import { pbzArchetypes, pbzArchetypeStages } from '../data/pbz/archetypes.js'
 import { pbzOrderedChapters } from '../data/pbz/walkthrough.js'
+// 旅游：18 个景点 + 3 条经典路线。只在打开搜索框时加载，不影响首屏。
+import { travelSpots } from '../data/travel/spots.js'
+import { travelAreas } from '../data/travel/areas.js'
+import { classicRoutes } from '../data/travel/routes.js'
 
 export const searchGroupOrder = [
   'weapons',
@@ -41,6 +45,8 @@ export const searchGroupOrder = [
   'pbzBosses',
   'pbzArchetypes',
   'pbzChapters',
+  'travelRoutes',
+  'travelSpots',
   'tools',
 ]
 
@@ -61,6 +67,8 @@ export const searchGroupLabels = {
   pbzBosses: '影之刃零 · BOSS',
   pbzArchetypes: '影之刃零 · 流派',
   pbzChapters: '影之刃零 · 流程',
+  travelRoutes: '旅游 · 经典路线',
+  travelSpots: '旅游 · 北京景点',
   tools: '工具',
 }
 
@@ -269,6 +277,55 @@ export function buildIndex() {
         .filter(Boolean)
         .join(' '),
       to: `/pbz/walkthrough/${encodeURIComponent(chapter.id)}`,
+    })
+  })
+
+  // 旅游：景点按名称、别名、片区、门票与预约条件都能搜到
+  travelSpots.forEach((spot) => {
+    const area = travelAreas.find((item) => item.id === spot.area)
+    push(map, 'travelSpots', {
+      name: spot.name,
+      sub: `旅游 · ${area ? area.name : ''}${spot.wall ? ' · 长城' : ''}${spot.remote ? ' · 远郊' : ''}`,
+      extra: [
+        spot.name,
+        ...(spot.alias || []),
+        spot.district,
+        area ? area.name : '',
+        spot.bestTime,
+        spot.entry,
+        ...(spot.access || []).map((item) => item.text),
+        ...(spot.conditions || []),
+        ...(spot.tips || []),
+        spot.ticket && spot.ticket.free ? '免费' : '',
+        spot.booking && spot.booking.required ? '需预约 预约' : '',
+        spot.hours ? spot.hours.closed : '',
+        '北京 景点 门票 预约 开放时间 怎么去',
+      ]
+        .filter(Boolean)
+        .join(' '),
+      to: `/travel/spots/${encodeURIComponent(spot.id)}`,
+    })
+  })
+
+  // 旅游：经典路线搜「三天」「春节」「中轴」都能落到对应路线
+  classicRoutes.forEach((route) => {
+    push(map, 'travelRoutes', {
+      name: route.name,
+      sub: `旅游 · ${route.days} 天 · ${route.tagline}`,
+      extra: [
+        route.name,
+        route.tagline,
+        route.level,
+        route.bestFor,
+        route.summary,
+        ...route.tips,
+        ...route.skip,
+        route.itinerary.flatMap((day) => day.title || '').join(' '),
+        `${route.days} 天 路线 行程 攻略 春节`,
+      ]
+        .filter(Boolean)
+        .join(' '),
+      to: '/travel/routes',
     })
   })
 

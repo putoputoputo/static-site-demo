@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "gen:404": "node scripts/gen-404.mjs",
     "check": "node scripts/check.mjs",
-    "check:ai": "node scripts/ai-selftest.mjs"
+    "check:ai": "node scripts/ai-selftest.mjs",
+    "check:map": "node scripts/travel-map-report.mjs"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",

@@ -1,8 +1,8 @@
 <template>
   <div class="portal">
     <div class="portal-head">
-      <h1>艾尔登法环攻略站</h1>
-      <p>三个板块：两款游戏的攻略，加上记录画面的摄影</p>
+      <h1>我的计划</h1>
+      <p>四个板块：两款游戏的攻略、影像分析，以及一份能落地的北京行程</p>
     </div>
 
     <div class="portal-grid">
@@ -65,13 +65,32 @@
           <el-icon :size="14"><ArrowRight /></el-icon>
         </span>
       </RouterLink>
+
+      <RouterLink to="/travel" class="portal-card travel">
+        <div class="card-icon">
+          <el-icon :size="34"><Place /></el-icon>
+        </div>
+        <h2>旅游板块</h2>
+        <p class="card-desc">
+          春节去北京：故宫与长城必去，按你选的起点终点串成路线，附每段通勤的时间与票价，以及每个景点的门票、预约与闭馆条件。
+        </p>
+        <ul class="card-facts">
+          <li>18 个景点</li>
+          <li>路线规划</li>
+          <li>门票与预约</li>
+        </ul>
+        <span class="card-enter">
+          进入旅游
+          <el-icon :size="14"><ArrowRight /></el-icon>
+        </span>
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import { Trophy, Camera, ArrowRight, Aim } from '@element-plus/icons-vue'
+import { Trophy, Camera, ArrowRight, Aim, Place } from '@element-plus/icons-vue'
 // 只从构建期生成的 summary 取数字：门户页是首屏，不能为了四个统计
 // 把整份 BOSS / 武器数据（约 200KB）打进首个 chunk
 import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../data/summary'
@@ -102,7 +121,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
 
 .portal-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 22px;
 }
 
@@ -112,7 +131,7 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
   flex-direction: column;
   gap: 14px;
   padding: 34px 30px 28px;
-  min-height: 300px;
+  min-height: 260px;
   text-decoration: none;
   background: #1a1a1a;
   border: 1px solid #3a3324;
@@ -273,5 +292,23 @@ import { mainStats, questStats, weaponCount, regionStats, pbzStats } from '../da
     min-height: 0;
     padding: 26px 22px 24px;
   }
+}
+/* 第四个板块：旅游，绿色系，与前三个拉开区分 */
+.portal-card.travel::before {
+  background: radial-gradient(120% 100% at 20% 0%, rgba(111, 158, 122, 0.16), transparent 70%);
+}
+
+.portal-card.travel:hover {
+  border-color: #6f9e7a;
+  box-shadow: 0 10px 28px rgba(111, 158, 122, 0.14);
+}
+
+.portal-card.travel .card-icon {
+  color: #6f9e7a;
+}
+
+.portal-card.travel:hover .card-enter {
+  color: #6f9e7a;
+  gap: 10px;
 }
 </style>

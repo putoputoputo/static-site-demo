@@ -1,0 +1,1205 @@
+/* 旅游板块共用样式
+   口径与影之刃零一致：深底 #1a1a1a 卡片、#3a3324 描边、金色作强调；
+   旅游板块自己的强调色换成绿色系，和游戏板块的暗金、影之刃零的赤红区分开。 */
+
+.travel {
+  --tv-accent: #6f9e7a;
+  --tv-accent-soft: #1a2620;
+  --tv-accent-line: #35513f;
+  --tv-card: #1a1a1a;
+  --tv-line: #3a3324;
+  --tv-text: #e5e3d8;
+  --tv-text-2: #a8a292;
+  --tv-text-3: #7a7565;
+  --tv-gold: #c8a86a;
+  padding: 24px 0 48px;
+}
+
+/* ---------- 页头 ---------- */
+.travel .hero {
+  padding: 8px 0 20px;
+  border-bottom: 1px solid var(--tv-line);
+}
+
+.travel .hero-eyebrow {
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--tv-accent);
+}
+
+.travel .hero h1 {
+  margin: 0 0 12px;
+  font-size: 30px;
+  letter-spacing: 2px;
+  color: var(--tv-text);
+}
+
+.travel .hero-lead {
+  margin: 0;
+  max-width: 760px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--tv-text-2);
+}
+
+.travel .hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.travel .hero-meta span {
+  padding: 3px 10px;
+  font-size: 12px;
+  color: #9aa89c;
+  background: var(--tv-accent-soft);
+  border: 1px solid var(--tv-accent-line);
+  border-radius: 999px;
+}
+
+/* ---------- 春节提示条 ---------- */
+.travel .festival {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: #1d1a12;
+  border: 1px solid #4a3f22;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--tv-gold);
+}
+
+.travel .festival-note {
+  font-size: 12px;
+  color: #8d7742;
+}
+
+/* ---------- 通用面板 ---------- */
+.travel .panel {
+  margin-top: 26px;
+  padding: 20px 22px;
+  background: var(--tv-card);
+  border: 1px solid var(--tv-line);
+  border-radius: 10px;
+}
+
+.travel .panel-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--tv-text);
+}
+
+.travel .panel-sub {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--tv-text-3);
+}
+
+/* ---------- 必去双卡 ---------- */
+.travel .must-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.travel .must-card {
+  display: block;
+  padding: 18px 20px;
+  text-decoration: none;
+  background: var(--tv-card);
+  border: 1px solid var(--tv-line);
+  border-radius: 10px;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.travel .must-card:hover {
+  border-color: var(--tv-accent-line);
+  background: #1b1b1a;
+}
+
+.travel .must-kicker {
+  font-size: 11.5px;
+  letter-spacing: 1.5px;
+  color: var(--tv-accent);
+}
+
+.travel .must-name {
+  margin: 6px 0 8px;
+  font-size: 19px;
+  color: var(--tv-text);
+}
+
+.travel .must-desc {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--tv-text-3);
+}
+
+/* ---------- 片区 ---------- */
+.travel .area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.travel .area-card {
+  display: block;
+  padding: 14px 16px;
+  text-decoration: none;
+  background: #151617;
+  border: 1px solid #2a2c2e;
+  border-radius: 8px;
+  transition: border-color 0.18s;
+}
+
+.travel .area-card:hover {
+  border-color: var(--tv-accent-line);
+}
+
+.travel .area-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.travel .area-name {
+  font-size: 14px;
+  color: var(--tv-text);
+}
+
+.travel .area-count {
+  font-size: 11.5px;
+  color: var(--tv-text-3);
+  white-space: nowrap;
+}
+
+.travel .area-desc {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--tv-text-3);
+}
+
+/* ---------- 春节提示列表 ---------- */
+.travel .notice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.travel .notice {
+  padding: 12px 14px;
+  background: #151617;
+  border-left: 2px solid var(--tv-accent-line);
+  border-radius: 0 6px 6px 0;
+}
+
+.travel .notice.warn {
+  background: #1a1710;
+  border-left-color: #6b5a30;
+}
+
+.travel .notice-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--tv-text);
+}
+
+.travel .notice-text {
+  margin: 7px 0 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--tv-text-3);
+}
+
+.travel .status {
+  padding: 1px 7px;
+  font-size: 10.5px;
+  border-radius: 999px;
+}
+
+.travel .status.confirmed {
+  color: #7ba888;
+  background: #17241c;
+  border: 1px solid #2d4a38;
+}
+
+.travel .status.pending {
+  color: #9aa7b8;
+  background: #202429;
+  border: 1px solid #33404d;
+}
+
+/* ---------- 下一步入口 ---------- */
+.travel .next-step {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.travel .btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 13.5px;
+  text-decoration: none;
+  color: var(--tv-text);
+  background: var(--tv-accent-soft);
+  border: 1px solid var(--tv-accent-line);
+  border-radius: 6px;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.travel .btn-link:hover {
+  background: #22332a;
+  border-color: var(--tv-accent);
+}
+
+.travel .btn-link.ghost {
+  background: transparent;
+  border-color: var(--tv-line);
+  color: var(--tv-text-2);
+}
+
+.travel .btn-link.ghost:hover {
+  border-color: var(--tv-accent-line);
+  color: var(--tv-text);
+}
+
+/* ---------- 景点列表 ---------- */
+.travel .filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.travel .chip {
+  padding: 5px 12px;
+  font-size: 12.5px;
+  color: var(--tv-text-2);
+  background: transparent;
+  border: 1px solid var(--tv-line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.16s;
+}
+
+.travel .chip:hover {
+  border-color: var(--tv-accent-line);
+  color: var(--tv-text);
+}
+
+.travel .chip.on {
+  color: #b6d3bf;
+  background: var(--tv-accent-soft);
+  border-color: var(--tv-accent-line);
+}
+
+.travel .spot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.travel .spot-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px;
+  text-decoration: none;
+  background: var(--tv-card);
+  border: 1px solid var(--tv-line);
+  border-radius: 10px;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.travel .spot-card:hover {
+  border-color: var(--tv-accent-line);
+  background: #1b1b1a;
+}
+
+.travel .spot-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.travel .spot-name {
+  font-size: 15px;
+  color: var(--tv-text);
+}
+
+.travel .spot-price {
+  font-size: 13px;
+  color: var(--tv-gold);
+  white-space: nowrap;
+}
+
+.travel .spot-meta {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--tv-text-3);
+}
+
+.travel .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.travel .tag {
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.travel .tag.must {
+  color: #d8c79a;
+  background: #241f10;
+  border: 1px solid #4a3f22;
+}
+
+.travel .tag.book {
+  color: #7ba888;
+  background: #17241c;
+  border: 1px solid #2d4a38;
+}
+
+.travel .tag.free {
+  color: #8fb08a;
+  background: #16201a;
+  border: 1px solid #2a3a30;
+}
+
+.travel .tag.closed {
+  color: #9aa7b8;
+  background: #202429;
+  border: 1px solid #33404d;
+}
+
+.travel .tag.pending {
+  color: #9aa7b8;
+  background: #202429;
+  border: 1px solid #33404d;
+}
+
+/* ---------- 景点详情 ---------- */
+.travel .detail-head {
+  padding: 4px 0 18px;
+  border-bottom: 1px solid var(--tv-line);
+}
+
+.travel .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 14px;
+  font-size: 12.5px;
+  color: var(--tv-text-3);
+  text-decoration: none;
+}
+
+.travel .back-link:hover {
+  color: var(--tv-accent);
+}
+
+.travel .detail-title {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: var(--tv-text);
+}
+
+.travel .detail-place {
+  margin: 6px 0 12px;
+  font-size: 12.5px;
+  color: var(--tv-text-3);
+}
+
+.travel .detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 条件表：左侧固定键宽，右侧长文本自动换行 */
+.travel .cond-table {
+  margin: 4px 0 0;
+}
+
+.travel .cond-row {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid #262420;
+}
+
+.travel .cond-row:last-child {
+  border-bottom: none;
+}
+
+.travel .cond-key {
+  font-size: 12.5px;
+  color: var(--tv-text-3);
+}
+
+.travel .cond-val {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--tv-text-2);
+}
+
+.travel .cond-val strong {
+  color: var(--tv-text);
+  font-weight: 600;
+}
+
+.travel .cond-val em {
+  font-style: normal;
+  color: var(--tv-gold);
+}
+
+.travel .bullet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.travel .bullet-list li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--tv-text-2);
+}
+
+.travel .bullet-list li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 11px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--tv-accent);
+  opacity: 0.7;
+}
+
+.travel .source-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--tv-text-3);
+  background: #151617;
+  border: 1px dashed #2f3236;
+  border-radius: 6px;
+}
+
+.travel .source-box a {
+  color: #8fb0c4;
+  text-decoration: none;
+  border-bottom: 1px solid #33424d;
+}
+
+.travel .source-box a:hover {
+  color: #b6d3e4;
+}
+
+.travel .pending-note {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #9aa7b8;
+  background: #202429;
+  border: 1px solid #33404d;
+  border-radius: 6px;
+}
+
+.travel .sibling-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* ---------- 空态 ---------- */
+.travel .empty {
+  padding: 60px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--tv-text-3);
+}
+
+@media (max-width: 980px) {
+  .travel .must-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .travel .hero h1 {
+    font-size: 24px;
+  }
+
+  .travel .panel {
+    padding: 16px 16px;
+  }
+
+  .travel .cond-row {
+    grid-template-columns: 84px 1fr;
+  }
+}
+
+/* ============================================================
+   路线规划器
+   ============================================================ */
+
+.travel .planner-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.travel .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.travel .field-label {
+  font-size: 12px;
+  color: var(--tv-text-3);
+}
+
+.travel .field-input {
+  width: 100%;
+  padding: 9px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--tv-text);
+  background: #151617;
+  border: 1px solid var(--tv-line);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.16s;
+}
+
+.travel .field-input:hover,
+.travel .field-input:focus {
+  border-color: var(--tv-accent-line);
+}
+
+.travel .field-input option,
+.travel .field-input optgroup {
+  background: #1a1a1a;
+  color: var(--tv-text);
+}
+
+.travel .planner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.travel .planner-hint {
+  font-size: 12px;
+  color: var(--tv-text-3);
+}
+
+/* ---------- 三档方案切换 ---------- */
+.travel .pace-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.travel .pace-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  text-align: left;
+  font-family: inherit;
+  background: var(--tv-card);
+  border: 1px solid var(--tv-line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.16s, background 0.16s;
+}
+
+.travel .pace-tab:hover {
+  border-color: var(--tv-accent-line);
+}
+
+.travel .pace-tab.on {
+  background: var(--tv-accent-soft);
+  border-color: var(--tv-accent);
+}
+
+.travel .pace-tab strong {
+  font-size: 15px;
+  color: var(--tv-text);
+}
+
+.travel .pace-tab span {
+  font-size: 12px;
+  color: #9aa89c;
+}
+
+.travel .pace-tab em {
+  font-size: 11.5px;
+  font-style: normal;
+  color: var(--tv-text-3);
+}
+
+/* ---------- 汇总条 ---------- */
+.travel .plan-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.travel .stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  background: #151617;
+  border: 1px solid #26282a;
+  border-radius: 8px;
+}
+
+.travel .stat strong {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--tv-text);
+}
+
+.travel .stat span {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--tv-text-3);
+}
+
+.travel .stat.money strong {
+  color: var(--tv-gold);
+}
+
+.travel .wall-note {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #a8c4ad;
+  background: #16201a;
+  border: 1px solid #2a3a30;
+  border-radius: 6px;
+}
+
+.travel .route-warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.travel .route-warnings li {
+  padding: 9px 12px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  border-radius: 6px;
+}
+
+.travel .route-warnings .info {
+  color: #9aa89c;
+  background: #16201a;
+  border-left: 2px solid #35513f;
+}
+
+.travel .route-warnings .warn {
+  color: #d8b97a;
+  background: #1d1a12;
+  border-left: 2px solid #6b5a30;
+}
+
+/* ---------- 主体：地图在上，行程在下 ----------
+   地图不做侧栏：SVG 的 viewBox 是 760 宽，塞进 380px 的侧栏会等比缩到 0.5 倍，
+   10.5px 的标签字只剩 5px，根本看不清。全宽居中后按 0.92 倍显示，字号正常。 */
+.travel .plan-map-full {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.travel .day-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+
+.travel .day-chips .chip em {
+  margin-left: 6px;
+  font-style: normal;
+  font-size: 11px;
+  opacity: 0.72;
+}
+
+.travel .plan-days {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+/* ---------- 每天的卡片 ---------- */
+.travel .day-card {
+  padding: 16px 18px 18px;
+  background: var(--tv-card);
+  border: 1px solid var(--tv-line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.16s, background 0.16s;
+}
+
+.travel .day-card:hover {
+  border-color: var(--tv-accent-line);
+}
+
+.travel .day-card.on {
+  background: #1b1c1b;
+  border-color: var(--tv-accent);
+}
+
+.travel .day-card.over {
+  border-color: #6b5a30;
+}
+
+.travel .day-head {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #26282a;
+}
+
+.travel .day-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.travel .day-index {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--tv-text);
+}
+
+.travel .day-date {
+  font-size: 12px;
+  color: var(--tv-text-2);
+}
+
+.travel .day-badge {
+  padding: 1px 8px;
+  font-size: 11px;
+  border-radius: 999px;
+}
+
+.travel .day-badge.wall {
+  color: #d8c79a;
+  background: #241f10;
+  border: 1px solid #4a3f22;
+}
+
+.travel .day-badge.over {
+  color: #d8b97a;
+  background: #1d1a12;
+  border: 1px solid #6b5a30;
+}
+
+.travel .day-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--tv-text-3);
+}
+
+.travel .amap-link {
+  margin-left: auto;
+  color: #8fb0c4;
+  text-decoration: none;
+  border-bottom: 1px solid #33424d;
+}
+
+.travel .amap-link:hover {
+  color: #b6d3e4;
+}
+
+.travel .wall-plan-note {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.75;
+  color: #c8bda0;
+  background: #1d1c17;
+  border-left: 2px solid #4a3f22;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ---------- 时间线 ---------- */
+.travel .timeline {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.travel .stop,
+.travel .leg {
+  position: relative;
+  display: grid;
+  grid-template-columns: 78px 20px minmax(0, 1fr);
+  column-gap: 10px;
+}
+
+.travel .stop {
+  padding: 6px 0;
+}
+
+/* 竖线在中间那一列，圆点压在线上 */
+.travel .stop::before,
+.travel .leg::before {
+  content: '';
+  position: absolute;
+  left: 87px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #2a2c2e;
+}
+
+.travel .stop::after {
+  content: '';
+  position: absolute;
+  left: 84px;
+  top: 15px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--tv-accent);
+}
+
+.travel .leg {
+  padding: 3px 0;
+}
+
+.travel .leg::before {
+  background: repeating-linear-gradient(#2a2c2e 0 3px, transparent 3px 6px);
+}
+
+.travel .leg-time {
+  grid-column: 1;
+  text-align: right;
+  font-size: 11.5px;
+  color: #5d5748;
+}
+
+.travel .leg-mode,
+.travel .leg-via,
+.travel .leg-fare {
+  grid-column: 3;
+}
+
+.travel .leg-mode {
+  font-size: 11.5px;
+  color: #6f8a76;
+}
+
+.travel .leg-via {
+  font-size: 11.5px;
+  color: var(--tv-text-3);
+}
+
+.travel .leg-fare {
+  font-size: 11.5px;
+  color: #8d7742;
+}
+
+.travel .stop-clock {
+  grid-column: 1;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tv-text-2);
+  line-height: 1.5;
+}
+
+.travel .stop-clock em {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 400;
+  color: #5d5748;
+}
+
+.travel .stop-body {
+  grid-column: 3;
+  min-width: 0;
+}
+
+.travel .stop-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.travel .stop-name {
+  font-size: 14.5px;
+  color: var(--tv-text);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.travel .stop-name:hover {
+  border-bottom-color: var(--tv-accent-line);
+}
+
+.travel .stop-stay,
+.travel .stop-ticket {
+  font-size: 11.5px;
+  color: var(--tv-text-3);
+}
+
+.travel .stop-ticket {
+  color: var(--tv-gold);
+}
+
+.travel .stop-ticket.free {
+  color: #7ba888;
+}
+
+.travel .stop-tip {
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: #6f6a5c;
+}
+
+.travel .day-footnote {
+  margin: 12px 0 0;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--tv-text-3);
+}
+
+/* ---------- 长城对照 ---------- */
+.travel .wall-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.travel .wall-card {
+  padding: 14px 16px;
+  background: #151617;
+  border: 1px solid #26282a;
+  border-radius: 8px;
+}
+
+.travel .wall-card.on {
+  border-color: var(--tv-accent-line);
+  background: #16201a;
+}
+
+.travel .wall-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.travel .wall-head strong {
+  font-size: 14.5px;
+  color: var(--tv-text);
+}
+
+.travel .wall-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.travel .wall-plan {
+  padding-left: 10px;
+  border-left: 1px solid #2a2c2e;
+}
+
+.travel .wall-plan-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.travel .wall-mode {
+  font-size: 13px;
+  color: var(--tv-text-2);
+}
+
+.travel .wall-cost {
+  font-size: 12px;
+  color: var(--tv-gold);
+  white-space: nowrap;
+}
+
+.travel .wall-from {
+  display: block;
+  font-size: 11.5px;
+  color: #5d5748;
+}
+
+.travel .wall-text {
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--tv-text-3);
+}
+
+@media (max-width: 860px) {
+  .travel .planner-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .travel .plan-stats,
+  .travel .pace-tabs,
+  .travel .wall-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 经典路线 ---------- */
+.travel .route-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.travel .route-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 16px;
+  text-align: left;
+  font-family: inherit;
+  background: var(--tv-card);
+  border: 1px solid var(--tv-line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.16s, background 0.16s;
+}
+
+.travel .route-tab:hover {
+  border-color: var(--tv-accent-line);
+}
+
+.travel .route-tab.on {
+  background: var(--tv-accent-soft);
+  border-color: var(--tv-accent);
+}
+
+.travel .route-tab strong {
+  font-size: 15px;
+  color: var(--tv-text);
+}
+
+.travel .route-tab span {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--tv-text-3);
+}
+
+.travel .route-extra {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #26282a;
+}
+
+.travel .route-extra h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--tv-text-2);
+}
+
+.travel .route-extra h3 + .bullet-list {
+  margin-bottom: 16px;
+}
+
+.travel .bullet-list.muted li {
+  color: var(--tv-text-3);
+}
+
+.travel .bullet-list.muted li::before {
+  background: #4a453a;
+}
+
+@media (max-width: 860px) {
+  .travel .route-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 详情页标题下的高德入口，行内跟在地区后面 */
+.travel .amap-link.inline {
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+/* 详情页标题下的高德入口，行内跟在地区后面 */
+.travel .amap-link.inline {
+  margin-left: 10px;
+  white-space: nowrap;
+}

@@ -39,7 +39,7 @@ const html = `<!DOCTYPE html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>艾尔登法环攻略站</title>
+    <title>我的计划</title>
     <meta name="robots" content="noindex" />
     <style>
       html,
@@ -61,7 +61,7 @@ const html = `<!DOCTYPE html>
     </style>
   </head>
   <body>
-    <div class="wrap">正在前往交界地…</div>
+    <div class="wrap">正在打开…</div>
     <script>
       ;(function () {
         var base = '${base}'

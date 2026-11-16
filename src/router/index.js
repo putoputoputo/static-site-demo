@@ -173,6 +173,17 @@ const routes = [
     component: () => import('../views/pbz/PbzArchetypeView.vue'),
   },
   { path: '/pbz/endings', name: 'pbz-endings', component: () => import('../views/pbz/PbzEndingsView.vue') },
+
+  // 旅游板块：景点库 + 分布图 + 路线规划 + 经典路线
+  { path: '/travel', name: 'travel-home', component: () => import('../views/travel/TravelHomeView.vue') },
+  { path: '/travel/spots', name: 'travel-spots', component: () => import('../views/travel/TravelSpotsView.vue') },
+  {
+    path: '/travel/spots/:id',
+    name: 'travel-spot',
+    component: () => import('../views/travel/TravelSpotView.vue'),
+  },
+  { path: '/travel/plan', name: 'travel-plan', component: () => import('../views/travel/TravelPlanView.vue') },
+  { path: '/travel/routes', name: 'travel-routes', component: () => import('../views/travel/TravelRoutesView.vue') },
   // 必须放最后：未匹配的路径统一落到 404 页，而不是白屏
   {
     path: '/:pathMatch(.*)*',

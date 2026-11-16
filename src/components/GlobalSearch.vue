@@ -31,10 +31,10 @@
 
       <div class="dialog-body">
         <template v-if="keyword.trim()">
-          <p v-if="!groups.length" class="empty-tip">
+          <p v-if="!scopedGroups.length" class="empty-tip">
             没有匹配「{{ keyword.trim() }}」的内容，{{ emptyHint }}
           </p>
-          <section v-for="group in groups" :key="group.group" class="result-group">
+          <section v-for="group in scopedGroups" :key="group.group" class="result-group">
             <div class="group-head">
               <span class="group-label">{{ group.label }}</span>
               <span class="group-total">{{ group.total }} 条{{ group.total > group.items.length ? `，显示前 ${group.items.length}` : '' }}</span>
@@ -79,27 +79,35 @@ const inputRef = ref(null)
 const router = useRouter()
 const route = useRoute()
 
-// 两个板块的索引是同一份，但推荐词得分开给：
-// 在影之刃零页面点「月隐」只会得到空结果，体感像搜索坏了
+// 三个板块共用一份索引，但结果要按板块筛：在旅游页搜「故宫」不该跳出法环的武器，
+// 推荐词也得分开给，否则点一个词得到空结果，体感像搜索坏了
 const inPbz = computed(() => route.path.startsWith('/pbz'))
+const inTravel = computed(() => route.path.startsWith('/travel'))
 
-const placeholderText = computed(() =>
-  inPbz.value
-    ? '搜影之刃零的流程、武器、影之武装、流派、BOSS…'
-    : '搜武器、护符、魔法、祷告、骨灰、支线、BOSS、区域、追忆…'
-)
+const placeholderText = computed(() => {
+  if (inTravel.value) return '搜北京的景点、门票、预约、经典路线…'
+  if (inPbz.value) return '搜影之刃零的流程、武器、影之武装、流派、BOSS…'
+  return '搜武器、护符、魔法、祷告、骨灰、支线、BOSS、区域、追忆…'
+})
 
-const suggestions = computed(() =>
-  inPbz.value
-    ? ['流程', '锁镰', '招架', '换刀', '悲泣溪谷']
-    : ['月隐', '猩红', '拉塔恩', '追忆', '出血', '神圣']
-)
+const suggestions = computed(() => {
+  if (inTravel.value) return ['故宫', '长城', '需要预约', '春节', '三天']
+  if (inPbz.value) return ['流程', '锁镰', '招架', '换刀', '悲泣溪谷']
+  return ['月隐', '猩红', '拉塔恩', '追忆', '出血', '神圣']
+})
 
-const emptyHint = computed(() =>
-  inPbz.value
-    ? '试试更短的关键词，比如「残钢」「招架」「召唤」，或直接搜章节名与区域名。'
-    : '试试更短的关键词，比如「月隐」「猩红」「拉塔恩」。'
-)
+const emptyHint = computed(() => {
+  if (inTravel.value) return '试试「故宫」「长城」「免费」，或直接搜「三天」「春节」找路线。'
+  if (inPbz.value) return '试试更短的关键词，比如「残钢」「招架」「召唤」，或直接搜章节名与区域名。'
+  return '试试更短的关键词，比如「月隐」「猩红」「拉塔恩」。'
+})
+
+// 只显示当前板块的分组：索引是同一份，不筛的话旅游页会搜出法环的武器
+const scopedGroups = computed(() => {
+  if (inTravel.value) return groups.value.filter((group) => group.group.startsWith('travel'))
+  if (inPbz.value) return groups.value.filter((group) => group.group.startsWith('pbz'))
+  return groups.value.filter((group) => !group.group.startsWith('pbz') && !group.group.startsWith('travel'))
+})
 
 // 搜索索引要读全部数据（约 1150 条），改成首次打开时才 import，
 // 否则首页会连带下载 quests / weapons 两个大 chunk
@@ -139,7 +147,7 @@ watch(keyword, () => {
 })
 
 function openFirst() {
-  const first = groups.value[0]?.items?.[0]
+  const first = scopedGroups.value[0]?.items?.[0]
   if (!first) return
   visible.value = false
   router.push(first.to)
